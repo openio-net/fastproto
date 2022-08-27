@@ -112,4 +112,16 @@ public class ProtoPackage implements Package{
         this.packageName=name;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ProtoPackage{" +
+                "fileName='" + fileName + '\'' +
+                ", packageName='" + packageName + '\'' +
+                ", options=" + options +
+                ", ImportFile=" + ImportFile +
+                ", ImportPublicFile=" + ImportPublicFile +
+                ", objects=" + objects +
+                '}';
+    }
 }

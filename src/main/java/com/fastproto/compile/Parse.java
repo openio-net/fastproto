@@ -51,12 +51,17 @@ public class Parse {
                 Message(pack,descriptorProto);
 
             }
+            for(DescriptorProtos.EnumDescriptorProto descriptorProto:proto.getEnumTypeList()){
+                Enum(pack,descriptorProto);
+
+            }
 
 
         }
     }
 
     private void Message(Package pack,DescriptorProtos.DescriptorProto proto){
+
         Object object=new ProtoObject();
         object.setObjectType(ObjectType.Message);
         object.setName(proto.getName());
@@ -68,10 +73,12 @@ public class Parse {
                 Message(object, proto1);
             }
         }
-
         for(DescriptorProtos.EnumDescriptorProto proto1 :proto.getEnumTypeList()){
+
             Enum(object,proto1);
         }
+
+
 
 
 
@@ -86,13 +93,13 @@ public class Parse {
 
 
     private void Message(Object object1, DescriptorProtos.DescriptorProto proto){
+
         Object object=new ProtoObject();
         object.setObjectType(ObjectType.Message);
         object.setName(proto.getName());
-
         for(DescriptorProtos.DescriptorProto proto1:proto.getNestedTypeList()){
-            if(proto1.getOptions().getMapEntry()){
 
+            if(proto1.getOptions().getMapEntry()){
                 Map(object,proto1);
             }else {
                 Message(object, proto1);
@@ -127,11 +134,13 @@ public class Parse {
     }
 
     private void Enum(Object object1,DescriptorProtos.EnumDescriptorProto proto){
+
         Object object=new ProtoObject();
         object.setObjectType(ObjectType.Enum);
         object.setName(proto.getName());
 
         for(DescriptorProtos.EnumValueDescriptorProto proto1:proto.getValueList()){
+
             EnumFiled(object,proto1);
         }
 
@@ -159,27 +168,29 @@ public class Parse {
         }
 
         switch (descriptorProto.getType().getNumber()){
-            case 1: filed.setFileType(FiledType.Double);
-            case 2: filed.setFileType(FiledType.Float);
-            case 3: filed.setFileType(FiledType.Int64);
-            case 4: filed.setFileType(FiledType.uInt64);
-            case 5: filed.setFileType(FiledType.Int32);
-            case 6: filed.setFileType(FiledType.Fixed64);
-            case 7: filed.setFileType(FiledType.Fixed32);
-            case 8: filed.setFileType(FiledType.Bool);
-            case 9: filed.setFileType(FiledType.String);
-            case 10: ;;
+            case 1: filed.setFileType(FiledType.Double);break;
+            case 2: filed.setFileType(FiledType.Float);break;
+            case 3: filed.setFileType(FiledType.Int64);break;
+            case 4: filed.setFileType(FiledType.uInt64);break;
+            case 5: filed.setFileType(FiledType.Int32);break;
+            case 6: filed.setFileType(FiledType.Fixed64);break;
+            case 7: filed.setFileType(FiledType.Fixed32);break;
+            case 8: filed.setFileType(FiledType.Bool);break;
+            case 9: filed.setFileType(FiledType.String);break;
+            case 10: ;;break;
             case 11: filed.setFileType(FiledType.Message);
 
-            filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
+            filed.setFileTypeName(descriptorProto.getTypeName().substring(1));break;
 
-            case 12: filed.setFileType(FiledType.Bytes);
-            case 13: filed.setFileType(FiledType.uInt32);
-            case 14: filed.setFileType(FiledType.Enum);filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
-            case 15: filed.setFileType(FiledType.sFixed32);
-            case 16: filed.setFileType(FiledType.sFixed64);
-            case 17: filed.setFileType(FiledType.sInt32);
-            case 18: filed.setFileType(FiledType.sInt64);
+            case 12: filed.setFileType(FiledType.Bytes);break;
+            case 13: filed.setFileType(FiledType.uInt32);break;
+            case 14: filed.setFileType(FiledType.Enum);
+            filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
+                break;
+            case 15: filed.setFileType(FiledType.sFixed32);break;
+            case 16: filed.setFileType(FiledType.sFixed64);break;
+            case 17: filed.setFileType(FiledType.sInt32);break;
+            case 18: filed.setFileType(FiledType.sInt64);break;
 
         }
 
@@ -220,7 +231,7 @@ public class Parse {
         filed.setFiledName(descriptorProto.getName());
         filed.setTag(descriptorProto.getNumber());
         filed.setFileType(FiledType.Int32);
-        object.addObject(object);
+        object.addFiled(filed);
     }
 
     private void Map(Object object,DescriptorProtos.DescriptorProto proto){
@@ -238,30 +249,30 @@ public class Parse {
     private void MapFiled(Object object,DescriptorProtos.FieldDescriptorProto proto){
         Filed filed=new ProtoFiled();
         filed.setFiledName(proto.getName());
-        filed.setFiledLabel(FiledLabel.Repeated);
+        filed.setFiledLabel(FiledLabel.Required);
         filed.setTag(proto.getNumber());
         if(proto.hasTypeName()){
             filed.setFileTypeName(proto.getTypeName().substring(1));
         }
         switch (proto.getType().getNumber()){
-            case 1: filed.setFileType(FiledType.Double);
-            case 2: filed.setFileType(FiledType.Float);
-            case 3: filed.setFileType(FiledType.Int64);
-            case 4: filed.setFileType(FiledType.uInt64);
-            case 5: filed.setFileType(FiledType.Int32);
-            case 6: filed.setFileType(FiledType.Fixed64);
-            case 7: filed.setFileType(FiledType.Fixed32);
-            case 8: filed.setFileType(FiledType.Bool);
-            case 9: filed.setFileType(FiledType.String);
+            case 1: filed.setFileType(FiledType.Double);break;
+            case 2: filed.setFileType(FiledType.Float);break;
+            case 3: filed.setFileType(FiledType.Int64);break;
+            case 4: filed.setFileType(FiledType.uInt64);break;
+            case 5: filed.setFileType(FiledType.Int32);break;
+            case 6: filed.setFileType(FiledType.Fixed64);break;
+            case 7: filed.setFileType(FiledType.Fixed32);break;
+            case 8: filed.setFileType(FiledType.Bool);break;
+            case 9: filed.setFileType(FiledType.String);break;
             case 10: ;;
-            case 11: filed.setFileType(FiledType.Message);filed.setFileTypeName(proto.getTypeName().substring(1));
-            case 12: filed.setFileType(FiledType.Bytes);
-            case 13: filed.setFileType(FiledType.uInt32);
-            case 14: filed.setFileType(FiledType.Enum);filed.setFileTypeName(proto.getTypeName().substring(1));
-            case 15: filed.setFileType(FiledType.sFixed32);
-            case 16: filed.setFileType(FiledType.sFixed64);
-            case 17: filed.setFileType(FiledType.sInt32);
-            case 18: filed.setFileType(FiledType.sInt64);
+            case 11: filed.setFileType(FiledType.Message);filed.setFileTypeName(proto.getTypeName().substring(1));break;
+            case 12: filed.setFileType(FiledType.Bytes);break;
+            case 13: filed.setFileType(FiledType.uInt32);break;
+            case 14: filed.setFileType(FiledType.Enum);filed.setFileTypeName(proto.getTypeName().substring(1));break;
+            case 15: filed.setFileType(FiledType.sFixed32);break;
+            case 16: filed.setFileType(FiledType.sFixed64);break;
+            case 17: filed.setFileType(FiledType.sInt32);break;
+            case 18: filed.setFileType(FiledType.sInt64);break;
 
         }
         object.addFiled(filed);

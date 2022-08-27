@@ -93,4 +93,15 @@ public class ProtoObject implements Object {
     public List<Object> getObject() {
         return objects;
     }
+
+    @Override
+    public String toString() {
+        return "ProtoObject{" +
+                "name='" + name + '\'' +
+                ", objectType=" + objectType +
+                ", filed=" + filed +
+                ", options=" + options +
+                ", objects=" + objects +
+                '}';
+    }
 }

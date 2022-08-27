@@ -13,8 +13,6 @@ public class ProtoFiled implements Filed{
 
     private String fileName;
 
-    private java.lang.Object filed;
-
     private boolean oneOf;
 
     private int oneIndex;
@@ -125,5 +123,19 @@ public class ProtoFiled implements Filed{
     public Filed setOneIndex(int oneIndex) {
         this.oneIndex=oneIndex;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ProtoFiled{" +
+                "tag=" + tag +
+                ", filedLabel=" + filedLabel +
+                ", filedType=" + filedType +
+                ", fileName='" + fileName + '\'' +
+                ", oneOf=" + oneOf +
+                ", oneIndex=" + oneIndex +
+                ", options=" + options +
+                ", fileTypeName='" + fileTypeName + '\'' +
+                '}';
     }
 }

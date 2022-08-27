@@ -13,6 +13,9 @@ public enum ObjectType {
     String type;
 
 
+   public  String getType(){
+        return type;
+    }
 
     ObjectType(String type){
         this.type=type;
