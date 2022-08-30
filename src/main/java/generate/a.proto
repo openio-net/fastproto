@@ -1,0 +1,85 @@
+syntax = "proto2";
+package google.protobuf;
+import public  "b.proto";
+option java_package = "com";
+
+
+message a{
+
+repeated  string  qwesad=12321;
+
+optional Type rtwqwe=1131;
+enum Type {
+    // 0 is reserved for errors.
+    // Order is weird for historical reasons.
+    TYPE_DOUBLE = 1;
+/   TYPE_FLOAT = 2;
+    // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
+    // negative values are likely.
+    TYPE_INT64 = 3;
+    TYPE_UINT64 = 4;
+    // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
+    // negative values are likely.
+    TYPE_INT32 = 5;
+    TYPE_FIXED64 = 6;
+    TYPE_FIXED32 = 7;
+    TYPE_BOOL = 8;
+    TYPE_STRING = 9;
+    // Tag-delimited aggregate.
+    // Group type is deprecated and not supported in proto3. However, Proto3
+    // implementations should still be able to parse the group wire format and
+    // treat group fields as unknown fields.
+    TYPE_GROUP = 10;
+    TYPE_MESSAGE = 11;  // Length-delimited aggregate.
+
+    // New in version 2.
+    TYPE_BYTES = 12;
+    TYPE_UINT32 = 13;
+    TYPE_ENUM = 14;
+    TYPE_SFIXED32 = 15;
+    TYPE_SFIXED64 = 16;
+    TYPE_SINT32 = 17;  // Uses ZigZag encoding.
+    TYPE_SINT64 = 18;  // Uses ZigZag encoding.
+  }
+
+
+	
+oneof w{
+int32 wq=5;
+int64 ew=100;
+}
+ map<int64 ,int64> b=1;
+
+required int32 c=9;
+
+
+optional google.protobuf1.a i=4;
+
+message s{
+	
+
+optional int32 sw=3;
+
+ map<int32 ,int32>f=1;
+
+extensions 2;
+// xxxxx;
+}
+
+
+optional google.protobuf.a.s sw1=3;
+ extensions 2;
+}
+
+extend a{
+ optional int64 d=2;
+}
+
+
+
+
+
+extend a.s{
+optional int64 c=2;
+}
+

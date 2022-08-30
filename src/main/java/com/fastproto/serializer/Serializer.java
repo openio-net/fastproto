@@ -3,6 +3,9 @@ package com.fastproto.serializer;
 
 import io.netty.buffer.ByteBuf;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public  class Serializer {
 
 
@@ -17,33 +20,34 @@ public  class Serializer {
 
         a=byteBuf.readByte();//解析第二数
         if(a>=0){
-            return value+(a<<7);
+            return value|(a<<7);
         }
 
-        value=value+((a^0b11111111111111111111111110000000)<<7);
+        value=value|((a^0b11111111111111111111111110000000)<<7);
 
         a=byteBuf.readByte();//解析第三数
         if(a>=0){
-            return value+(a<<14);
+            return value|(a<<14);
         }
 
-        value=value+((a^(0b11111111111111111111111110000000))<<14);
+        value=value|((a^(0b11111111111111111111111110000000))<<14);
 
         a=byteBuf.readByte();//解析第4数
         if(a>=0){
-            return value+(a<<21);
+            return value|(a<<21);
         }
 
-        value=value+((a^(0b11111111111111111111111110000000))<<21);
+        value=value|((a^(0b11111111111111111111111110000000))<<21);
 
 
         a=byteBuf.readByte();//解析第5数
         if(a>=0){
-            return     value+(a<<28);
+            return     value|(a<<28);
         }
 
         throw new  RuntimeException("this code is wrong");
     }
+
 
 
     public static long decodeVarInt64(ByteBuf byteBuf){
@@ -57,60 +61,60 @@ public  class Serializer {
 
         a=byteBuf.readByte();//解析第二数
         if(a>=0L){
-            return value+(a<<7L);
+            return value|(a<<7L);
         }
 
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<7L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<7L);
 
         a=byteBuf.readByte();//解析第三数
         if(a>=0){
-            return value+(a<<14L);
+            return value|(a<<14L);
         }
 
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<14L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<14L);
 
         a=byteBuf.readByte();//解析第4数
         if(a>=0L){
-            return value+(a<<21L);
+            return value|(a<<21L);
         }
 
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<21L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<21L);
 
 
         a=byteBuf.readByte();//解析第5数
         if(a>=0L){
-            return value+(a<<28L);
+            return value|(a<<28L);
         }
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<28L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<28L);
 
 
         a=byteBuf.readByte();//解析第6数
         if(a>=0L){
-            return value+(a<<35L);
+            return value|(a<<35L);
         }
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<35L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<35L);
 
         a=byteBuf.readByte();//解析第7数
         if(a>=0L){
-            return value+(a<<42L);
+            return value|(a<<42L);
         }
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<42L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<42L);
 
         a=byteBuf.readByte();//解析第8数
         if(a>=0L){
-            return value+(a<<49L);
+            return value|(a<<49L);
         }
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<49L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<49L);
 
         a=byteBuf.readByte();//解析第9数
         if(a>=0L){
-            return value+(a<<56L);
+            return value|(a<<56L);
         }
-        value=value+((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<56L);
+        value=value|((a^0b1111111111111111111111111111111111111111111111111111111110000000L)<<56L);
 
         a=byteBuf.readByte();//解析第10数
         if(a>=0L){
-            return value+(a<<63L);
+            return value|(a<<63L);
         }
         throw new  RuntimeException("this code is wrong");
 
@@ -124,10 +128,10 @@ public  class Serializer {
         while (true) {
             int value2 = value >>> 7;
             if (value2 == 0) {
-                byteBuf.writeByte((byte)value);
+                byteBuf.writeByte(value);
                 return;
             }
-            byteBuf.writeByte((byte) (value | 128));
+            byteBuf.writeByte( (value | 128));
 
             value = value2;
         }
@@ -139,10 +143,10 @@ public  class Serializer {
         while (true) {
             long value2 = value >>> 7L;
             if (value2 == 0L) {
-                byteBuf.writeByte((byte)value);
+                byteBuf.writeByte((int) value);
                 return;
             }
-            byteBuf.writeByte((byte) (value | 128L));
+            byteBuf.writeByte((int) (value | 128L));
 
             value = value2;
         }
@@ -169,36 +173,88 @@ public  class Serializer {
     }
 
     public static void encodeString(ByteBuf byteBuf,String s){
+        byte[] a=s.getBytes(StandardCharsets.UTF_8);
+        Serializer.encodeVarInt32(byteBuf,a.length);
+        byteBuf.writeBytes(a);
+    }
+
+    public static void encodeByteString(ByteBuf byteBuf,byte[] s){
+        byteBuf.writeBytes(s);
 
     }
 
-    public static void encodeByteString(ByteBuf byteBuf,String s){
-
+    public static String decodeString(ByteBuf byteBuf,int length){
+        if(!byteBuf.hasArray()){
+            throw new RuntimeException("byteBuf not has array");
+        }
+        int read=byteBuf.readerIndex();
+        byteBuf.readerIndex(read+length);
+        return new String(byteBuf.array(),read,length);
     }
 
-    public static String decodeString(ByteBuf byteBuf){
+    public static byte[] decodeByteString(ByteBuf byteBuf,int length){
+        if(!byteBuf.hasArray()){
+            throw new RuntimeException("byteBuf not has array");
+        }
+        int read=byteBuf.readerIndex();
+        byteBuf.readerIndex(read+length);
+        return Arrays.copyOfRange(byteBuf.array(),read,read+length);
 
-
-        return null;
-    }
-
-    public static byte[] decodeByteString(ByteBuf byteBuf){
-
-
-        return null;
     }
 
     public static boolean decodeBoolean(ByteBuf byteBuf){
-
-
-        return false;
+        return decodeVarInt64(byteBuf)!=0;
     }
 
-    public static void encodeBoolean(ByteBuf byteBuf,boolean b){
 
+    public static void encodeDouble(ByteBuf byteBuf,double b){
+        byteBuf.writeDouble(b);
+
+    }
+
+    public static void encodeFloat(ByteBuf byteBuf,float b){
+        byteBuf.writeFloat(b);
+    }
+
+    public static double decodeDouble(ByteBuf byteBuf){
+        return byteBuf.readDouble();
+    }
+
+    public static float decodeFloat(ByteBuf byteBuf){
+        return byteBuf.readFloat();
+
+    }
+
+
+    public static void encode32(ByteBuf byteBuf,int b){
+        byteBuf.writeInt(b);
+    }
+
+    public static void encode64(ByteBuf byteBuf,long b){
+
+        byteBuf.writeLong(b);
 
 
     }
+
+    public static int decode32(ByteBuf byteBuf){
+
+        return byteBuf.readInt();
+    }
+
+    public static long decode64(ByteBuf byteBuf){
+        return byteBuf.readLong();
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

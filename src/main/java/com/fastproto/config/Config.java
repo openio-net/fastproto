@@ -7,7 +7,7 @@ public class Config {
 
     private String fileDir="";
 
-    private  String java_out="src/main/java/proto/";
+    private  String java_out="src/main/java/";
 
     private final List<String> ProtoFiles=new ArrayList<String>();//文件名字
 
@@ -19,7 +19,7 @@ public class Config {
         this.fileDir=fileDir1;
     }
 
-    public String setJavaOut(){
+    public String getJavaOut(){
         return java_out;
     }
 

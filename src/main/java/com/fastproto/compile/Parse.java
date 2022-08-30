@@ -8,43 +8,96 @@ import com.fastproto.config.Config;
 import com.fastproto.wrapper.*;
 import com.fastproto.wrapper.Object;
 import com.fastproto.wrapper.Package;
+import com.google.protobuf.ProtocolStringList;
+import io.netty.buffer.ByteBuf;
 
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 
 public class Parse {
 
-    private static List<Package> list=new ArrayList<>();
+    private  List<Package> list=new ArrayList<>();
 
-    public static List<Package> getList() {
+    public  List<Package> getList() {
         return list;
     }
 
 
     private static String exeAddress="src/main/resources/protoc/Window64/protoc.exe";
+
+
+
     public  void parse(Config config) throws Exception {
+
         Runtime runtime = Runtime.getRuntime();
         for (String s : config.getProtoFiles()) {
             String s1 = s.substring(0, s.length() - 6);
             String l = exeAddress + " " + "-I=" + config.getFileDir() + " " + "--descriptor_set_out=" + config.getFileDir()  + s1 + ".desc " + " " + config.getFileDir()  + s;
            System.out.println("cmd "+l);
-            Process p = runtime.exec(l);
-            p.waitFor();
-            System.out.println(new String(p.getErrorStream().readAllBytes()));
-            FileInputStream is=new FileInputStream(config.getFileDir()+s1+".desc");
 
-            DescriptorProtos.FileDescriptorSet fileDescriptorSet=DescriptorProtos.FileDescriptorSet.parseFrom(is);
+            Process p = null;
+            try {//执行
+                p = runtime.exec(l);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+
+
+
+            try {
+                p.waitFor();//等待打印结果
+                System.out.println(new String(p.getErrorStream().readAllBytes()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+
+            try {
+                System.out.println(new String(p.getErrorStream().readAllBytes()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            DescriptorProtos.FileDescriptorSet fileDescriptorSet;
+            FileInputStream is=null;
+            try {
+                File file=new File(config.getFileDir()+s1+".desc");
+                if(!file.exists()){
+
+                }
+                is=new FileInputStream(file);
+
+                fileDescriptorSet=DescriptorProtos.FileDescriptorSet.parseFrom(is);
+                is.close();
+            }catch (Exception e){
+                e.printStackTrace();
+                return;
+            }finally {
+                if(is!=null) {
+                    is.close();
+                }
+            }
+
             Package pack=new ProtoPackage();
             Pack(pack,fileDescriptorSet);
             list.add(pack);
+
         }
 
     }
 
     private void Pack(Package pack ,DescriptorProtos.FileDescriptorSet fileDescriptorSet ){
         for(DescriptorProtos.FileDescriptorProto proto:fileDescriptorSet.getFileList()){
+            for( String list:proto.getDependencyList()) {
+                pack.addImportFile(list);
+            }
+
             pack.setFileName(proto.getName());
             pack.setPackageName(proto.getPackage());
             for(DescriptorProtos.DescriptorProto descriptorProto:proto.getMessageTypeList()){
@@ -161,6 +214,9 @@ public class Parse {
 
         if(descriptorProto.getLabel().name().equals("LABEL_REPEATED")){
             filed.setFiledLabel(FiledLabel.Repeated);
+            if(descriptorProto.getOptions().getPacked()){
+                Option option=new ProtoOption("packed",true,OptionType.FiledOption);
+            }
         }else if(descriptorProto.getLabel().name().equals("LABEL_REQUIRED")){
             filed.setFiledLabel(FiledLabel.Required);
         }else {
