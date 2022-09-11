@@ -40,6 +40,7 @@ public class FastProtoMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         File baseDir = project.getBasedir();
+
         Config config=new Config();
         config.setJavaOut(new File(baseDir,javaOutDir).getPath());
         config.setFileDir(new File(baseDir,SourcesDir).getPath());
