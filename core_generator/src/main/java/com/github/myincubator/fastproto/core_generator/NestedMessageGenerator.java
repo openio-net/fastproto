@@ -15,8 +15,8 @@ public class NestedMessageGenerator {
     /**
      * @param pw
      * @param o
-     * @param map
-     * @param metaMap
+     * @param map Store map information
+     * @param metaMap Meta information of entity class
      */
     public static void generate(PrintWriter pw, Object o, Map<String, Object> map, Map<String, Meta> metaMap) {
 
@@ -24,10 +24,10 @@ public class NestedMessageGenerator {
         String className = o.getName();
 
 
-        pw.format("         public final static class %s {\n", o.getName());//类声明
+        pw.format("         public final static class %s {\n", o.getName());//Class declaration
 
 
-        Map<Integer, List<Filed>> oneOf=new HashMap<>();//同一个OneOf结构存储到一个List中
+        Map<Integer, List<Filed>> oneOf=new HashMap<>();//The same oneof structure is stored in a list
 
 
 
@@ -36,12 +36,12 @@ public class NestedMessageGenerator {
         pw.println();
 
 
-        o.getAllFiled().forEach(//除oneof以为的进行代码生成
+        o.getAllFiled().forEach(//Except oneof, code generation is performed for
                 f-> filedGen(pw,f,map,metaMap,oneOf,className)
         );
 
 
-        oneOf.keySet().forEach(//生成OneOf声明
+        oneOf.keySet().forEach(//Generate oneof declaration
                 index-> OneOfMessageGenerator.Gen(oneOf.get(index),pw,metaMap,className)
         );
         pw.println();
@@ -91,22 +91,24 @@ public class NestedMessageGenerator {
 
         Object mapObject=map.get(filed.getFileTypeName());
         String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){                                //判断是否为Onof里的属性
+        if(filed.getHasOneOf()){                                //Determine whether it is an attribute in onof
             int oneOfIndex= filed.getOneIndex();
             List<Filed> filedList=oneOf.get(oneOfIndex);
-            if(filedList==null){            //判断Map表中是否有对应的存储结构
+            if(filedList==null){            //Determine whether there is a corresponding storage structure in the map table
                 List<Filed> list=new ArrayList<>();
                 list.add(filed);
                 oneOf.put(oneOfIndex,list);
             }else {
                 filedList.add(filed);
             }
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){//判断标签是否为可多次出现的
-            RepeatedMessageGenerator.Gen(filed,pw,metaMap,className);
-        }else if(mapObject!=null){                             //判断是否是Map类型
+        }else if(mapObject!=null){                             //Determine whether it is a map type
             MapMessageGenerator.Gen(filed,pw,metaMap,mapObject,className);
+        }else if(label.equals(FiledLabel.Repeated.getLabel())){//Determine whether the label can appear multiple times
+            RepeatedMessageGenerator.Gen(filed,pw,metaMap,className);
         }else {
-            MessageGenerator.Gen(filed,pw,metaMap,className);//repeated不进行操作
+            MessageGenerator.Gen(filed,pw,metaMap,className);//Repeated: no operation
+
+
         }
 
     }

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="1.7">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../mavenlib/io/protostuff/protostuff-parser/1.7.2" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../mavenlib/io/protostuff/protostuff-parser/1.7.2" recursive="false" />
+  </library>
+</component>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="3">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../mavenlib/org/antlr/antlr-runtime/3.4" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/antlr-runtime-3.4-sources.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../mavenlib/org/antlr/antlr-runtime/3.4" recursive="false" />
+  </library>
+</component>

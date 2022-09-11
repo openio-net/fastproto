@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="3.21">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../mavenlib/com/google/protobuf/protobuf-java/3.21.1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../mavenlib/com/google/protobuf/protobuf-java/3.21.1" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../mavenlib/com/google/protobuf/protobuf-java/3.21.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../mavenlib/com/google/protobuf/protobuf-java/3.21.1" recursive="false" type="SOURCES" />
+  </library>
+</component>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="4.13">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../mavenlib/junit/junit/4.13.2" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../mavenlib/junit/junit/4.13.2" recursive="false" />
+  </library>
+</component>

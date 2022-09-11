@@ -65,7 +65,44 @@
 
     </dependencies>
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.2</version>
+            </extension>
+        </extensions>
         <plugins>
+
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <extensions>true</extensions>
+                <configuration>
+
+                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+
+                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
+
+                    <outputDirectory>${project.basedir}/src/test/java</outputDirectory>
+
+                    <clearOutputDirectory>false</clearOutputDirectory>
+
+                </configuration>
+                <executions>
+                    <execution>
+
+                        <phase>compile</phase>
+                        <goals>
+
+                            <goal>compile</goal>
+
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>fastproto_maven_plugin</artifactId>
