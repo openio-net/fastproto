@@ -15,21 +15,33 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ *
+ * @author luoluoyuyu
+ *  Parse the contents of proto file
+ */
 public class Parse {
 
-    private  List<Package> list=new ArrayList<>();
+    private  List<Package> list=new ArrayList<>();//Store the package information corresponding to each proto
 
-    private Set<String> importSet=new HashSet<>();
+    private Set<String> importSet=new HashSet<>();//Store all dependent files to be loaded
 
     public  List<Package> getList() {
         return list;
     }
 
-    public  Map<String, Meta> metas=new HashMap<>(); //以proto的全类名为索引
+    public  Map<String, Meta> metas=new HashMap<>(); //Store meta information of each entity class
 
-    public  Map<String, Object> maps=new HashMap<>();//存储Map的信息
+    public  Map<String, Object> maps=new HashMap<>();//Store map information of all required files
 
+
+    /**
+     *
+     *  Parse the proto file information to generate the corresponding package
+     * @param config
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public   void parse(Config config) throws IOException, InterruptedException {
 
         for (String s : config.getProtoFiles()) {

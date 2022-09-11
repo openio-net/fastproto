@@ -16,6 +16,10 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * Generate java file
+ * @author luoluoyuyu
+ */
 public class ProtoGenerator {
 
     /**
