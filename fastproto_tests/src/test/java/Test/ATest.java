@@ -2,8 +2,6 @@ package Test;
 
 
 
-import com.A;
-import com.X;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

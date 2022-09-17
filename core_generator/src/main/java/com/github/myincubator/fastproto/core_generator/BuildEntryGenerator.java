@@ -69,22 +69,22 @@ public class BuildEntryGenerator {
 
         Object mapObject=map.get(filed.getFileTypeName());
         String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){                                //判断是否为Onof里的属性
+        if(filed.getHasOneOf()){
             int oneOfIndex= filed.getOneIndex();
             List<Filed> filedList=oneOf.get(oneOfIndex);
-            if(filedList==null){            //判断Map表中是否有对应的存储结构
+            if(filedList==null){
                 List<Filed> list=new ArrayList<>();
                 list.add(filed);
                 oneOf.put(oneOfIndex,list);
             }else {
                 filedList.add(filed);
             }
-        }else if(mapObject!=null){                             //判断是否是Map类型
+        }else if(mapObject!=null){
             MapBuildFileGenerator.generate(pw,filed,metaMap,mapObject);
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){//判断标签是否为可多次出现的
+        }else if(label.equals(FiledLabel.Repeated.getLabel())){
             RepeatedBuildFileGenerator.generate(pw,filed,map,metaMap);
         }else {
-            MessageBuildFileGenerator.generate(pw,filed,map,metaMap);//repeated不进行操作
+            MessageBuildFileGenerator.generate(pw,filed,map,metaMap);
         }
 
     }
@@ -92,14 +92,14 @@ public class BuildEntryGenerator {
     private static void methodGen(PrintWriter pw, Filed filed, Map<String, Object> map, Map<String, Meta> metaMap, String className){
         Object mapObject=map.get(filed.getFileTypeName());
         String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){                                //判断是否为Onof里的属性
+        if(filed.getHasOneOf()){
             return ;
-        }else if(mapObject!=null){                             //判断是否是Map类型
+        }else if(mapObject!=null){
             MapBuildMethodGenerator.generate(pw,filed,mapObject,metaMap,className);
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){//判断标签是否为可多次出现的
+        }else if(label.equals(FiledLabel.Repeated.getLabel())){
             RepeatedBuildMethodGenerator.generate(pw,filed,metaMap,className);
         }else {
-            MessageBuildMethodGenerator.generate(pw,filed,metaMap,className);//普通进行操作
+            MessageBuildMethodGenerator.generate(pw,filed,metaMap,className);
         }
     }
 

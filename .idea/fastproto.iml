@@ -7,6 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/fastproto_maven_plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/fastproto_maven_plugin/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/fastproto_maven_plugin/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/classes" />
       <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target" />

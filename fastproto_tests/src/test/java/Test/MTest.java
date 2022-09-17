@@ -32,7 +32,7 @@ public class MTest {
 
 
 
-        X.M l1=X.M.newBuilder()
+        X.M l1= X.M.newBuilder()
                 .addH(Long.MAX_VALUE)
                 .addH(Long.MIN_VALUE)
                 .addI(Integer.MAX_VALUE)
