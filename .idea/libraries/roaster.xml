@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="roaster">
-    <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../mavenlib/org/jboss/forge/roaster" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
