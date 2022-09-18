@@ -4,6 +4,7 @@ import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.FiledLabel;
 import com.github.myincubator.fastproto.wrapper.Meta;
 import com.github.myincubator.fastproto.wrapper.Object;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -115,7 +116,7 @@ public class BuildEntryGenerator {
                 pw.format("             value_1.setOneOf%d_%s(this.%s);\n", oneOf, filedName, filedName);
                 pw.format("         }\n");
             } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Repeated.getLabel())) {//repeated
-                pw.format("         if(this.has_%s()){\n", filedName);
+                pw.format("         if(this.has%s()){\n", CaseUtils.toCamelCase(filedName,true));
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
                 pw.format("         }\n");
             } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Required.getLabel())) {//required
@@ -124,7 +125,7 @@ public class BuildEntryGenerator {
                 pw.format("         }\n");
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
             } else if (map.get(filed.getFileTypeName()) != null) {//map
-                pw.format("     if(has_%s){\n",filedName);
+                pw.format("     if(has%s){\n", CaseUtils.toCamelCase(filedName,true));
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);pw.format("");
                 pw.format("     }\n");
             } else {//option

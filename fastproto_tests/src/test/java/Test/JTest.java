@@ -23,11 +23,11 @@ public class JTest {
                 .setL(ByteString.copyFromUtf8("hello")).build();
 
         J j =J.newBuilder()
-                .set_h(Long.MIN_VALUE)
-                .set_i(Integer.MAX_VALUE)
-                .set_j(Long.MIN_VALUE)
-                .set_k("hello")
-                .set_l(ByteString.copyFromUtf8("hello").toByteArray()).build();
+                .setH(Long.MIN_VALUE)
+                .setI(Integer.MAX_VALUE)
+                .setJ(Long.MIN_VALUE)
+                .setK("hello")
+                .setL(ByteString.copyFromUtf8("hello").toByteArray()).build();
 
         ByteBuf buf= Unpooled.buffer(j1.getSerializedSize());
         buf.writeBytes(j1.toByteArray());
@@ -35,11 +35,11 @@ public class JTest {
         buf.clear();
         j.encode(buf);
         J j3=J.decode(buf);
-        assertEquals(j2.get_h(),j3.get_h());
-        assertEquals(j2.get_i(),j3.get_i());
-        assertEquals(j2.get_j(),j3.get_j());
-        assertEquals(j2.get_k(),j3.get_k());
-        assertEquals(new String(j2.get_l(), StandardCharsets.UTF_8),new String(j3.get_l(), StandardCharsets.UTF_8));
+        assertEquals(j2.getH(),j3.getH());
+        assertEquals(j2.getI(),j3.getI());
+        assertEquals(j2.getJ(),j3.getJ());
+        assertEquals(j2.getK(),j3.getK());
+        assertEquals(new String(j2.getL(), StandardCharsets.UTF_8),new String(j3.getL(), StandardCharsets.UTF_8));
     }
 
 }

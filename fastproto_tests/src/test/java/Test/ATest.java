@@ -2,6 +2,8 @@ package Test;
 
 
 
+import com.A;
+import com.X;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -21,11 +23,11 @@ public class ATest {
                 .addB(-12345)
                 .addB(Integer.MAX_VALUE)
                 .build();
-        A a= A.newBuilder().add_b_value(-123)
-                .add_b_value(1234)
-                .add_b_value(-12345)
-                .add_b_value(Integer.MAX_VALUE)
-                .set_a(123456).build();
+        A a= A.newBuilder().addB(-123)
+                .addB(1234)
+                .addB(-12345)
+                .addB(Integer.MAX_VALUE)
+                .setA(123456).build();
         int size=a.getByteSize();
         ByteBuf byteBuf= Unpooled.buffer(a.getByteSize());
         a.encode(byteBuf);
@@ -35,11 +37,11 @@ public class ATest {
         byteBuf.clear();
         A a2=A.decode(byteBuf.writeBytes(a1.toByteArray()));
         assertEquals(size1,size );
-        assertEquals(a1.getB(0),a2.get_b_value(0) );
-        assertEquals(a1.getB(1),a2.get_b_value(1) );
-        assertEquals(a1.getB(2),a2.get_b_value(2) );
-        assertEquals(a1.getB(3),a2.get_b_value(3) );
-        assertEquals(a1.getA(),a2.get_a() );
+        assertEquals(a1.getB(0),a2.getB(0) );
+        assertEquals(a1.getB(1),a2.getB(1) );
+        assertEquals(a1.getB(2),a2.getB(2) );
+        assertEquals(a1.getB(3),a2.getB(3) );
+        assertEquals(a1.getA(),a2.getA() );
 
     }
 }

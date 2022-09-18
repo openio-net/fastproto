@@ -17,16 +17,16 @@ public class MTest {
     @org.junit.Test
     public void testM() throws InvalidProtocolBufferException {//序列化反序列化测试
         M l= M.newBuilder()
-                .add_h_value(Long.MAX_VALUE)
-                .add_h_value(Long.MIN_VALUE)
-                .add_i_value(Integer.MAX_VALUE)
-                .add_i_value(Integer.MIN_VALUE)
-                .add_j_value(Long.MAX_VALUE)
-                .add_j_value(Long.MIN_VALUE)
-                .add_k_value("hello1")
-                .add_k_value("hello2")
-                .add_l_value(ByteString.copyFromUtf8("hello1").toByteArray())
-                .add_l_value(ByteString.copyFromUtf8("hello2").toByteArray())
+                .addH(Long.MAX_VALUE)
+                .addH(Long.MIN_VALUE)
+                .addI(Integer.MAX_VALUE)
+                .addI(Integer.MIN_VALUE)
+                .addJ(Long.MAX_VALUE)
+                .addJ(Long.MIN_VALUE)
+                .addK("hello1")
+                .addK("hello2")
+                .addL(ByteString.copyFromUtf8("hello1").toByteArray())
+                .addL(ByteString.copyFromUtf8("hello2").toByteArray())
                 .build();
 
 
@@ -46,7 +46,7 @@ public class MTest {
                 .build();
 
 
-        ByteBuf buf= Unpooled.buffer(l1.getSerializedSize());
+        ByteBuf buf= Unpooled.directBuffer(l1.getSerializedSize());
 
         buf.writeBytes(l1.toByteArray());
 
@@ -58,16 +58,16 @@ public class MTest {
 
         L l3=L.decode(buf);
         assertEquals(l.getByteSize(),l1.getSerializedSize());
-        assertEquals(l2.get_h_value(0),l3.get_h_value(0));
-        assertEquals(l2.get_h_value(1),l3.get_h_value(1));
-        assertEquals(l2.get_i_value(0),l3.get_i_value(0));
-        assertEquals(l2.get_i_value(1),l3.get_i_value(1));
-        assertEquals(l2.get_j_value(0),l3.get_j_value(0));
-        assertEquals(l2.get_j_value(1),l3.get_j_value(1));
-        assertEquals(l2.get_k_value(0),l3.get_k_value(0));
-        assertEquals(l2.get_k_value(1),l3.get_k_value(1));
-        assertEquals(new String(l2.get_l_value(0), StandardCharsets.UTF_8),new String(l3.get_l_value(0),StandardCharsets.UTF_8));
-        assertEquals(new String(l2.get_l_value(1),StandardCharsets.UTF_8),new String(l3.get_l_value(1),StandardCharsets.UTF_8));
+        assertEquals(l2.getH(0),l3.getH(0));
+        assertEquals(l2.getH(1),l3.getH(1));
+        assertEquals(l2.getI(0),l3.getI(0));
+        assertEquals(l2.getI(1),l3.getI(1));
+        assertEquals(l2.getJ(0),l3.getJ(0));
+        assertEquals(l2.getJ(1),l3.getJ(1));
+        assertEquals(l2.getK(0),l3.getK(0));
+        assertEquals(l2.getK(1),l3.getK(1));
+        assertEquals(new String(l2.getL(0),StandardCharsets.UTF_8),new String(l3.getL(0),StandardCharsets.UTF_8));
+        assertEquals(new String(l2.getL(1),StandardCharsets.UTF_8),new String(l3.getL(1),StandardCharsets.UTF_8));
     }
 
 }

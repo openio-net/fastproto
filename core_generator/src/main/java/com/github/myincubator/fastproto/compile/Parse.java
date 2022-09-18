@@ -7,7 +7,7 @@ import com.github.myincubator.fastproto.wrapper.Package;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
 import com.github.myincubator.fastproto.config.Config;
-
+import org.apache.commons.text.CaseUtils;
 
 
 import java.io.File;
@@ -34,6 +34,68 @@ public class Parse {
 
     public  Map<String, Object> maps=new HashMap<>();//Store map information of all required files
 
+
+    private static Set<String> keyword=new HashSet<>();
+
+    /**
+     *、、、、、、、、、、、、try、、、
+     *
+     */
+    static {
+        keyword.add("null");
+        keyword.add("false");
+        keyword.add("true");
+        keyword.add("const");
+        keyword.add("goto");
+        keyword.add("while");
+        keyword.add("volatile");
+        keyword.add("void");
+        keyword.add("try");
+        keyword.add("transient");
+        keyword.add("throws");
+        keyword.add("throw");
+        keyword.add("this");
+        keyword.add("synchronized");
+        keyword.add("switch");
+        keyword.add("super");
+        keyword.add("strictfp");
+        keyword.add("static");
+        keyword.add("short");
+        keyword.add("return");
+        keyword.add("public");
+        keyword.add("protected");
+        keyword.add("private");
+        keyword.add("package");
+        keyword.add("new");
+        keyword.add("native");
+        keyword.add("long");
+        keyword.add("instanceof");
+        keyword.add("interface");
+        keyword.add("int");
+        keyword.add("import");
+        keyword.add("implements");
+        keyword.add("if");
+        keyword.add("for");
+        keyword.add("float");
+        keyword.add("finally");
+        keyword.add("final");
+        keyword.add("extends");
+        keyword.add("enum");
+        keyword.add("else");
+        keyword.add("double");
+        keyword.add("do");
+        keyword.add("default");
+        keyword.add("continue");
+        keyword.add("class");
+        keyword.add("char");
+        keyword.add("catch");
+        keyword.add("case");
+        keyword.add("byte");
+        keyword.add("boolean");
+        keyword.add("break");
+        keyword.add("assert");
+        keyword.add("abstract");
+    }
 
     /**
      *
@@ -165,10 +227,10 @@ public class Parse {
 
 
 
-
+        Set<String> fileName=new HashSet<>();
         for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
 
-            MessageFiled(object,proto1);
+            MessageFiled(object,proto1,fileName);
         }
 
         pack.addObject(object);
@@ -198,9 +260,9 @@ public class Parse {
         }
 
 
-
+        Set<String> fieldName=new HashSet<>();
         for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
-            MessageFiled(object,proto1);
+            MessageFiled(object,proto1,fieldName);
         }
 
         object1.addObject(object);
@@ -246,7 +308,7 @@ public class Parse {
 
 
 
-    private  void MessageFiled(Object object,DescriptorProtos.FieldDescriptorProto descriptorProto){
+    private  void MessageFiled(Object object,DescriptorProtos.FieldDescriptorProto descriptorProto,Set<String>  fileName){
 
         Filed filed=new ProtoFiled();
         if(descriptorProto.hasOneofIndex()){
@@ -255,7 +317,15 @@ public class Parse {
         }
 
         filed.setNum(descriptorProto.getNumber());
-        filed.setFiledName(descriptorProto.getName());
+        boolean cfl=false;
+        if(keyword.contains(descriptorProto.getName())){
+            cfl=true;
+        }
+        String name= CaseUtils.toCamelCase(descriptorProto.getName(),cfl, '_');
+        if(fileName.contains(name)){
+            throw new RuntimeException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
+        }
+        filed.setFiledName(name);
         if(descriptorProto.hasTypeName()) {
             filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
         }

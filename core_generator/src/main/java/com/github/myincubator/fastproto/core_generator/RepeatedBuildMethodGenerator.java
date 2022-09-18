@@ -2,6 +2,7 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class RepeatedBuildMethodGenerator {
     private static void set(PrintWriter pw, Filed filed, Map<String, Meta> metaMap,String className){
 
         String fileName=filed.getFiledName();
-        pw.format("     public %s add_%s_value(%s a){\n",className,fileName, Util.getJavaType(filed,metaMap));
+        pw.format("     public %s add%s(%s a){\n",className,CaseUtils.toCamelCase(fileName,true), Util.getJavaType(filed,metaMap));
         pw.format("         if(a==null){");
         pw.format("             throw new RuntimeException(\"a is null\");");
         pw.format("         }");
@@ -47,7 +48,7 @@ public class RepeatedBuildMethodGenerator {
 
     private static void get(PrintWriter pw, Filed filed, Map<String, Meta> metaMap){
         String fileName=filed.getFiledName();
-        pw.format("     public %s get_%s_value(int index){\n", Util.getJavaType(filed,metaMap),fileName);
+        pw.format("     public %s get%s(int index){\n", Util.getJavaType(filed,metaMap), CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null||index>=this.%s.size()){\n",fileName,fileName);
         pw.format("             throw new RuntimeException(\"%s is null or index bigger than %s size\");\n",fileName,fileName);
         pw.println("        }\n");
@@ -58,7 +59,7 @@ public class RepeatedBuildMethodGenerator {
 
     private static void remove(PrintWriter pw, Filed filed,String className){
         String fileName=filed.getFiledName();
-        pw.format("     public %s remove_%s_value(int index){\n",className,fileName);
+        pw.format("     public %s remove%s(int index){\n",className,CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null||index>=this.%s.size()){\n",fileName,fileName);
         pw.format("             throw new RuntimeException(\"%s is null or index bigger than %s size\");\n",fileName,fileName);
         pw.println("        }\n");
@@ -70,7 +71,7 @@ public class RepeatedBuildMethodGenerator {
 
     private static void size(PrintWriter pw, Filed filed){
         String fileName=filed.getFiledName();
-        pw.format("     public int size_%s(){\n",fileName);
+        pw.format("     public int size%s(){\n",CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             throw new RuntimeException(\"%s is null\");\n",fileName);
         pw.println("        }\n");
@@ -79,14 +80,14 @@ public class RepeatedBuildMethodGenerator {
     }
 
     private static void clear(PrintWriter pw, String  filedName,String className){
-        pw.format("     public %s clear_%s(){\n",className,filedName);
+        pw.format("     public %s clear%s(){\n",className,CaseUtils.toCamelCase(filedName,true));
         pw.format("         this.%s=null;\n",filedName);
         pw.format("         return this;\n");
         pw.println("     }");
     }
 
     private static void has(PrintWriter pw, String  filedName){
-        pw.format("     public boolean has_%s(){\n",filedName);
+        pw.format("     public boolean has%s(){\n",CaseUtils.toCamelCase(filedName,true));
         pw.format("         if(this.%s==null){\n",filedName);
         pw.format("             return false;\n");
         pw.format("         }\n");

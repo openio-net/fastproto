@@ -2,6 +2,7 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class MessageBuildMethodGenerator {
 
     private static void set(PrintWriter pw, Filed filed, Map<String, Meta> metaMap,String className){
 
-        pw.format("     public %s set_%s(%s a){\n",className,filed.getFiledName(), Util.getJavaType(filed,metaMap));
+        pw.format("     public %s set%s(%s a){\n",className,CaseUtils.toCamelCase(filed.getFiledName(),true), Util.getJavaType(filed,metaMap));
         pw.format("         this.%s=a;\n",filed.getFiledName());
         pw.format("         return this;\n");
         pw.println("    }");
@@ -36,7 +37,7 @@ public class MessageBuildMethodGenerator {
 
     private static void get(PrintWriter pw, Filed filed, Map<String, Meta> metaMap){
 
-        pw.format("     public %s get_%s(){\n", Util.getJavaType(filed,metaMap),filed.getFiledName());
+        pw.format("     public %s get%s(){\n", Util.getJavaType(filed,metaMap),CaseUtils.toCamelCase(filed.getFiledName(),true));
         pw.format("        return this.%s;\n",filed.getFiledName());
         pw.println("    }");
 
@@ -44,7 +45,7 @@ public class MessageBuildMethodGenerator {
 
     private static void clear(PrintWriter pw, Filed filed,String className){
 
-        pw.format("     public %s clear_%s(){\n", className,filed.getFiledName());
+        pw.format("     public %s clear%s(){\n", className,CaseUtils.toCamelCase(filed.getFiledName(),true));
         pw.format("        this.%s=null;\n",filed.getFiledName());
         pw.format("         return this;");
         pw.println("    }");
@@ -53,7 +54,7 @@ public class MessageBuildMethodGenerator {
 
     private static void has(PrintWriter pw, Filed filed){
 
-        pw.format("     public boolean has_%s(){\n",filed.getFiledName());
+        pw.format("     public boolean has%s(){\n", CaseUtils.toCamelCase(filed.getFiledName(),true));
         pw.format("        return this.%s!=null;\n",filed.getFiledName());
         pw.println("    }");
 

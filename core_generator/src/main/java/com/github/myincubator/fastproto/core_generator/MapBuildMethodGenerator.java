@@ -3,6 +3,7 @@ package com.github.myincubator.fastproto.core_generator;
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
 import com.github.myincubator.fastproto.wrapper.Object;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class MapBuildMethodGenerator {
         }
 
         pw.println();
-        put(pw,filed.getFiledName(),metaMap,key,value,className);
+        put(pw, filed.getFiledName(),metaMap,key,value,className);
         pw.println();
         get(pw,filed.getFiledName(),metaMap,key,value);
         pw.println();
@@ -37,7 +38,7 @@ public class MapBuildMethodGenerator {
     }
 
     public static void put(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key,Filed value,String className){
-        pw.format("     public %s put_%s(%s key,%s value){\n",className,fileName, Util.getJavaType(key,metaMap), Util.getJavaType(value,metaMap));
+        pw.format("     public %s put%s(%s key,%s value){\n",className,CaseUtils.toCamelCase(fileName,true), Util.getJavaType(key,metaMap), Util.getJavaType(value,metaMap));
         pw.format("         if(key==null||value==null){");
         pw.format("             throw new RuntimeException(\"key or value is null\");");
         pw.format("         }");
@@ -50,7 +51,7 @@ public class MapBuildMethodGenerator {
     }
 
     public static void get(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key,Filed value){
-        pw.format("     public %s get_%s_value(%s key){\n", Util.getJavaType(value,metaMap),fileName, Util.getJavaType(key,metaMap));
+        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value,metaMap),CaseUtils.toCamelCase(fileName,true), Util.getJavaType(key,metaMap));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             throw new RuntimeException(\"%s is null\");\n",fileName);
         pw.println("        }\n");
@@ -59,7 +60,7 @@ public class MapBuildMethodGenerator {
     }
 
     public static void getKeySet(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key){
-        pw.format("     public java.util.Set<%s> get_%s_KeySet(){\n", Util.getJavaType(key,metaMap),fileName);
+        pw.format("     public java.util.Set<%s> get%s(){\n", Util.getJavaType(key,metaMap),CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             throw new RuntimeException(\"%s is null\");\n",fileName);
         pw.println("        }\n");
@@ -68,23 +69,23 @@ public class MapBuildMethodGenerator {
     }
 
     public static void remove(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key){
-        pw.format("     public java.util.Set<%s> remove_%s_value(){\n", Util.getJavaType(key,metaMap),fileName);
+        pw.format("     public void remove%s(%s key){\n", CaseUtils.toCamelCase(fileName,true),Util.getJavaType(key,metaMap));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             throw new RuntimeException(\"%s is null\");\n",fileName);
         pw.println("        }\n");
-        pw.format("         return this.%s.keySet();\n",fileName);
+        pw.format("         this.%s.remove(key);\n",fileName);
         pw.println("    }\n");
     }
 
     public static void clear(PrintWriter pw, String fileName,  String className){
-        pw.format("     public %s clear_%s(){\n",className,fileName);
+        pw.format("     public %s clear%s(){\n",className,CaseUtils.toCamelCase(fileName,true));
         pw.format("         this.%s=null;\n",fileName);
         pw.format("         return this;\n");
         pw.println("    }");
     }
 
     public static void has(PrintWriter pw, String fileName){
-        pw.format("     public boolean has_%s(){\n",fileName);
+        pw.format("     public boolean has%s(){\n",CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return false;\n");
         pw.format("         }");

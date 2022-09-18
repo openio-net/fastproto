@@ -61,7 +61,11 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
     <build>
@@ -114,15 +118,15 @@
                         <file>proto/x.proto</file>
                         <file>google/protobuf/any.proto</file>
                         <file>google/protobuf/api.proto</file>
-<!--                        <file>google/protobuf/descriptor.proto</file>-->
-<!--                        <file>google/protobuf/duration.proto</file>-->
-<!--                        <file>google/protobuf/empty.proto</file>-->
-<!--                        <file>google/protobuf/field_mask.proto</file>-->
-<!--                        <file>google/protobuf/source_context.proto</file>-->
-<!--                        <file>google/protobuf/struct.proto</file>-->
-<!--                        <file>google/protobuf/timestamp.proto</file>-->
-<!--                        <file>google/protobuf/type.proto</file>-->
-<!--                        <file>google/protobuf/wrappers.proto</file>-->
+                        <file>google/protobuf/descriptor.proto</file>
+                        <file>google/protobuf/duration.proto</file>
+                        <file>google/protobuf/empty.proto</file>
+                        <file>google/protobuf/field_mask.proto</file>
+                        <file>google/protobuf/source_context.proto</file>
+                        <file>google/protobuf/struct.proto</file>
+                        <file>google/protobuf/timestamp.proto</file>
+                        <file>google/protobuf/type.proto</file>
+                        <file>google/protobuf/wrappers.proto</file>
 
                     </protoFile>
 

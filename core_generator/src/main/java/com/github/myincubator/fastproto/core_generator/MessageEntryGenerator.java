@@ -4,6 +4,7 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.*;
 import com.github.myincubator.fastproto.wrapper.Object;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.*;
 
@@ -194,7 +195,7 @@ public class MessageEntryGenerator {
                 continue;
             }
             String filedName=filed.getFiledName();
-            pw.format("         if(has_%s()){\n",filedName);
+            pw.format("         if(has%s()){\n", CaseUtils.toCamelCase(filedName,true));
             pw.format("             this.encode_%s(buf);\n",filedName);
             pw.format("         }\n");
             pw.println();

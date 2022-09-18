@@ -3,6 +3,7 @@ package com.github.myincubator.fastproto.core_generator;
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
 import com.github.myincubator.fastproto.wrapper.Option;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class RepeatedMessageGenerator {
 
     private static void get(PrintWriter pw,   Map<String, Meta> metaMap, Filed value){
         String fileName=value.getFiledName();
-        pw.format("     public %s get_%s_value(int index){\n", Util.getJavaType(value,metaMap),fileName);
+        pw.format("     public %s get%s(int index){\n", Util.getJavaType(value,metaMap), CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return null;");
         pw.println("        }\n");
@@ -111,7 +112,7 @@ public class RepeatedMessageGenerator {
 
     private static void getSize(PrintWriter pw,   Filed value){
         String fileName=value.getFiledName();
-        pw.format("     public int get_%s_size(){\n",fileName);
+        pw.format("     public int get%sSize(){\n",CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return 0;");
         pw.println("        }\n");
@@ -210,7 +211,7 @@ public class RepeatedMessageGenerator {
     }
 
     private static void has(PrintWriter pw, String  filedName){
-        pw.format("     public boolean has_%s(){\n",filedName);
+        pw.format("     public boolean has%s(){\n",CaseUtils.toCamelCase(filedName,true));
         pw.format("         if(this.%s==null){\n",filedName);
         pw.format("             return false;\n");
         pw.format("         }\n");

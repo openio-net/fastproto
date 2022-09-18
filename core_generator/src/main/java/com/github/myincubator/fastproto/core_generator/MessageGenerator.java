@@ -2,6 +2,7 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -64,13 +65,13 @@ public class MessageGenerator {
 
     private static void get(PrintWriter pw,  Map<String, Meta> metaMap,Filed value){
         String fileName=value.getFiledName();
-        pw.format("     public  %s get_%s(){\n", Util.getJavaType(value,metaMap),fileName);
+        pw.format("     public  %s get%s(){\n", Util.getJavaType(value,metaMap), CaseUtils.toCamelCase(fileName,true));
         pw.format("        return this.%s;\n",fileName);
         pw.println("    }");
     }
     private static void has(PrintWriter pw,Filed value){
         String fileName=value.getFiledName();
-        pw.format("     private  boolean has_%s(){\n",fileName);
+        pw.format("     private  boolean has%s(){\n",CaseUtils.toCamelCase(fileName,true));
         pw.format("        return this.%s!=null;\n",fileName);
         pw.println("    }");
     }

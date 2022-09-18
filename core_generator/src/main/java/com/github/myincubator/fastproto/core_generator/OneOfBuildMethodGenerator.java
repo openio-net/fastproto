@@ -2,6 +2,7 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -28,8 +29,8 @@ public class OneOfBuildMethodGenerator {
     private static void set(PrintWriter pw, List<Filed> filed1, Map<String, Meta> metaMap,String className){
         int oneOfIndex=filed1.get(0).getOneIndex();
         for(Filed filed:filed1){
-            pw.format("     public %s setOneOf%dValue%s(%s a){\n"
-                    ,className,oneOfIndex,filed.getFiledName(), Util.getJavaType(filed,metaMap));
+            pw.format("     public %s setOneOf%d%sValue(%s a){\n"
+                    ,className,oneOfIndex, CaseUtils.toCamelCase(filed.getFiledName(),true), Util.getJavaType(filed,metaMap));
             pw.format("     if(a==null) {\n");
             pw.format("         endSet%dNum=-1;\n",oneOfIndex);
             pw.format("         return this;\n");

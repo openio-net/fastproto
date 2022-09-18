@@ -245,22 +245,16 @@ public class Serializer {
 	}
 
 	public static String decodeString(ByteBuf byteBuf, int length) {
-		if (!byteBuf.hasArray()) {
-			throw new RuntimeException("byteBuf not has array");
-		}
 		int read = byteBuf.readerIndex();
 		byteBuf.readerIndex(read + length);
 		return byteBuf.toString(read, length, StandardCharsets.UTF_8);
 	}
 
 	public static byte[] decodeByteString(ByteBuf byteBuf, int length) {
-		if (!byteBuf.hasArray()) {
-			throw new RuntimeException("byteBuf not has array");
-		}
 		int read = byteBuf.readerIndex();
-		byteBuf.readerIndex(read + length);
-		return Arrays.copyOfRange(byteBuf.array(), read, read + length);
-
+		byte[] bytes=new byte[length];
+		byteBuf.readBytes(bytes,0,length);
+		return bytes;
 	}
 
 	public static boolean decodeBoolean(ByteBuf byteBuf) {

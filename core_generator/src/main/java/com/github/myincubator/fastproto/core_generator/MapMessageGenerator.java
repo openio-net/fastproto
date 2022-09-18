@@ -3,6 +3,7 @@ package com.github.myincubator.fastproto.core_generator;
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.Meta;
 import com.github.myincubator.fastproto.wrapper.Object;
+import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class MapMessageGenerator {
 
 
     private static void get(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key,Filed value){
-        pw.format("     public %s get_%s_value(%s key){\n", Util.getJavaType(value,metaMap),fileName, Util.getJavaType(key,metaMap));
+        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value,metaMap), CaseUtils.toCamelCase(fileName,true), Util.getJavaType(key,metaMap));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return null;");
         pw.println("        }\n");
@@ -112,7 +113,7 @@ public class MapMessageGenerator {
 
 
     private static void getKeySet(PrintWriter pw, String fileName,  Map<String, Meta> metaMap, Filed key){
-        pw.format("     public java.util.Set<%s> get_%s_KeySet(){\n", Util.getJavaType(key,metaMap),fileName);
+        pw.format("     public java.util.Set<%s> get%sKeySet(){\n", Util.getJavaType(key,metaMap),CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return null;");
         pw.println("        }\n");
@@ -183,7 +184,7 @@ public class MapMessageGenerator {
 
 
     private static void has(PrintWriter pw, String fileName){
-        pw.format("     public boolean has_%s(){\n",fileName);
+        pw.format("     public boolean has%s(){\n",CaseUtils.toCamelCase(fileName,true));
         pw.format("         if(this.%s==null){\n",fileName);
         pw.format("             return false;\n");
         pw.format("         }");
