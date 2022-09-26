@@ -2,8 +2,8 @@ package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
 import com.github.myincubator.fastproto.wrapper.FiledLabel;
+import com.github.myincubator.fastproto.wrapper.Message;
 import com.github.myincubator.fastproto.wrapper.Meta;
-import com.github.myincubator.fastproto.wrapper.Object;
 import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
@@ -11,48 +11,51 @@ import java.util.*;
 
 public class BuildEntryGenerator {
 
+    private final Message message;
+
+    public BuildEntryGenerator(Message message) {
+        this.message = message;
+    }
 
     /**
-     *
-     * @param o :需要生成的Object
-     * @param map   ：存储了map信息的
-     * @param metaMap ：
+     * @param map     ：Stored map information
+     * @param metaMap ：Message object information
      * @return
      */
-    public static void generate(PrintWriter pw, Object o, Map<String, Object> map, Map<String, Meta> metaMap) {
+    public void generate(PrintWriter pw, Map<String, Message> map, Map<String, Meta> metaMap) {
+        Message o = this.message;
+        String buildName = o.getName() + "Build";
 
-        String buildName=o.getName()+"Build";
-
-        pw.format("     public static class %s {\n",buildName);//类声明
+        pw.format("     public static class %s {\n", buildName);//类声明
 
 
-        Map<Integer, List<Filed>> oneOf=new HashMap<>();//同一个OneOf结构存储到一个List中
+        Map<Integer, List<Filed>> oneOf = new HashMap<>();//同一个OneOf结构存储到一个List中
 
 
 
 
         o.getAllFiled().forEach(//除oneof以为的进行代码生成
-                f-> filedGen(pw,f,map,metaMap,oneOf)
+                f-> filedGenerate(pw, f, map, metaMap, oneOf)
         );
 
 
         oneOf.keySet().forEach(//生成OneOf声明
-                index-> OneOfBuildFiledGenerator.generate(pw,oneOf.get(index),map,metaMap)
+                index -> new OneOfBuildFiledGenerator(oneOf.get(index)).generate(pw, metaMap)
         );
 
         o.getAllFiled().forEach(//除oneof以为的进行代码生成
-                f-> methodGen(pw,f,map,metaMap,buildName)
+                f-> methodGenerate(pw, f, map, metaMap, buildName)
         );
 
 
         oneOf.keySet().forEach(//生成OneOf声明
-                index-> OneOfBuildMethodGenerator.generate(pw,oneOf.get(index),metaMap,buildName)
+                index -> new OneOfBuildMethodGenerator(oneOf.get(index), buildName).generate(pw, metaMap)
         );
 
         pw.println();
-        build(pw,o.getAllFiled(),o.getName(),map,metaMap);
+        generateBuild(pw, o.getAllFiled(), o.getName(), map, metaMap);
 
-        clear(pw,o.getAllFiled(),buildName);
+        generateClear(pw, o.getAllFiled(), buildName);
 
         pw.println();
         pw.format("     private %s(){\n",buildName);
@@ -66,46 +69,46 @@ public class BuildEntryGenerator {
     }
 
 
-    private static void filedGen(PrintWriter pw, Filed filed, Map<String, Object> map, Map<String, Meta> metaMap, Map<Integer,List<Filed>> oneOf){
+    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Message> map, Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf) {
 
-        Object mapObject=map.get(filed.getFileTypeName());
-        String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){
-            int oneOfIndex= filed.getOneIndex();
-            List<Filed> filedList=oneOf.get(oneOfIndex);
-            if(filedList==null){
-                List<Filed> list=new ArrayList<>();
+        Message mapMessage = map.get(filed.getFileTypeName());
+        String label = filed.getFiledLabel().getLabel();
+        if (filed.getHasOneOf()) {
+            int oneOfIndex = filed.getOneIndex();
+            List<Filed> filedList = oneOf.get(oneOfIndex);
+            if (filedList == null) {
+                List<Filed> list = new ArrayList<>();
                 list.add(filed);
-                oneOf.put(oneOfIndex,list);
-            }else {
+                oneOf.put(oneOfIndex, list);
+            } else {
                 filedList.add(filed);
             }
-        }else if(mapObject!=null){
-            MapBuildFileGenerator.generate(pw,filed,metaMap,mapObject);
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){
-            RepeatedBuildFileGenerator.generate(pw,filed,map,metaMap);
-        }else {
-            MessageBuildFileGenerator.generate(pw,filed,map,metaMap);
+        } else if (mapMessage != null) {
+            new MapBuildFileGenerator(filed, mapMessage).generate(pw, metaMap);
+        } else if (label.equals(FiledLabel.Repeated.getLabel())) {
+            new RepeatedBuildFileGenerator(filed).generate(pw, metaMap);
+        } else {
+            new MessageBuildFileGenerator(filed).generate(pw, metaMap);
         }
 
     }
 
-    private static void methodGen(PrintWriter pw, Filed filed, Map<String, Object> map, Map<String, Meta> metaMap, String className){
-        Object mapObject=map.get(filed.getFileTypeName());
-        String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){
-            return ;
-        }else if(mapObject!=null){
-            MapBuildMethodGenerator.generate(pw,filed,mapObject,metaMap,className);
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){
-            RepeatedBuildMethodGenerator.generate(pw,filed,metaMap,className);
-        }else {
-            MessageBuildMethodGenerator.generate(pw,filed,metaMap,className);
+    private void methodGenerate(PrintWriter pw, Filed filed, Map<String, Message> map, Map<String, Meta> metaMap, String className) {
+        Message mapMessage = map.get(filed.getFileTypeName());
+        String label = filed.getFiledLabel().getLabel();
+        if (filed.getHasOneOf()) {
+            return;
+        } else if (mapMessage != null) {
+            new MapBuildMethodGenerator(filed, mapMessage, className).generate(pw, metaMap);
+        } else if (label.equals(FiledLabel.Repeated.getLabel())) {
+            new RepeatedBuildMethodGenerator(filed, className).generate(pw, metaMap, className);
+        } else {
+            new MessageBuildMethodGenerator(filed, className).generate(pw, metaMap);
         }
     }
 
 
-    private static void build(PrintWriter pw, List<Filed> filed1, String className, Map<String, Object> map, Map<String,Meta> metaMap) {
+    private void generateBuild(PrintWriter pw, List<Filed> filed1, String className, Map<String, Message> map, Map<String, Meta> metaMap) {
         pw.format("     public %s build(){\n", className);
         pw.format("         %s value_1=new %s();\n", className, className);
         for (Filed filed : filed1) {
@@ -138,16 +141,16 @@ public class BuildEntryGenerator {
         pw.format("     }\n");
     }
 
-    private static void clear(PrintWriter pw,List<Filed> filed1,String buildName) {
+    private void generateClear(PrintWriter pw, List<Filed> filed1, String buildName) {
         pw.format("     public %s clear(){\n", buildName);
-        Set<Integer> set=new HashSet<>();
+        Set<Integer> set = new HashSet<>();
         for (Filed filed : filed1) {
 
             String filedName = filed.getFiledName();
 
             if (filed.getHasOneOf()) {//oneOf
                 int oneOf = filed.getOneIndex();
-                if(set.contains(oneOf)){
+                if (set.contains(oneOf)) {
                     continue;
                 }
                 set.add(oneOf);

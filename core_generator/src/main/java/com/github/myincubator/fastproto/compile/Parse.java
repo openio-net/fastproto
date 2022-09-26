@@ -1,14 +1,12 @@
 package com.github.myincubator.fastproto.compile;
 
 
-import com.github.myincubator.fastproto.wrapper.*;
-import com.github.myincubator.fastproto.wrapper.Object;
+import com.github.myincubator.fastproto.config.Config;
 import com.github.myincubator.fastproto.wrapper.Package;
+import com.github.myincubator.fastproto.wrapper.*;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
-import com.github.myincubator.fastproto.config.Config;
 import org.apache.commons.text.CaseUtils;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,31 +14,22 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- *
- * @author luoluoyuyu
- *  Parse the contents of proto file
+ * Parse the contents of proto file
  */
 public class Parse {
 
-    private  List<Package> list=new ArrayList<>();//Store the package information corresponding to each proto
+    private static final Set<String> keyword = new HashSet<>();
+    private final List<Package> list = new ArrayList<>();//Store the package information corresponding to each proto
 
-    private Set<String> importSet=new HashSet<>();//Store all dependent files to be loaded
-
-    public  List<Package> getList() {
+    public List<Package> getList() {
         return list;
     }
 
-    public  Map<String, Meta> metas=new HashMap<>(); //Store meta information of each entity class
+    public Map<String, Meta> metas = new HashMap<>(); //Store meta information of each entity class
+    private final Set<String> importSet = new HashSet<>();//Store all dependent files to be loaded
+    public Map<String, Message> maps = new HashMap<>();//Store map information of all required files
 
-    public  Map<String, Object> maps=new HashMap<>();//Store map information of all required files
 
-
-    private static Set<String> keyword=new HashSet<>();
-
-    /**
-     *、、、、、、、、、、、、try、、、
-     *
-     */
     static {
         keyword.add("null");
         keyword.add("false");
@@ -124,23 +113,23 @@ public class Parse {
                 fileDescriptorSet=DescriptorProtos.FileDescriptorSet.parseFrom(is);
                 is.close();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
 
                 return;
-            }finally {
-                if(is!=null) {
+            } finally {
+                if (is != null) {
                     is.close();
                 }
             }
-            Package pack=new ProtoPackage();
-            Pack(pack,fileDescriptorSet,config.getFileDir());
+            Package pack = new Package();
+            parsePackage(pack, fileDescriptorSet, config.getFileDir());
             list.add(pack);
         }
 
     }
 
-    private void importPack(String fileDir,Set<String> importSet ) throws IOException, InterruptedException {
+    private void parseImportPack(String fileDir, Set<String> importSet) throws IOException, InterruptedException {
         for (String s : importSet) {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
@@ -168,26 +157,26 @@ public class Parse {
                     is.close();
                 }
             }
-            Package pack = new ProtoPackage();
-            Pack(pack, fileDescriptorSet,fileDir);
+            Package pack = new Package();
+            parsePackage(pack, fileDescriptorSet, fileDir);
         }
     }
 
-    private  void Pack(Package pack ,DescriptorProtos.FileDescriptorSet fileDescriptorSet ,String fileDir) throws IOException, InterruptedException {
-        for(DescriptorProtos.FileDescriptorProto proto:fileDescriptorSet.getFileList()){
-            for( String list:proto.getDependencyList()) {
+    private void parsePackage(Package pack, DescriptorProtos.FileDescriptorSet fileDescriptorSet, String fileDir) throws IOException, InterruptedException {
+        for (DescriptorProtos.FileDescriptorProto proto : fileDescriptorSet.getFileList()) {
+            for (String list : proto.getDependencyList()) {
                 pack.addImportFile(list);
             }
             pack.setFileName(proto.getName());
             pack.setPackageName(proto.getPackage());
             pack.setJavaPackName(proto.getOptions().getJavaPackage());
-            for(DescriptorProtos.DescriptorProto descriptorProto:proto.getMessageTypeList()){
+            for (DescriptorProtos.DescriptorProto descriptorProto : proto.getMessageTypeList()) {
 
-                Message(pack,descriptorProto);
+                parseMessage(pack, descriptorProto);
 
             }
             for(DescriptorProtos.EnumDescriptorProto descriptorProto:proto.getEnumTypeList()){
-                Enum(pack,descriptorProto);
+                parseEnum(pack, descriptorProto);
 
             }
             Set<String> set=new HashSet<>();
@@ -198,30 +187,30 @@ public class Parse {
                 importSet.add(s);
                 set.add(s);
             }
-            importPack(fileDir,set);
+            parseImportPack(fileDir, set);
 
         }
 
 
     }
 
-    private  void Message(Package pack,DescriptorProtos.DescriptorProto proto){
-        metas.put(pack.getPackageName()+"."+proto.getName(),
-                new ProtoMeta(proto.getName(),pack.getJavaPackName(),pack.getPackageName(),"", pack.getPackageName()+"."+proto.getName()));
-        Object object=new ProtoObject();
-        object.setObjectType(ObjectType.Message);
-        object.setName(proto.getName());
-        for(DescriptorProtos.DescriptorProto proto1:proto.getNestedTypeList()){
+    private void parseMessage(Package pack, DescriptorProtos.DescriptorProto proto) {
+        metas.put(pack.getPackageName() + "." + proto.getName(),
+                new Meta(proto.getName(), pack.getJavaPackName(), pack.getPackageName(), "", pack.getPackageName() + "." + proto.getName()));
+        Message message = new Message();
+        message.setObjectType(ObjectType.Message);
+        message.setName(proto.getName());
+        for (DescriptorProtos.DescriptorProto proto1 : proto.getNestedTypeList()) {
 
-            if(proto1.getOptions().getMapEntry()){
-                Map(object,proto1,pack.getPackageName()+"."+proto.getName());
-            }else {
-                Message(object, proto1,proto.getName(),pack.getPackageName(), pack.getJavaPackName());
+            if (proto1.getOptions().getMapEntry()) {
+                parseMap(message, proto1, pack.getPackageName() + "." + proto.getName());
+            } else {
+                parseMessage(message, proto1, proto.getName(), pack.getPackageName(), pack.getJavaPackName());
             }
         }
-        for(DescriptorProtos.EnumDescriptorProto proto1 :proto.getEnumTypeList()){
+        for (DescriptorProtos.EnumDescriptorProto proto1 : proto.getEnumTypeList()) {
 
-            Enum(object,proto1,proto.getName(),pack.getPackageName(), pack.getJavaPackName());
+            parseEnum(message, proto1, proto.getName(), pack.getPackageName(), pack.getJavaPackName());
         }
 
 
@@ -230,98 +219,93 @@ public class Parse {
         Set<String> fileName=new HashSet<>();
         for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
 
-            MessageFiled(object,proto1,fileName);
+            parseMessageFiled(message, proto1, fileName);
         }
 
-        pack.addObject(object);
+        pack.addObject(message);
 
     }
 
 
-    private  void Message(Object object1, DescriptorProtos.DescriptorProto proto,String filed,String protoPack,String javaPack){
-        metas.put(protoPack+"."+filed+"."+proto.getName(),
-                new ProtoMeta(proto.getName(),javaPack,protoPack,filed,protoPack+"."+filed+"."+proto.getName()));//添加类元数据
+    private void parseMessage(Message message1, DescriptorProtos.DescriptorProto proto, String filed, String protoPack, String javaPack) {
+        metas.put(protoPack + "." + filed + "." + proto.getName(),
+                new Meta(proto.getName(), javaPack, protoPack, filed, protoPack + "." + filed + "." + proto.getName()));//添加类元数据
 
 
-        Object object=new ProtoObject();
-        object.setObjectType(ObjectType.Message);
-        object.setName(proto.getName());
-        for(DescriptorProtos.DescriptorProto proto1:proto.getNestedTypeList()){
+        Message message = new Message();
+        message.setObjectType(ObjectType.Message);
+        message.setName(proto.getName());
+        for (DescriptorProtos.DescriptorProto proto1 : proto.getNestedTypeList()) {
 
-            if(proto1.getOptions().getMapEntry()){
-                Map(object,proto1,protoPack+"."+filed);
-            }else {
-                Message(object, proto1,filed+"."+proto.getName(),protoPack,javaPack);
+            if (proto1.getOptions().getMapEntry()) {
+                parseMap(message, proto1, protoPack + "." + filed);
+            } else {
+                parseMessage(message, proto1, filed + "." + proto.getName(), protoPack, javaPack);
             }
         }
 
-        for(DescriptorProtos.EnumDescriptorProto proto1 :proto.getEnumTypeList()){
-            Enum(object,proto1,filed+"."+proto.getName(),protoPack,javaPack);
+        for (DescriptorProtos.EnumDescriptorProto proto1 : proto.getEnumTypeList()) {
+            parseEnum(message, proto1, filed + "." + proto.getName(), protoPack, javaPack);
         }
 
 
         Set<String> fieldName=new HashSet<>();
         for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
-            MessageFiled(object,proto1,fieldName);
+            parseMessageFiled(message, proto1, fieldName);
         }
 
-        object1.addObject(object);
+        message1.addObject(message);
 
     }
 
 
 
-    private  void Enum(Package pack,DescriptorProtos.EnumDescriptorProto proto){
+    private void parseEnum(Package pack, DescriptorProtos.EnumDescriptorProto proto) {
 
 
-        metas.put(pack.getPackageName()+"."+proto.getName(),
-                new ProtoMeta(proto.getName(),pack.getJavaPackName(),pack.getPackageName(),
-                        "", pack.getPackageName()+"."+proto.getName()));
+        metas.put(pack.getPackageName() + "." + proto.getName(),
+                new Meta(proto.getName(), pack.getJavaPackName(), pack.getPackageName(),
+                        "", pack.getPackageName() + "." + proto.getName()));
 
 
-        Object object=new ProtoObject();
-        object.setObjectType(ObjectType.Enum);
-        object.setName(proto.getName());
-        for(DescriptorProtos.EnumValueDescriptorProto proto1:proto.getValueList()){
-            EnumFiled(object,proto1);
+        Message message = new Message();
+        message.setObjectType(ObjectType.Enum);
+        message.setName(proto.getName());
+        for (DescriptorProtos.EnumValueDescriptorProto proto1 : proto.getValueList()) {
+            parseEnumFiled(message, proto1);
         }
 
-        pack.addObject(object);
+        pack.addObject(message);
     }
 
-    private  void Enum(Object object1,DescriptorProtos.EnumDescriptorProto proto,String filed,String protoPack,String javaClass){
-        metas.put(protoPack+"."+filed+"."+proto.getName(),
-                new ProtoMeta(proto.getName(),javaClass,protoPack,filed,protoPack+"."+filed+"."+proto.getName()));
+    private void parseEnum(Message message1, DescriptorProtos.EnumDescriptorProto proto, String filed, String protoPack, String javaClass) {
+        metas.put(protoPack + "." + filed + "." + proto.getName(),
+                new Meta(proto.getName(), javaClass, protoPack, filed, protoPack + "." + filed + "." + proto.getName()));
 
-        Object object=new ProtoObject();
-        object.setObjectType(ObjectType.Enum);
-        object.setName(proto.getName());
+        Message message = new Message();
+        message.setObjectType(ObjectType.Enum);
+        message.setName(proto.getName());
 
-        for(DescriptorProtos.EnumValueDescriptorProto proto1:proto.getValueList()){
+        for (DescriptorProtos.EnumValueDescriptorProto proto1 : proto.getValueList()) {
 
-            EnumFiled(object,proto1);
+            parseEnumFiled(message, proto1);
         }
 
-        object1.addObject(object);
+        message1.addObject(message);
     }
 
 
+    private void parseMessageFiled(Message message, DescriptorProtos.FieldDescriptorProto descriptorProto, Set<String> fileName) {
 
-
-    private  void MessageFiled(Object object,DescriptorProtos.FieldDescriptorProto descriptorProto,Set<String>  fileName){
-
-        Filed filed=new ProtoFiled();
-        if(descriptorProto.hasOneofIndex()){
+        Filed filed = new Filed();
+        if (descriptorProto.hasOneofIndex()) {
             filed.setOneIndex(descriptorProto.getOneofIndex());
             filed.setHasOneOf(true);
         }
 
         filed.setNum(descriptorProto.getNumber());
-        boolean cfl=false;
-        if(keyword.contains(descriptorProto.getName())){
-            cfl=true;
-        }
-        String name= CaseUtils.toCamelCase(descriptorProto.getName(),cfl, '_');
+        boolean cfl = keyword.contains(descriptorProto.getName());
+        String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
         if(fileName.contains(name)){
             throw new RuntimeException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
         }
@@ -333,7 +317,7 @@ public class Parse {
         if(descriptorProto.getLabel().name().equals("LABEL_REPEATED")){
             filed.setFiledLabel(FiledLabel.Repeated);
             if(descriptorProto.getOptions().getPacked()){
-                Option option=new ProtoOption("packed",true,OptionType.FiledOption);
+                Option option = new Option("packed", true, OptionType.FiledOption);
                 filed.addOption(option);
             }
         }else if(descriptorProto.getLabel().name().equals("LABEL_REQUIRED")){
@@ -383,10 +367,13 @@ public class Parse {
                 filed.setFileTypeName(FiledType.String.getJavaClass().getName());
                 filed.setFileType(FiledType.String);
                 break;
-            case 10: ;;break;
-            case 11: filed.setFileType(FiledType.Message);
+            case 10:
+                break;
+            case 11:
+                filed.setFileType(FiledType.Message);
 
-            filed.setFileTypeName(descriptorProto.getTypeName().substring(1));break;
+                filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
+                break;
 
             case 12:
                 filed.setFileTypeName("byte[]");
@@ -447,40 +434,40 @@ public class Parse {
          TYPE_SFIXED64 = 16;
          TYPE_SINT32 = 17;  // Uses ZigZag encoding.
          TYPE_SINT64 = 18;  // Uses ZigZag encoding.*/
-        object.addFiled(filed);
+        message.addFiled(filed);
 
     }
 
-    private   void EnumFiled(Object object, DescriptorProtos.EnumValueDescriptorProto descriptorProto){
-        Filed filed=new ProtoFiled();
+    private void parseEnumFiled(Message message, DescriptorProtos.EnumValueDescriptorProto descriptorProto) {
+        Filed filed = new Filed();
         filed.setFiledName(descriptorProto.getName());
         filed.setNum(descriptorProto.getNumber());
         filed.setFileType(FiledType.Int32);
-        object.addFiled(filed);
+        message.addFiled(filed);
     }
 
-    private   void Map(Object object,DescriptorProtos.DescriptorProto proto,String field){
+    private void parseMap(Message message, DescriptorProtos.DescriptorProto proto, String field) {
 
-        Object object1=new ProtoObject();
-        object1.setObjectType(ObjectType.Map);
-        object1.setName(proto.getName());
-        for(DescriptorProtos.FieldDescriptorProto fieldDescriptorProto: proto.getFieldList()){
-            MapFiled(object1,fieldDescriptorProto);
+        Message message1 = new Message();
+        message1.setObjectType(ObjectType.Map);
+        message1.setName(proto.getName());
+        for (DescriptorProtos.FieldDescriptorProto fieldDescriptorProto : proto.getFieldList()) {
+            parseMapFiled(message1, fieldDescriptorProto);
         }
-        object.addObject(object1);
-        maps.put(field+"."+proto.getName(),object1);
+        message.addObject(message1);
+        maps.put(field + "." + proto.getName(), message1);
 
     }
 
-    private   void MapFiled(Object object,DescriptorProtos.FieldDescriptorProto proto){
-        Filed filed=new ProtoFiled();
+    private void parseMapFiled(Message message, DescriptorProtos.FieldDescriptorProto proto) {
+        Filed filed = new Filed();
         filed.setFiledName(proto.getName());
         filed.setFiledLabel(FiledLabel.Required);
         filed.setNum(proto.getNumber());
-        if(proto.hasTypeName()){
+        if (proto.hasTypeName()) {
             filed.setFileTypeName(proto.getTypeName().substring(1));
         }
-        switch (proto.getType().getNumber()){
+        switch (proto.getType().getNumber()) {
             case 1:
                 filed.setFileType(FiledType.Double);
                 filed.setFileTypeName(FiledType.Double.getJavaClass().getName());
@@ -517,10 +504,13 @@ public class Parse {
                 filed.setFileTypeName(FiledType.String.getJavaClass().getName());
                 filed.setFileType(FiledType.String);
                 break;
-            case 10: ;;break;
-            case 11: filed.setFileType(FiledType.Message);
+            case 10:
+                break;
+            case 11:
+                filed.setFileType(FiledType.Message);
 
-                filed.setFileTypeName(proto.getTypeName().substring(1));break;
+                filed.setFileTypeName(proto.getTypeName().substring(1));
+                break;
 
             case 12:
                 filed.setFileTypeName("byte[]");
@@ -552,7 +542,7 @@ public class Parse {
                 break;
 
         }
-        object.addFiled(filed);
+        message.addFiled(filed);
     }
 
 

@@ -1,45 +1,61 @@
 package com.github.myincubator.fastproto.wrapper;
 
-public interface Meta {
+public class Meta {
 
-    /**
-     *
-     * @return 对象所在的文件名字;
-     */
-    String getClassName();
-
-    /**
-     *
-     * @return 所在的proto名字
-     */
-    String getProtoPackName();
+    private final String className;//对像的名字
 
 
-    /**
-     *
-     * @return 所在的包名
-     */
-    String getJavaPackageName();
+    private final String javaPackageName;//所在的java包名
+
+    private final String protoPackName;//proto的包名
+
+    private final String filed;//域
+
+    private final String objectName;//proto中的全类名
 
 
-    /**
-     *
-     * @return 所在的作用域，
-     */
-    String getField();
+    public Meta(String className, String javaPackageName, String protoPackName, String filed, String objectName) {
+        this.className = className;
+        this.javaPackageName = javaPackageName;
+        this.protoPackName = protoPackName;
+        this.filed = filed;
+        this.objectName = objectName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getProtoPackName() {
+        return protoPackName;
+    }
+
+    public String getJavaPackageName() {
+        return javaPackageName;
+    }
+
+    public String getField() {
+        return filed;
+    }
+
+    public String getObjectName() {
+        return objectName;
+    }
+
+    public String getJavaObjectName() {
+        if (filed != null && !filed.equals("")) {
+            if (javaPackageName != null && !javaPackageName.equals("")) {
+                return javaPackageName + "." + filed + "." + className;
+            } else {
+                return filed + "." + className;
+            }
+        }
 
 
-    /**
-     *
-     * @return proto中的全类名类名
-     */
-    String getObjectName();//
-
-
-
-    /**
-     *
-     * @return
-     */
-    String getJavaObjectName();//获取java全类名
+        if (javaPackageName != null && !javaPackageName.equals("")) {
+            return javaPackageName + "." + className;
+        } else {
+            return className;
+        }
+    }
 }

@@ -2,33 +2,35 @@ package com.github.myincubator.fastproto.core_generator;
 
 
 import com.github.myincubator.fastproto.wrapper.*;
-import com.github.myincubator.fastproto.wrapper.Object;
 import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
-
-
 import java.util.*;
 
 public class NestedMessageGenerator {
 
 
+    Message message;
+
+    public NestedMessageGenerator(Message message) {
+        this.message = message;
+    }
+
     /**
      * @param pw
-     * @param o
-     * @param map Store map information
+     * @param map     Store map information
      * @param metaMap Meta information of entity class
      */
-    public static void generate(PrintWriter pw, Object o, Map<String, Object> map, Map<String, Meta> metaMap) {
+    public void generate(PrintWriter pw, Map<String, Message> map, Map<String, Meta> metaMap) {
 
 
-        String className = o.getName();
+        String className = message.getName();
 
 
-        pw.format("         public final static class %s {\n", o.getName());//Class declaration
+        pw.format("         public final static class %s {\n", message.getName());//Class declaration
 
 
-        Map<Integer, List<Filed>> oneOf=new HashMap<>();//The same oneof structure is stored in a list
+        Map<Integer, List<Filed>> oneOf = new HashMap<>();//The same oneof structure is stored in a list
 
 
 
@@ -37,50 +39,50 @@ public class NestedMessageGenerator {
         pw.println();
 
 
-        o.getAllFiled().forEach(//Except oneof, code generation is performed for
-                f-> filedGen(pw,f,map,metaMap,oneOf,className)
+        message.getAllFiled().forEach(//Except oneof, code generation is performed for
+                f -> filedGen(pw, f, map, metaMap, oneOf, className)
         );
 
 
         oneOf.keySet().forEach(//Generate oneof declaration
-                index-> OneOfMessageGenerator.Gen(oneOf.get(index),pw,metaMap,className)
+                index -> new OneOfMessageGenerator(oneOf.get(index), className).generate(pw, metaMap)
         );
         pw.println();
 
-        decode(pw,className,o.getAllFiled());
+        generateDecode(pw, className, message.getAllFiled());
 
         pw.println();
 
-        decode2(pw,className,o.getAllFiled());
+        generateDecode2(pw, className, message.getAllFiled());
 
         pw.println();
 
-        encode(pw,o.getAllFiled());
+        generateEncode(pw, message.getAllFiled());
 
         pw.println();
 
-        getByteSize(pw,className);
+        generateGetByteSize(pw, className);
 
         pw.println();
 
-        verify(pw,o.getAllFiled());
+        generateVerify(pw, message.getAllFiled());
 
         pw.println();
 
-        build(pw,className+"Build");
+        generateBuild(pw, className + "Build");
 
         pw.println();
 
-        BuildEntryGenerator.generate(pw,o,map,metaMap);
+        new BuildEntryGenerator(message).generate(pw, map, metaMap);
 
         pw.println();
 
 
-        for (Object object : o.getObject()) {
-            if (object.getObjectType().getType().equals(ObjectType.Message.getType())) {
-                NestedMessageGenerator.generate(pw,object,map,metaMap);
-            } else if (object.getObjectType().getType().equals(ObjectType.Enum.getType())) {
-                NestedEnumGenerator.generate(pw,object);
+        for (Message message : message.getObject()) {
+            if (message.getObjectType().getType().equals(ObjectType.Message.getType())) {
+                new NestedMessageGenerator(message).generate(pw, map, metaMap);
+            } else if (message.getObjectType().getType().equals(ObjectType.Enum.getType())) {
+                new NestedEnumGenerator(message).generate(pw);
             }
         }
         pw.println("}");
@@ -88,50 +90,48 @@ public class NestedMessageGenerator {
 
     }
 
-    private static void filedGen(PrintWriter pw, Filed filed, Map<String, Object> map, Map<String, Meta> metaMap, Map<Integer,List<Filed>> oneOf, String className){
+    private void filedGen(PrintWriter pw, Filed filed, Map<String, Message> map, Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf, String className) {
 
-        Object mapObject=map.get(filed.getFileTypeName());
-        String label=filed.getFiledLabel().getLabel();
-        if(filed.getHasOneOf()){                                //Determine whether it is an attribute in onof
-            int oneOfIndex= filed.getOneIndex();
-            List<Filed> filedList=oneOf.get(oneOfIndex);
-            if(filedList==null){            //Determine whether there is a corresponding storage structure in the map table
-                List<Filed> list=new ArrayList<>();
+        Message mapMessage = map.get(filed.getFileTypeName());
+        String label = filed.getFiledLabel().getLabel();
+        if (filed.getHasOneOf()) {                                //Determine whether it is an attribute in onof
+            int oneOfIndex = filed.getOneIndex();
+            List<Filed> filedList = oneOf.get(oneOfIndex);
+            if (filedList == null) {            //Determine whether there is a corresponding storage structure in the map table
+                List<Filed> list = new ArrayList<>();
                 list.add(filed);
-                oneOf.put(oneOfIndex,list);
-            }else {
+                oneOf.put(oneOfIndex, list);
+            } else {
                 filedList.add(filed);
             }
-        }else if(mapObject!=null){                             //Determine whether it is a map type
-            MapMessageGenerator.Gen(filed,pw,metaMap,mapObject,className);
-        }else if(label.equals(FiledLabel.Repeated.getLabel())){//Determine whether the label can appear multiple times
-            RepeatedMessageGenerator.Gen(filed,pw,metaMap,className);
-        }else {
-            MessageGenerator.Gen(filed,pw,metaMap,className);//Repeated: no operation
-
-
+        } else if (mapMessage != null) {                             //Determine whether it is a map type
+            new MapMessageGenerator(filed, mapMessage, className).Generate(pw, metaMap);
+        } else if (label.equals(FiledLabel.Repeated.getLabel())) {//Determine whether the label can appear multiple times
+            new RepeatedMessageGenerator(filed, className).Gen(pw, metaMap);
+        } else {
+            new MessageGenerator(filed, className).generate(pw, metaMap);//Repeated: no operation
         }
 
     }
 
 
-    private static void getByteSize(PrintWriter pw,String className){
+    private void generateGetByteSize(PrintWriter pw, String className) {
         pw.println("    public int getByteSize(){");
-        pw.format("         return this.%s_size;\n",className);
+        pw.format("         return this.%s_size;\n", className);
         pw.println("    }");
     }
 
-    private static void decode(PrintWriter pw, String className, List<Filed> filedList){
-        pw.format("     public static %s decode(ByteBuf buf){\n",className);
-        pw.format("         %s value_1=new %s();\n",className,className);
+    private void generateDecode(PrintWriter pw, String className, List<Filed> filedList) {
+        pw.format("     public static %s decode(ByteBuf buf){\n", className);
+        pw.format("         %s value_1=new %s();\n", className, className);
         pw.format("         int f_Index=buf.readerIndex();");
         pw.format("         while(buf.readerIndex()<buf.writerIndex()){\n");
         pw.format("             int num_1=Serializer.decodeVarInt32(buf);\n");
         pw.format("              switch(num_1){\n");
-        for(Filed filed:filedList){
-            String filedName=filed.getFiledName();
+        for (Filed filed : filedList) {
+            String filedName = filed.getFiledName();
             pw.format("             case %s_Tag:\n", filedName);
-            pw.format("                 decode_%s(buf,value_1);\n",filedName);
+            pw.format("                 decode_%s(buf,value_1);\n", filedName);
             pw.format("                 break;\n");
         }
         pw.format("default: Serializer.skipUnknownField(num_1,buf);");
@@ -142,16 +142,16 @@ public class NestedMessageGenerator {
         pw.println("    }\n");
     }
 
-    private static void decode2(PrintWriter pw, String className, List<Filed> filedList){
-        pw.format("     public static %s decode(ByteBuf buf,int length_1){\n",className);
-        pw.format("         %s value_1=new %s();\n",className,className);
+    private void generateDecode2(PrintWriter pw, String className, List<Filed> filedList) {
+        pw.format("     public static %s decode(ByteBuf buf,int length_1){\n", className);
+        pw.format("         %s value_1=new %s();\n", className, className);
         pw.format("         int f_Index=buf.readerIndex();\n");
         pw.format("         while(buf.readerIndex()<f_Index+length_1){\n");
         pw.format("             int num_1=Serializer.decodeVarInt32(buf);\n");
         pw.format("              switch(num_1){\n");
-        Set<Integer> set=new HashSet<>();
-        for(Filed filed:filedList){
-            String filedName=filed.getFiledName();
+        Set<Integer> set = new HashSet<>();
+        for (Filed filed : filedList) {
+            String filedName = filed.getFiledName();
             pw.format("             case %s_Tag:\n", filed.getFiledName());
             pw.format("                 decode_%s(buf,value_1);\n",filedName);
             pw.format("                 break;\n");
@@ -166,17 +166,17 @@ public class NestedMessageGenerator {
         pw.println("    }\n");
     }
 
-    private static void encode(PrintWriter pw,  List<Filed> filedList){
+    private void generateEncode(PrintWriter pw, List<Filed> filedList) {
         pw.format("     public void encode(ByteBuf buf){\n");
-        Set<Integer> set=new HashSet<>();
-        for(Filed filed: filedList) {
-            if(filed.getHasOneOf()){
+        Set<Integer> set = new HashSet<>();
+        for (Filed filed : filedList) {
+            if (filed.getHasOneOf()) {
                 set.add(filed.getOneIndex());
                 continue;
             }
-            String filedName=filed.getFiledName();
-            pw.format("         if(has%s()){\n", CaseUtils.toCamelCase(filedName,true));
-            pw.format("             this.encode_%s(buf);\n",filedName);
+            String filedName = filed.getFiledName();
+            pw.format("         if(has%s()){\n", CaseUtils.toCamelCase(filedName, true));
+            pw.format("             this.encode_%s(buf);\n", filedName);
             pw.format("         }\n");
             pw.println();
 
@@ -190,18 +190,18 @@ public class NestedMessageGenerator {
     }
 
 
-    private static void build(PrintWriter pw,String buildName){
-        pw.format("public static %s newBuilder(){\n",buildName);
-        pw.format("return new %s();\n",buildName);
+    private void generateBuild(PrintWriter pw, String buildName) {
+        pw.format("public static %s newBuilder(){\n", buildName);
+        pw.format("return new %s();\n", buildName);
         pw.format("}\n");
     }
 
-    private static void verify(PrintWriter pw,List<Filed> filed){
+    private void generateVerify(PrintWriter pw, List<Filed> filed) {
         pw.format("     private void verify(){\n");
-        for(Filed filed1:filed) {
-            if(filed1.getFiledLabel().getLabel().equals(FiledLabel.Required.getLabel())){
-                pw.format("         if(this.%s==null){\n",filed1.getFiledName());
-                pw.format("             throw new RuntimeException(\"required %s\");\n",filed1.getFiledName());
+        for (Filed filed1 : filed) {
+            if (filed1.getFiledLabel().getLabel().equals(FiledLabel.Required.getLabel())) {
+                pw.format("         if(this.%s==null){\n", filed1.getFiledName());
+                pw.format("             throw new RuntimeException(\"required %s\");\n", filed1.getFiledName());
                 pw.format("         }\n");
             }
         }

@@ -1,47 +1,127 @@
 package com.github.myincubator.fastproto.wrapper;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Filed {
+public class Filed {
 
 
-    int getNum();
-
-    Filed setNum(int tag);
-
-    FiledLabel getFiledLabel();
-
-    Filed setFiledLabel(FiledLabel filedLabel);//re
-
-    FiledType getFileType();//
-
-    Filed setFileType(FiledType filedType);
-
-    String getFiledName();//获取属性名字
+    private final List<Option> options = new ArrayList<>();
+    private int tag;
+    private FiledLabel filedLabel;
+    private FiledType filedType;
+    private String fileName;
+    private boolean oneOf;
+    private int oneIndex;
+    private String fileTypeName;
 
 
-     Filed setFileTypeName(String filedName);
+    public int getNum() {
+        return tag;
+    }
 
 
-     String getFileTypeName();
-
-    Filed setFiledName(String filedName);//
-
-
-    List<Option> getAllOption();//获取所有的选项
-
-    Option getOption(String key);//更具名字获取选项
-
-    Filed addOption(Option option);//添加选项
+    public Filed setNum(int tag) {
+        this.tag = tag;
+        return this;
+    }
 
 
-    Filed setHasOneOf(boolean b);
-
-    boolean getHasOneOf();
-
-    int getOneIndex();
+    public FiledLabel getFiledLabel() {
+        return this.filedLabel;
+    }
 
 
-    public Filed setOneIndex(int oneIndex);
+    public Filed setFiledLabel(FiledLabel filedLabel) {
+        this.filedLabel = filedLabel;
+        return this;
+    }
+
+
+    public FiledType getFileType() {
+        return filedType;
+    }
+
+
+    public Filed setFileType(FiledType filedType) {
+        this.filedType = filedType;
+        return this;
+    }
+
+
+    public String getFiledName() {
+        return fileName;
+    }
+
+    public Filed setFiledName(String filedName) {
+        this.fileName = filedName;
+        return this;
+    }
+
+    public String getFileTypeName() {
+        return this.fileTypeName;
+    }
+
+    public Filed setFileTypeName(String filedName) {
+        this.fileTypeName = filedName;
+
+        return this;
+    }
+
+    public List<Option> getAllOption() {
+        return options;
+    }
+
+
+    public Option getOption(String key) {
+        for (Option option : options) {
+            if (option.getKey().equals(key)) {
+                return option;
+            }
+        }
+        return null;
+    }
+
+
+    public Filed addOption(Option option) {
+        if (option == null) {
+            throw new RuntimeException("option is null");
+        }
+        options.add(option);
+        return this;
+    }
+
+    public boolean getHasOneOf() {
+        return oneOf;
+    }
+
+    public Filed setHasOneOf(boolean b) {
+        oneOf = b;
+        return this;
+    }
+
+    public int getOneIndex() {
+        return 0;
+    }
+
+
+    public Filed setOneIndex(int oneIndex) {
+        this.oneIndex = oneIndex;
+        return this;
+    }
+
+
+    public String toString() {
+        return "ProtoFiled{" +
+                "tag=" + tag +
+                ", filedLabel=" + filedLabel +
+                ", filedType=" + filedType +
+                ", fileName='" + fileName + '\'' +
+                ", oneOf=" + oneOf +
+                ", oneIndex=" + oneIndex +
+                ", options=" + options +
+                ", fileTypeName='" + fileTypeName + '\'' +
+                '}';
+    }
 }

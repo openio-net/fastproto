@@ -9,53 +9,60 @@ import java.util.Map;
 
 public class MessageBuildMethodGenerator {
 
+    Filed filed;
 
-    public static void generate(PrintWriter pw,Filed filed, Map<String, Meta> metaMap, String className){
-        pw.println();
-        set(pw,filed,metaMap,className);
+    String className;
 
+    public MessageBuildMethodGenerator(Filed filed, String className) {
+        this.filed = filed;
+        this.className = className;
+    }
+
+    public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
+        pw.println();
+        generateSet(pw, filed, metaMap, className);
         pw.println();
         pw.println();
-        get(pw,filed,metaMap);
+        generateGet(pw, filed, metaMap);
         pw.println();
-        clear(pw,filed,className);
+        generateClear(pw, filed, className);
         pw.println();
-        has(pw,filed);
+        generateHas(pw, filed);
         pw.println();
 
     }
 
 
-    private static void set(PrintWriter pw, Filed filed, Map<String, Meta> metaMap,String className){
+    private void generateSet(PrintWriter pw, Filed filed, Map<String, Meta> metaMap, String className) {
 
-        pw.format("     public %s set%s(%s a){\n",className,CaseUtils.toCamelCase(filed.getFiledName(),true), Util.getJavaType(filed,metaMap));
-        pw.format("         this.%s=a;\n",filed.getFiledName());
+        pw.format("     public %s set%s(%s a){\n", className, CaseUtils.toCamelCase(filed.getFiledName(), true), Util.getJavaType(filed, metaMap));
+        pw.format("         this.%s=a;\n", filed.getFiledName());
         pw.format("         return this;\n");
         pw.println("    }");
 
     }
 
-    private static void get(PrintWriter pw, Filed filed, Map<String, Meta> metaMap){
+    private void generateGet(PrintWriter pw, Filed filed, Map<String, Meta> metaMap) {
 
-        pw.format("     public %s get%s(){\n", Util.getJavaType(filed,metaMap),CaseUtils.toCamelCase(filed.getFiledName(),true));
-        pw.format("        return this.%s;\n",filed.getFiledName());
+        pw.format("     public %s get%s(){\n", Util.getJavaType(filed, metaMap), CaseUtils.toCamelCase(filed.getFiledName(), true));
+        pw.format("        return this.%s;\n", filed.getFiledName());
         pw.println("    }");
 
     }
 
-    private static void clear(PrintWriter pw, Filed filed,String className){
+    private void generateClear(PrintWriter pw, Filed filed, String className) {
 
-        pw.format("     public %s clear%s(){\n", className,CaseUtils.toCamelCase(filed.getFiledName(),true));
-        pw.format("        this.%s=null;\n",filed.getFiledName());
+        pw.format("     public %s clear%s(){\n", className, CaseUtils.toCamelCase(filed.getFiledName(), true));
+        pw.format("        this.%s=null;\n", filed.getFiledName());
         pw.format("         return this;");
         pw.println("    }");
 
     }
 
-    private static void has(PrintWriter pw, Filed filed){
+    private void generateHas(PrintWriter pw, Filed filed) {
 
-        pw.format("     public boolean has%s(){\n", CaseUtils.toCamelCase(filed.getFiledName(),true));
-        pw.format("        return this.%s!=null;\n",filed.getFiledName());
+        pw.format("     public boolean has%s(){\n", CaseUtils.toCamelCase(filed.getFiledName(), true));
+        pw.format("        return this.%s!=null;\n", filed.getFiledName());
         pw.println("    }");
 
     }

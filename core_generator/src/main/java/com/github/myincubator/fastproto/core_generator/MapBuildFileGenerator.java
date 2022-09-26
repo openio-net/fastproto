@@ -1,23 +1,32 @@
 package com.github.myincubator.fastproto.core_generator;
 
 import com.github.myincubator.fastproto.wrapper.Filed;
+import com.github.myincubator.fastproto.wrapper.Message;
 import com.github.myincubator.fastproto.wrapper.Meta;
-import com.github.myincubator.fastproto.wrapper.Object;
 
 import java.io.PrintWriter;
 import java.util.Map;
 
 public class MapBuildFileGenerator {
 
-    public static void generate(PrintWriter pw, Filed filed, Map<String, Meta> metaMap, Object o){
+    Filed filed;
 
-        Filed key=null;
-        Filed value=null;
-        for(Filed filed1:o.getAllFiled()){
-            if(filed1.getFiledName().equals("key")){
-                key=filed1;
-            }else {
-                value=filed1;
+    Message message;
+
+    public MapBuildFileGenerator(Filed filed, Message message) {
+        this.filed = filed;
+        this.message = message;
+    }
+
+    public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
+
+        Filed key = null;
+        Filed value = null;
+        for (Filed filed1 : message.getAllFiled()) {
+            if (filed1.getFiledName().equals("key")) {
+                key = filed1;
+            } else {
+                value = filed1;
             }
         }
 

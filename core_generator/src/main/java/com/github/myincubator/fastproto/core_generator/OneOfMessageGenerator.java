@@ -8,37 +8,45 @@ import java.util.List;
 import java.util.Map;
 
 public class OneOfMessageGenerator {
+    List<Filed> filed1;
 
-    public static void Gen(List<Filed> filed1, PrintWriter pw, Map<String, Meta> metaMap, String className) {
-       int oneOfIndex=filed1.get(0).getOneIndex();
-        pw.format("private int endOneOfNum_%d=-1;\n",oneOfIndex);
+    String className;
+
+    public OneOfMessageGenerator(List<Filed> filed, String name) {
+        this.filed1 = filed;
+        this.className = name;
+    }
+
+    public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
+        int oneOfIndex = filed1.get(0).getOneIndex();
+        pw.format("private int endOneOfNum_%d=-1;\n", oneOfIndex);
         pw.println();
-        for(Filed filed:filed1){
-            pw.format("private %s %s;\n", Util.getJavaType(filed,metaMap),filed.getFiledName());
-            pw.format("    public final static int %s_Num = %d;\n",filed.getFiledName(),filed.getNum());
-            pw.format("    public final static int %s_Tag=%d;\n",filed.getFiledName(), Util.getTag(filed));
-            pw.format("    public final static int %s_TagEncodeSize=%d;\n",filed.getFiledName(), Util.getTagEncodeSize(filed));
+        for (Filed filed : filed1) {
+            pw.format("private %s %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
+            pw.format("    public final static int %s_Num = %d;\n", filed.getFiledName(), filed.getNum());
+            pw.format("    public final static int %s_Tag=%d;\n", filed.getFiledName(), Util.getTag(filed));
+            pw.format("    public final static int %s_TagEncodeSize=%d;\n", filed.getFiledName(), Util.getTagEncodeSize(filed));
             pw.println();
         }
 
-        set(filed1,pw,metaMap,oneOfIndex,className);
+        generateSet(filed1, pw, metaMap, oneOfIndex, className);
         pw.println();
-        get(pw,filed1);
+        generateGet(pw, filed1);
         pw.println();
-        encode(pw,filed1);
+        generateEncode(pw, filed1);
         pw.println();
-        decode(pw,filed1,metaMap,className);
+        generateDecode(pw, filed1, metaMap, className);
         pw.println();
-        has(pw,filed1);
+        generateHas(pw, filed1);
         pw.println();
     }
 
-    private static void set(List<Filed> filed1, PrintWriter pw, Map<String, Meta> metaMap,int oneOf,String className){
-        for(Filed filed:filed1){
-            String filedName=filed.getFiledName();
-            String javaClass= Util.getJavaType(filed,metaMap);
-            pw.format("     private void setOneOf%d_%s(%s value_1){\n",oneOf,filedName,javaClass);
-            pw.format("         this.%s=value_1;\n",filedName);
+    private void generateSet(List<Filed> filed1, PrintWriter pw, Map<String, Meta> metaMap, int oneOf, String className) {
+        for (Filed filed : filed1) {
+            String filedName = filed.getFiledName();
+            String javaClass = Util.getJavaType(filed, metaMap);
+            pw.format("     private void setOneOf%d_%s(%s value_1){\n", oneOf, filedName, javaClass);
+            pw.format("         this.%s=value_1;\n", filedName);
 //            pw.format("         if(endOneOfNum_%d!=-1){\n",oneOf);
 //            pw.format("             switch(endOneOfNum_%d){\n",oneOf);
 //            int i=2;
@@ -64,15 +72,15 @@ public class OneOfMessageGenerator {
 
     }
 
-    private static void get(PrintWriter pw, List<Filed> filed1){
-        int oneOfIndex=filed1.get(0).getOneIndex();
+    private void generateGet(PrintWriter pw, List<Filed> filed1) {
+        int oneOfIndex = filed1.get(0).getOneIndex();
 
-        pw.format("    public java.lang.Object getOneOf%dValue(){\n",oneOfIndex);
-        pw.format("         if(endOneOfNum_%d==-1) return null;\n",oneOfIndex);
-        pw.format("         switch(endOneOfNum_%d){\n",oneOfIndex);
-        for(Filed filed: filed1) {
-            pw.format("             case %s_Num :\n",filed.getFiledName());
-            pw.format("            return this.%s;\n",filed.getFiledName());
+        pw.format("    public java.lang.Object getOneOf%dValue(){\n", oneOfIndex);
+        pw.format("         if(endOneOfNum_%d==-1) return null;\n", oneOfIndex);
+        pw.format("         switch(endOneOfNum_%d){\n", oneOfIndex);
+        for (Filed filed : filed1) {
+            pw.format("             case %s_Num :\n", filed.getFiledName());
+            pw.format("            return this.%s;\n", filed.getFiledName());
         }
         pw.println("        }");
         pw.println("return null;");
@@ -80,17 +88,17 @@ public class OneOfMessageGenerator {
 
     }
 
-    private static void encode(PrintWriter pw, List<Filed> filed1){
+    private void generateEncode(PrintWriter pw, List<Filed> filed1) {
         pw.println();
-        int oneOf=filed1.get(0).getOneIndex();
+        int oneOf = filed1.get(0).getOneIndex();
 
-            pw.println();
+        pw.println();
 
-            pw.format("     private void encodeOneOf_%d(ByteBuf buf){\n",oneOf);
-            pw.format("         switch(endOneOfNum_%d){",oneOf);
-            for(Filed filed:filed1) {
+        pw.format("     private void encodeOneOf_%d(ByteBuf buf){\n", oneOf);
+        pw.format("         switch(endOneOfNum_%d){", oneOf);
+        for (Filed filed : filed1) {
 
-                String filedName=filed.getFiledName();
+            String filedName = filed.getFiledName();
                 pw.format("             case %s_Num :\n",filed.getFiledName());
                 pw.format("         Serializer.encodeVarInt32(buf,%s_Tag);\n", filed.getFiledName());
                 Util.encodeFiled(pw,filed,"buf","this."+filedName);
@@ -104,17 +112,17 @@ public class OneOfMessageGenerator {
 
     }
 
-    private static void decode(PrintWriter pw, List<Filed> filed1,Map<String,Meta> metaMap,String className){
-        int oneOf=filed1.get(0).getOneIndex();
+    private void generateDecode(PrintWriter pw, List<Filed> filed1, Map<String, Meta> metaMap, String className) {
+        int oneOf = filed1.get(0).getOneIndex();
         pw.println();
-        for(Filed filed:filed1) {
+        for (Filed filed : filed1) {
             pw.println();
-            String filedName=filed.getFiledName();
-            pw.format("     private static void decode_%s(ByteBuf buf,%s value_1){\n",filedName,className);
-            pw.format("         if(value_1.endOneOfNum_%d!=-1){\n",oneOf);
-            pw.format("             switch(value_1.endOneOfNum_%d){\n",oneOf);
-            for(Filed filed2:filed1){
-                pw.format("             case %s_Tag :\n",filed2.getFiledName());
+            String filedName = filed.getFiledName();
+            pw.format("     private static void decode_%s(ByteBuf buf,%s value_1){\n", filedName, className);
+            pw.format("         if(value_1.endOneOfNum_%d!=-1){\n", oneOf);
+            pw.format("             switch(value_1.endOneOfNum_%d){\n", oneOf);
+            for (Filed filed2 : filed1) {
+                pw.format("             case %s_Tag :\n", filed2.getFiledName());
                 pw.format("                 value_1.%s=null;\n",filed2.getFiledName());
                 pw.format("                 break;\n");
 
@@ -133,10 +141,10 @@ public class OneOfMessageGenerator {
 
     }
 
-    private static void has(PrintWriter pw, List<Filed>  list){
-        int oneOfIndex=list.get(0).getOneIndex();
-        pw.format("     public boolean hasOneOf%d(){\n",oneOfIndex);
-        pw.format("         return endOneOfNum_%d!=-1;\n",oneOfIndex);
+    private void generateHas(PrintWriter pw, List<Filed> list) {
+        int oneOfIndex = list.get(0).getOneIndex();
+        pw.format("     public boolean hasOneOf%d(){\n", oneOfIndex);
+        pw.format("         return endOneOfNum_%d!=-1;\n", oneOfIndex);
         pw.println("     }");
     }
 

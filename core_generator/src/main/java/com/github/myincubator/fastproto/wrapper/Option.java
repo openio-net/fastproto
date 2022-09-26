@@ -1,12 +1,29 @@
 package com.github.myincubator.fastproto.wrapper;
 
-public interface Option {
+public class Option {
 
-    public String getKey();
+    private final String key;
+
+    private final Object value;
+
+    private final OptionType type;
 
 
-    public java.lang.Object getValue();
+    public Option(String key, Object value, OptionType optionType) {
+        this.key = key;
+        this.value = value;
+        this.type = optionType;
+    }
 
+    public String getKey() {
+        return key;
+    }
 
-    public OptionType getObjectType();
+    public Object getValue() {
+        return value;
+    }
+
+    public OptionType getObjectType() {
+        return type;
+    }
 }
