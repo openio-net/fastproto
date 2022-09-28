@@ -1,6 +1,6 @@
 package com.github.myincubator.fastproto.core_generator;
 
-import com.github.myincubator.fastproto.compile.Parse;
+import com.github.myincubator.fastproto.compile.Parser;
 import com.github.myincubator.fastproto.config.Config;
 import com.github.myincubator.fastproto.wrapper.Message;
 import com.github.myincubator.fastproto.wrapper.Meta;
@@ -17,7 +17,7 @@ import java.util.*;
 
 /**
  * Generate java file
- * @author luoluoyuyu
+ *
  */
 public class ProtoGenerator {
 
@@ -28,7 +28,7 @@ public class ProtoGenerator {
      * @throws IOException
      */
         public static List<File> generate(Config config) throws IOException, InterruptedException {
-            Parse parse=new Parse();
+            Parser parse = new Parser();
             parse.parse(config);
             List<File> files = new ArrayList<>();
             for(Package pack:parse.getList()){

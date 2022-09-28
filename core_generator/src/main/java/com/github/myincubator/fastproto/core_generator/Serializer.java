@@ -1,11 +1,13 @@
 package com.github.myincubator.fastproto.core_generator;
+
 import io.netty.buffer.ByteBuf;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
  * Serialization and deserialization methods
- * @author lyy
+ *
  */
 public class Serializer {
 

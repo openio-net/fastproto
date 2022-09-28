@@ -5,14 +5,11 @@ import com.github.myincubator.fastproto.wrapper.*;
 import org.jboss.forge.roaster.Roaster;
 
 import java.io.*;
-
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * @author luoluoyuyu
- */
+
 public  class Util {
 
      static int getTag(Filed filed){
@@ -196,7 +193,7 @@ public  class Util {
             case FiledType.eInt32:
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s);\n",var,deValue);
                 break;
-            case FiledType.eInt64:;
+            case FiledType.eInt64:
                 pw.format("             %s+=Serializer.computeVarInt64Size(%s);\n",var,deValue);
                 break;
             case FiledType.esInt32:
@@ -208,13 +205,13 @@ public  class Util {
             case FiledType.euInt32:
                 pw.format("             %s+=Serializer.computeVarUInt32Size(%s);\n",var,deValue);
                 break;
-            case FiledType.euInt64:;
+            case FiledType.euInt64:
                 pw.format("             %s+=Serializer.computeVarInt64Size(%s);\n",var,deValue);
                 break;
             case FiledType.eEnum:
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s.getNum());\n",var,deValue);
                 break;
-            case FiledType.eBool:;
+            case FiledType.eBool:
                 pw.format("             %s+=1;\n",var);
                 break;
             case FiledType.eDouble:
@@ -229,10 +226,10 @@ public  class Util {
             case FiledType.eFixed64:
                 pw.format("             %s+=8;\n",var);
                 break;
-            case FiledType.esFixed32:;
+            case FiledType.esFixed32:
                 pw.format("             %s+=4;\n",var);
                 break;
-            case FiledType.esFixed64:;
+            case FiledType.esFixed64:
                 pw.format("             %s+=8;\n",var);
                 break;
 
@@ -292,7 +289,7 @@ public  class Util {
     }
 
     static void WriterContent(File file, String sw) throws IOException {
-        String content= Roaster.format(sw.toString());
+        String content = Roaster.format(sw);
         try (Writer w = Files.newBufferedWriter(file.toPath())) {
             w.write(content);
         }

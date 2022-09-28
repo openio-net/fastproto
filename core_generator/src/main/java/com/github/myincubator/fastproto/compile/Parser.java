@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Parse the contents of proto file
  */
-public class Parse {
+public class Parser {
 
     private static final Set<String> keyword = new HashSet<>();
     private final List<Package> list = new ArrayList<>();//Store the package information corresponding to each proto

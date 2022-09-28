@@ -3,9 +3,7 @@ package com.github.myincubator.fastproto.config;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author luoluoyuyu
- */
+
 public class Config {
 
     private String fileDir="";//File scan root path
