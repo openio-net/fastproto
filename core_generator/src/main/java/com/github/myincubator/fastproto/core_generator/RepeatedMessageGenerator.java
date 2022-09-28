@@ -82,7 +82,7 @@ public class RepeatedMessageGenerator {
         pw.format("             this.%s.add(value_1);", fileName);
         pw.format("          }\n");
         pw.format("         this.%s_size+=Serializer.computeVarInt32Size(length_1);//add length byte size\n", ClassName);//添加length的byte长度
-        pw.format("         this.%s_size+=length_1;\n", ClassName);//重长度加value的长度
+        pw.format("         this.%s_size+=length_1;\n", ClassName);
         pw.format("         this.%s_Length=length_1;\n", fileName);
 
     }
@@ -95,7 +95,7 @@ public class RepeatedMessageGenerator {
         pw.format("             this.%s.add(value_1);", fileName);
         pw.format("             int length_1=0;\n");
         Util.size(pw, filed.getFileType().getType(), "length_1", "value_1");
-        pw.format("             this.%s_size+=length_1;\n", ClassName);//最终长度加value的长度
+        pw.format("             this.%s_size+=length_1;\n", ClassName);
         pw.format("          }\n");
 
     }
@@ -148,7 +148,7 @@ public class RepeatedMessageGenerator {
 
     private void packedDecode(PrintWriter pw, Map<String, Meta> metaMap, Filed value) {
         String fileName = value.getFiledName();
-        pw.format("         if(a_1.%s_Length!=0){// has init\n ", fileName);//判断之前是否有值
+        pw.format("         if(a_1.%s_Length!=0){// has init\n ", fileName);
         pw.format("             a_1.%s=new java.util.ArrayList<>();\n", fileName);
         pw.format("         }\n");
         pw.format("         a_1.%s_Length=Serializer.decodeVarInt32(buf);\n", fileName);

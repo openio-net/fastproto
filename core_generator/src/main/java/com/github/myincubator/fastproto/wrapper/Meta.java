@@ -2,16 +2,16 @@ package com.github.myincubator.fastproto.wrapper;
 
 public class Meta {
 
-    private final String className;//对像的名字
+    private final String className;
 
 
-    private final String javaPackageName;//所在的java包名
+    private final String javaPackageName;
 
-    private final String protoPackName;//proto的包名
+    private final String protoPackName;
 
-    private final String filed;//域
+    private final String filed;
 
-    private final String objectName;//proto中的全类名
+    private final String objectName;
 
 
     public Meta(String className, String javaPackageName, String protoPackName, String filed, String objectName) {

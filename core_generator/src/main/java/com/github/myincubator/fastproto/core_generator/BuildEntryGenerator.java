@@ -26,29 +26,27 @@ public class BuildEntryGenerator {
         Message o = this.message;
         String buildName = o.getName() + "Build";
 
-        pw.format("     public static class %s {\n", buildName);//类声明
+        pw.format("     public static class %s {\n", buildName);
 
 
-        Map<Integer, List<Filed>> oneOf = new HashMap<>();//同一个OneOf结构存储到一个List中
+        Map<Integer, List<Filed>> oneOf = new HashMap<>();
 
 
-
-
-        o.getAllFiled().forEach(//除oneof以为的进行代码生成
-                f-> filedGenerate(pw, f, map, metaMap, oneOf)
+        o.getAllFiled().forEach(
+                f -> filedGenerate(pw, f, map, metaMap, oneOf)
         );
 
 
-        oneOf.keySet().forEach(//生成OneOf声明
+        oneOf.keySet().forEach(
                 index -> new OneOfBuildFiledGenerator(oneOf.get(index)).generate(pw, metaMap)
         );
 
-        o.getAllFiled().forEach(//除oneof以为的进行代码生成
-                f-> methodGenerate(pw, f, map, metaMap, buildName)
+        o.getAllFiled().forEach(
+                f -> methodGenerate(pw, f, map, metaMap, buildName)
         );
 
 
-        oneOf.keySet().forEach(//生成OneOf声明
+        oneOf.keySet().forEach(
                 index -> new OneOfBuildMethodGenerator(oneOf.get(index), buildName).generate(pw, metaMap)
         );
 

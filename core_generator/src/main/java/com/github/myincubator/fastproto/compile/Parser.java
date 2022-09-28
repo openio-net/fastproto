@@ -98,8 +98,8 @@ public class Parser {
         for (String s : config.getProtoFiles()) {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
-            String[] args = {"-v3.11.1", "-I",config.getFileDir(),"--descriptor_set_out",config.getFileDir()  + s1 + ".desc",config.getFileDir()  + s};
-            int result= Protoc.runProtoc(args);//生成desc文件，调用protoc
+            String[] args = {"-v3.11.1", "-I", config.getFileDir(), "--descriptor_set_out", config.getFileDir() + s1 + ".desc", config.getFileDir() + s};
+            int result = Protoc.runProtoc(args);//Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is=null;
@@ -134,7 +134,7 @@ public class Parser {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
             String[] args = {"-v3.11.1", "-I", fileDir, "--descriptor_set_out", fileDir + s1 + ".desc", fileDir + s};
-            int result = Protoc.runProtoc(args);//生成desc文件，调用protoc
+            int result = Protoc.runProtoc(args);//Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is = null;
