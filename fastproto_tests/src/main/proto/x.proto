@@ -1,0 +1,138 @@
+syntax = "proto2";
+package google.protobuf;
+option java_package = "com";
+
+
+message A{
+	optional	int32 a=1;
+	repeated  int32  b=2[packed=true];
+}
+
+message B {
+	
+	repeated A b=2;
+}
+
+
+
+message C{
+	
+	repeated B b=2;
+}
+
+
+message D{
+	
+	map<int32,int64>  b=2;
+}
+
+enum F{
+	a=0;
+	b=2;
+	c=3;
+}
+
+
+message E{
+	
+	map<int32,D>  a=1;
+
+	repeated B b=2;
+	
+	oneof p {
+		int32 c=3;
+
+		int64 e=4;
+
+		int64 f=5;
+	
+	}
+		
+}
+
+
+
+message I {
+	
+	map<int32,A>  b=2;
+}
+
+message J{
+	optional int64 h=6;
+
+	optional fixed32 i=7;
+
+	optional fixed64 j=8;
+
+	optional string k=9;
+
+	optional bytes l=10;
+}
+
+message L{
+	repeated int64 h=6;
+
+	repeated fixed32 i=7;
+
+	repeated fixed64 j=8;
+
+	repeated string k=9;
+
+	repeated bytes l=10;
+}
+
+message M{
+	repeated int64 h=6[packed=true];
+
+	repeated fixed32 i=7[packed=true];
+
+	repeated fixed64 j=8[packed=true];
+
+	repeated string k=9;
+
+	repeated bytes l=10;
+}
+
+
+message K{
+	optional uint64 h=6;
+
+	optional uint32  i=7;
+
+	optional sint32 j=8;
+
+	optional sint64 k=9;
+
+	optional bool l=10;
+}
+
+
+
+
+
+
+
+
+message N{
+	repeated uint64 h=6[packed=true];
+
+	repeated uint32  i=7[packed=true];
+
+	repeated sint32 j=8[packed=true];
+
+	repeated sint64 k=9[packed=true];
+
+	repeated bool l=10[packed=true];
+}
+
+message O{
+	repeated uint64 h=6;
+
+	repeated uint32  i=7;
+
+	repeated sint32 j=8;
+
+	repeated sint64 k=9;
+
+	repeated bool l=10;
+}
