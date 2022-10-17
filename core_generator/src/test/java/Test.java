@@ -1,6 +1,6 @@
 
-import com.github.myincubator.fastproto.config.Config;
-import com.github.myincubator.fastproto.core_generator.ProtoGenerator;
+import com.github.openio.fastproto.config.Config;
+import com.github.openio.fastproto.core_generator.ProtoGenerator;
 
 import java.io.IOException;
 
