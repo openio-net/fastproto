@@ -2,6 +2,7 @@ package net.openio.fastproto.compile;
 
 
 import net.openio.fastproto.config.Config;
+import net.openio.fastproto.exception.FileNotFoundException;
 import net.openio.fastproto.wrapper.*;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
@@ -105,7 +106,7 @@ public class Parser {
             FileInputStream is=null;
             File file=new File(config.getFileDir()+s1+".desc");
             if(!file.exists()){
-                throw new RuntimeException("file is not exists");
+                throw new FileNotFoundException();
             }
             try {
 
@@ -140,7 +141,7 @@ public class Parser {
             FileInputStream is = null;
             File file = new File(fileDir + s1 + ".desc");
             if (!file.exists()) {
-                throw new RuntimeException("file is not exists");
+                throw new FileNotFoundException();
             }
             try {
 

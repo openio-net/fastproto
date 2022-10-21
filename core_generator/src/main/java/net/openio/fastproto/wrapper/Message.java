@@ -1,5 +1,7 @@
 package net.openio.fastproto.wrapper;
 
+import net.openio.fastproto.exception.OptionNullPointerException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class Message {
 
     public Message addOption(Option option) {
         if (option == null) {
-            throw new RuntimeException("option is null");
+            throw new OptionNullPointerException();
         }
         options.add(option);
         return this;

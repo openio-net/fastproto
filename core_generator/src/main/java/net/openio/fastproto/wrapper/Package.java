@@ -1,5 +1,10 @@
 package net.openio.fastproto.wrapper;
 
+import net.openio.fastproto.exception.NameNullPointerException;
+import net.openio.fastproto.exception.ObjectNullPointerException;
+import net.openio.fastproto.exception.OptionNullPointerException;
+import net.openio.fastproto.exception.PathNullPointerException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +26,7 @@ public class Package {
 
     public Package addOption(Option option) {
         if (option == null) {
-            throw new RuntimeException("option is null");
+            throw new OptionNullPointerException();
         }
         options.add(option);
         return this;
@@ -46,7 +51,7 @@ public class Package {
 
     public Package addImportFile(String path) {
         if (path == null) {
-            throw new RuntimeException("path is null");
+            throw new PathNullPointerException();
         }
         ImportFile.add(path);
         return this;
@@ -60,7 +65,7 @@ public class Package {
 
     public Package addPublicPackage(String path) {
         if (path == null) {
-            throw new RuntimeException("path is null");
+            throw new PathNullPointerException();
         }
         ImportPublicFile.add(path);
         return this;
@@ -73,7 +78,7 @@ public class Package {
 
     public Package setPackageName(String name) {
         if (name == null) {
-            throw new RuntimeException("PackageName is null");
+            throw new PathNullPointerException();
         }
         this.packageName = name;
         return this;
@@ -85,7 +90,7 @@ public class Package {
 
     public Message getObjectByName(String Name) {
         if (Name == null) {
-            throw new RuntimeException("Name is null");
+            throw new NameNullPointerException();
         }
         for (Message message : messages) {
             if (message.getName().equals(Name))
@@ -96,7 +101,7 @@ public class Package {
 
     public Package addObject(Message message) {
         if (message == null) {
-            throw new RuntimeException("object is null");
+            throw new ObjectNullPointerException();
         }
         messages.add(message);
         return this;
