@@ -86,7 +86,7 @@
 
                     <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
 
-                    <protoSourceRoot>src/main/java/net/openio/fastproto/proto</protoSourceRoot>
+                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
 
                     <outputDirectory>${project.basedir}/src/test/java</outputDirectory>
 
