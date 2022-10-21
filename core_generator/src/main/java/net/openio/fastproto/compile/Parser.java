@@ -3,7 +3,6 @@ package net.openio.fastproto.compile;
 
 import net.openio.fastproto.config.Config;
 import net.openio.fastproto.wrapper.*;
-import com.github.myincubator.fastproto.wrapper.*;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
 import net.openio.fastproto.wrapper.Package;

@@ -1,7 +1,7 @@
 package net.openio.fastproto.core_generator;
 
 
-import com.github.myincubator.fastproto.wrapper.*;
+
 import net.openio.fastproto.wrapper.*;
 import org.jboss.forge.roaster.Roaster;
 
