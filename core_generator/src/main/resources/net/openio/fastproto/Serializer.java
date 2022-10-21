@@ -1,6 +1,7 @@
-package net.openio.fastproto;
+package com.github.myincubator.fastproto.core_generator;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 
 public class Serializer {
@@ -13,52 +14,52 @@ public class Serializer {
 		}
 		value = a ^ 0xffffff80;
 
-		a = byteBuf.readByte();// 解析第二数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 7);
 		}
 
 		value = value | ((a ^ 0xffffff80) << 7);
 
-		a = byteBuf.readByte();// 解析第三数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 14);
 		}
 
 		value = value | ((a ^ (0xffffff80)) << 14);
 
-		a = byteBuf.readByte();// 解析第4数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 21);
 		}
 
 		value = value | ((a ^ (0xffffff80)) << 21);
 
-		a = byteBuf.readByte();// 解析第5数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 28);
 		}
 		value = value | ((a & 15) << 28);// the value is negative ,
-		a = byteBuf.readByte();// 解析第6数
+		a = byteBuf.readByte();
 
 		if (a != -1) {
 			throw new RuntimeException("this code is wrong");
 		}
 
-		a = byteBuf.readByte();// 解析第7数
+		a = byteBuf.readByte();
 		if (a != -1) {
 			throw new RuntimeException("this code is wrong");
 		}
 
-		a = byteBuf.readByte();// 解析第8数
+		a = byteBuf.readByte();
 		if (a != -1) {
 			throw new RuntimeException("this code is wrong");
 		}
-		a = byteBuf.readByte();// 解析第9数
+		a = byteBuf.readByte();
 		if (a != -1) {
 			throw new RuntimeException("this code is wrong");
 		}
-		a = byteBuf.readByte();// 解析第10数
+		a = byteBuf.readByte();
 		if (a != 1) {
 			throw new RuntimeException("this code is wrong");
 		}
@@ -74,28 +75,28 @@ public class Serializer {
 		}
 		value = a ^ 0xffffff80;
 
-		a = byteBuf.readByte();// 解析第二数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 7);
 		}
 
 		value = value | ((a ^ 0xffffff80) << 7);
 
-		a = byteBuf.readByte();// 解析第三数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 14);
 		}
 
 		value = value | ((a ^ (0xffffff80)) << 14);
 
-		a = byteBuf.readByte();// 解析第4数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 21);
 		}
 
 		value = value | ((a ^ (0xffffff80)) << 21);
 
-		a = byteBuf.readByte();// 解析第5数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 28);
 		}
@@ -116,65 +117,65 @@ public class Serializer {
 	}
 
 	public static long decodeVarInt64(ByteBuf byteBuf) {
-		long value;// 解析第一个数
+		long value;
 		long a = byteBuf.readByte();
 		if (a >= 0L) {
 			return a;
 		}
 		value = a ^ 0xffffffffffffff80L;
 
-		a = byteBuf.readByte();// 解析第二数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 7L);
 		}
 
 		value = value | ((a ^ 0xffffffffffffff80L) << 7L);
 
-		a = byteBuf.readByte();// 解析第三数
+		a = byteBuf.readByte();
 		if (a >= 0) {
 			return value | (a << 14L);
 		}
 
 		value = value | ((a ^ 0xffffffffffffff80L) << 14L);
 
-		a = byteBuf.readByte();// 解析第4数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 21L);
 		}
 
 		value = value | ((a ^ 0xffffffffffffff80L) << 21L);
 
-		a = byteBuf.readByte();// 解析第5数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 28L);
 		}
 		value = value | ((a ^ 0xffffffffffffff80L) << 28L);
 
-		a = byteBuf.readByte();// 解析第6数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 35L);
 		}
 		value = value | ((a ^ 0xffffffffffffff80L) << 35L);
 
-		a = byteBuf.readByte();// 解析第7数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 42L);
 		}
 		value = value | ((a ^ 0xffffffffffffff80L) << 42L);
 
-		a = byteBuf.readByte();// 解析第8数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 49L);
 		}
 		value = value | ((a ^ 0xffffffffffffff80L) << 49L);
 
-		a = byteBuf.readByte();// 解析第9数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 56L);
 		}
 		value = value | ((a ^ 0xffffffffffffff80L) << 56L);
 
-		a = byteBuf.readByte();// 解析第10数
+		a = byteBuf.readByte();
 		if (a >= 0L) {
 			return value | (a << 63L);
 		}
