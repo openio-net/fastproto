@@ -1,7 +1,7 @@
 package net.openio.fastproto.exception;
 
 
-public class FileNotFoundException extends AbstractFastProtoException {
+public class FileNotFoundException extends RuntimeException {
 	
 	public FileNotFoundException() {
 	}

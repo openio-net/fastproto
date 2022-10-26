@@ -3,7 +3,8 @@ package net.openio.fastproto.exception;
 
 
 
-public class FailToMakeDirException extends AbstractFastProtoException {
+public class FailToMakeDirException extends RuntimeException {
+	
 	public FailToMakeDirException() {
 	}
 	

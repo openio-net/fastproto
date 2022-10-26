@@ -1,16 +1,9 @@
 package net.openio.fastproto.wrapper;
 
-import net.openio.fastproto.exception.NameNullPointerException;
-import net.openio.fastproto.exception.ObjectNullPointerException;
-import net.openio.fastproto.exception.OptionNullPointerException;
-import net.openio.fastproto.exception.PathNullPointerException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Package {
-
-
     private final List<Option> options = new ArrayList<>();
     private final List<String> ImportFile = new ArrayList<>();
     private final List<String> ImportPublicFile = new ArrayList<>();
@@ -26,7 +19,7 @@ public class Package {
 
     public Package addOption(Option option) {
         if (option == null) {
-            throw new OptionNullPointerException();
+            throw new NullPointerException("the option is null");
         }
         options.add(option);
         return this;
@@ -51,7 +44,7 @@ public class Package {
 
     public Package addImportFile(String path) {
         if (path == null) {
-            throw new PathNullPointerException();
+            throw new NullPointerException("the path is null");
         }
         ImportFile.add(path);
         return this;
@@ -65,7 +58,7 @@ public class Package {
 
     public Package addPublicPackage(String path) {
         if (path == null) {
-            throw new PathNullPointerException();
+            throw new NullPointerException("the path is null");
         }
         ImportPublicFile.add(path);
         return this;
@@ -78,7 +71,7 @@ public class Package {
 
     public Package setPackageName(String name) {
         if (name == null) {
-            throw new PathNullPointerException();
+            throw new NullPointerException("the path is nul");
         }
         this.packageName = name;
         return this;
@@ -90,7 +83,7 @@ public class Package {
 
     public Message getObjectByName(String Name) {
         if (Name == null) {
-            throw new NameNullPointerException();
+            throw new NullPointerException("the name is null");
         }
         for (Message message : messages) {
             if (message.getName().equals(Name))
@@ -101,7 +94,7 @@ public class Package {
 
     public Package addObject(Message message) {
         if (message == null) {
-            throw new ObjectNullPointerException();
+            throw new NullPointerException("the message is null");
         }
         messages.add(message);
         return this;

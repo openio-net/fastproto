@@ -1,8 +1,6 @@
 package net.openio.fastproto.wrapper;
 
 
-import net.openio.fastproto.exception.OptionNullPointerException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +86,7 @@ public class Filed {
 
     public Filed addOption(Option option) {
         if (option == null) {
-            throw new OptionNullPointerException();
+            throw new NullPointerException("the option is null");
         }
         options.add(option);
         return this;

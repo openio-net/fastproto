@@ -3,7 +3,8 @@ package net.openio.fastproto.exception;
 
 
 
-public class PackageNameNullPointerException extends AbstractFastProtoException {
+public class PackageNameNullPointerException extends RuntimeException {
+	
 	public PackageNameNullPointerException() {
 	}
 	

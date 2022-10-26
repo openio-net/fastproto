@@ -2,7 +2,8 @@ package net.openio.fastproto.exception;
 
 
 
-public class AttributeNameConflictException extends AbstractFastProtoException {
+public class AttributeNameConflictException extends RuntimeException {
+	
 	public AttributeNameConflictException() {
 	}
 	
