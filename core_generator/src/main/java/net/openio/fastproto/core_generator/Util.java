@@ -2,8 +2,7 @@ package net.openio.fastproto.core_generator;
 
 
 
-import net.openio.fastproto.exception.FailToCreateFileException;
-import net.openio.fastproto.exception.FailToMakeDirException;
+import net.openio.fastproto.exception.FastProtoException;
 import net.openio.fastproto.wrapper.*;
 import org.jboss.forge.roaster.Roaster;
 
@@ -269,7 +268,7 @@ public  class Util {
         File fileDir=new File(path.toString());
         if(!fileDir.isDirectory()){
             if(!fileDir.mkdirs()){
-                throw new FailToMakeDirException(fileDir.toPath().toString());
+                throw new FastProtoException().new FailToMakeDirException(fileDir.toPath().toString());
             }
         }
         path.append('/').append(fileName).append(".java");
@@ -277,7 +276,7 @@ public  class Util {
         File file=new File(path.toString());
         if(!file.exists()){
             if (!file.createNewFile()){
-                throw new FailToCreateFileException(file.toPath().toString());
+                throw new FastProtoException().new FailToCreateFileException(file.toPath().toString());
             }
         }
         return file;

@@ -2,7 +2,7 @@ package net.openio.fastproto.compile;
 
 
 import net.openio.fastproto.config.Config;
-import net.openio.fastproto.exception.FileNotFoundException;
+import net.openio.fastproto.exception.FastProtoException;
 import net.openio.fastproto.wrapper.*;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
@@ -11,6 +11,7 @@ import org.apache.commons.text.CaseUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -308,7 +309,7 @@ public class Parser {
         boolean cfl = keyword.contains(descriptorProto.getName());
         String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
         if(fileName.contains(name)){
-            throw new RuntimeException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
+            throw new FastProtoException().new AttributeNameConflictException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
         }
         filed.setFiledName(name);
         if(descriptorProto.hasTypeName()) {
