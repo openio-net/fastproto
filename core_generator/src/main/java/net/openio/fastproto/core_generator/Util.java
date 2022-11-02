@@ -268,7 +268,7 @@ public  class Util {
         File fileDir=new File(path.toString());
         if(!fileDir.isDirectory()){
             if(!fileDir.mkdirs()){
-                throw new FastProtoException.FailToMakeDirException(fileDir.toPath().toString());
+                throw new FastProtoException.FailToMakeDirException("Cannot create the dir "+fileDir.toPath().toString());
             }
         }
         path.append('/').append(fileName).append(".java");
@@ -276,7 +276,7 @@ public  class Util {
         File file=new File(path.toString());
         if(!file.exists()){
             if (!file.createNewFile()){
-                throw new FastProtoException.FailToCreateFileException(file.toPath().toString());
+                throw new FastProtoException.FailToCreateFileException("Cannot create the file "+file.toPath().toString());
             }
         }
         return file;

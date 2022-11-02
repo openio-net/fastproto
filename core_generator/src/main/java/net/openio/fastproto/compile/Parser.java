@@ -100,13 +100,12 @@ public class Parser {
         for (String s : config.getProtoFiles()) {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
-            String packagePath = PackageType.JavaOption.getType()+ File.separator+PackageType.NetOption.getType()+File.separator+PackageType.OptionIoOption.getType()+File.separator+PackageType.FastProtoOption.getType()+File.separator;
-            String[] args = {"-v3.11.1", "-I", config.getFileDir()+packagePath, "--descriptor_set_out", config.getFileDir()+packagePath + s1 + ".desc", config.getFileDir()+packagePath + s};
+            String[] args = {"-v3.11.1", "-I", config.getFileDir(), "--descriptor_set_out", config.getFileDir() + s1 + ".desc", config.getFileDir() + s};
             int result = Protoc.runProtoc(args);//Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is=null;
-            File file=new File(config.getFileDir()+packagePath+s1+".desc");
+            File file=new File(config.getFileDir()+s1+".desc");
             if(!file.exists()){
                 throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
             }
@@ -136,13 +135,12 @@ public class Parser {
         for (String s : importSet) {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
-            String packagePath = PackageType.JavaOption.getType()+ File.separator+PackageType.NetOption.getType()+File.separator+PackageType.OptionIoOption.getType()+File.separator+PackageType.FastProtoOption.getType()+File.separator;
-            String[] args = {"-v3.11.1", "-I", fileDir+packagePath, "--descriptor_set_out", fileDir+packagePath + s1 + ".desc", fileDir+packagePath + s};
+            String[] args = {"-v3.11.1", "-I", fileDir, "--descriptor_set_out", fileDir + s1 + ".desc", fileDir + s};
             int result = Protoc.runProtoc(args);//Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is = null;
-            File file = new File(fileDir+packagePath + s1 + ".desc");
+            File file = new File(fileDir + s1 + ".desc");
             if (!file.exists()) {
                 throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
             }

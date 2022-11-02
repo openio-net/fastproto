@@ -117,7 +117,7 @@
                 <version>${project.version}</version>
                 <configuration>
                     <javaOutDir>src/test/java</javaOutDir>
-                    <SourcesDir>src/main</SourcesDir>
+                    <SourcesDir>src/main/java/net/openio/fastproto</SourcesDir>
                     <protoFile>
                         <file>proto/x.proto</file>
                         <file>google/protobuf/any.proto</file>
