@@ -108,7 +108,7 @@ public class Parser {
             FileInputStream is=null;
             File file=new File(config.getFileDir()+packagePath+s1+".desc");
             if(!file.exists()){
-                throw new FileNotFoundException();
+                throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
             }
             try {
 
@@ -144,7 +144,7 @@ public class Parser {
             FileInputStream is = null;
             File file = new File(fileDir+packagePath + s1 + ".desc");
             if (!file.exists()) {
-                throw new FileNotFoundException();
+                throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
             }
             try {
 
@@ -311,7 +311,7 @@ public class Parser {
         boolean cfl = keyword.contains(descriptorProto.getName());
         String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
         if(fileName.contains(name)){
-            throw new FastProtoException().new AttributeNameConflictException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
+            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
         }
         filed.setFiledName(name);
         if(descriptorProto.hasTypeName()) {

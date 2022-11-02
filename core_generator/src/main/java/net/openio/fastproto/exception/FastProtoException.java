@@ -10,7 +10,7 @@ public class FastProtoException extends RuntimeException {
 		super(message);
 	}
 	
-	public class AttributeNameConflictException extends FastProtoException {
+	public static class AttributeNameConflictException extends FastProtoException {
 		
 		public AttributeNameConflictException() {
 		}
@@ -21,7 +21,7 @@ public class FastProtoException extends RuntimeException {
 	}
 	
 	
-	public class FailToMakeDirException extends FastProtoException {
+	public static class FailToMakeDirException extends FastProtoException {
 		public FailToMakeDirException() {
 		}
 		
@@ -30,7 +30,7 @@ public class FastProtoException extends RuntimeException {
 		}
 	}
 	
-	public class FailToCreateFileException extends FastProtoException {
+	public static class FailToCreateFileException extends FastProtoException {
 		public FailToCreateFileException() {
 		}
 		
