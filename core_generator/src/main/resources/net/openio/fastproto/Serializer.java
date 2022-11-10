@@ -251,7 +251,6 @@ public class Serializer {
 	}
 
 	public static byte[] decodeByteString(ByteBuf byteBuf, int length) {
-		int read = byteBuf.readerIndex();
 		byte[] bytes=new byte[length];
 		byteBuf.readBytes(bytes,0,length);
 		return bytes;
@@ -268,7 +267,6 @@ public class Serializer {
 
 	public static void encodeDouble(ByteBuf byteBuf, double b) {
 		byteBuf.writeDoubleLE(b);
-
 	}
 
 	public static void encodeFloat(ByteBuf byteBuf, float b) {
