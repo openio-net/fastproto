@@ -2,7 +2,6 @@ package Test;
 
 import com.N;
 import com.X;
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -12,7 +11,7 @@ public class NTest {
 
 
     @org.junit.Test
-    public void testN() throws InvalidProtocolBufferException {//序列化反序列化测试
+    public void testN() {
         X.N j1 = X.N.newBuilder().addH(Long.MIN_VALUE)
                 .addH(Long.MAX_VALUE)
                 .addH(0)

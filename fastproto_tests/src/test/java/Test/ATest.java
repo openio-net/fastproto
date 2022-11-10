@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ATest {
 
     @org.junit.Test
-    public void testA() throws InvalidProtocolBufferException {//序列化反序列化测试
+    public void testA() throws InvalidProtocolBufferException {
 
         X.A a3 = X.A.newBuilder()
                 .setA(123456)

@@ -10,7 +10,7 @@ public class ETest {
 
 
     @org.junit.Test
-    public void testProtoE() {//序列化反序列化测试
+    public void testProtoE() {
         A a = A.newBuilder().addB(123456)
                 .addB(0)
                 .addB(-2)

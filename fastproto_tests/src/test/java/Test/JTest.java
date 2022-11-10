@@ -3,7 +3,6 @@ package Test;
 import com.J;
 import com.X;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -15,7 +14,7 @@ public class JTest {
 
 
     @org.junit.Test
-    public void testI() throws InvalidProtocolBufferException {//序列化反序列化测试
+    public void testI() {
         X.J j1 = X.J.newBuilder().setH(Long.MIN_VALUE)
                 .setI(Integer.MAX_VALUE)
                 .setJ(Long.MIN_VALUE)

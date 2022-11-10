@@ -4,7 +4,6 @@ import com.L;
 import com.M;
 import com.X;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MTest {
 
     @org.junit.Test
-    public void testM() throws InvalidProtocolBufferException {//序列化反序列化测试
+    public void testM() {
         M l = M.newBuilder()
                 .addH(Long.MAX_VALUE)
                 .addH(Long.MIN_VALUE)

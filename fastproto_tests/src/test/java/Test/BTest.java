@@ -3,7 +3,6 @@ package Test;
 import com.A;
 import com.B;
 import com.X;
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -13,7 +12,7 @@ public class BTest {
 
 
     @org.junit.Test
-    public void testProtoB() throws InvalidProtocolBufferException {//序列化反序列化测试
+    public void testProtoB() {
         A a = A.newBuilder().addB(123456)
                 .addB(0)
                 .addB(-2)
