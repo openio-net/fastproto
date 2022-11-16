@@ -28,7 +28,7 @@
         <roaster.version>2.22.2.Final</roaster.version>
         <protocJar.version>3.11.4</protocJar.version>
         <nettyBuffer.version>4.1.80.Final</nettyBuffer.version>
-        <junitJupiter.version>5.9.0</junitJupiter.version>
+        <junitJupiter.version>5.7.0</junitJupiter.version>
         <commonsText.version>1.9</commonsText.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -149,9 +149,6 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-
-
-
         </dependencies>
     </dependencyManagement>
 
