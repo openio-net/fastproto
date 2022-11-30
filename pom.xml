@@ -186,7 +186,16 @@
                     <mapping>
                         <proto>JAVADOC_STYLE</proto>
                     </mapping>
+
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
