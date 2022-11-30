@@ -181,6 +181,7 @@
                     <excludes>
                         <exclude>**/google/protobuf/**</exclude>
                         <exclude>**.desc</exclude>
+                        <exclude>**/README.MD</exclude>
                     </excludes>
                     <mapping>
                         <proto>JAVADOC_STYLE</proto>
