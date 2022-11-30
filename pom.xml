@@ -179,18 +179,7 @@
                 <configuration>
                     <header>HEADER.txt</header>
                     <excludes>
-                        <exclude>**/google/protobuf/any.proto</exclude>
-                        <exclude>**/google/protobuf/api.proto</exclude>
-                        <exclude>**/google/protobuf/descriptor.proto</exclude>
-                        <exclude>**/google/protobuf/duration.proto</exclude>
-                        <exclude>**/google/protobuf/empty.proto</exclude>
-                        <exclude>**/google/protobuf/field_mask.proto</exclude>
-                        <exclude>**/google/protobuf/source_context.proto</exclude>
-                        <exclude>**/google/protobuf/struct.proto</exclude>
-                        <exclude>**/google/protobuf/timestamp.proto</exclude>
-                        <exclude>**/google/protobuf/type.proto</exclude>
-                        <exclude>**/google/protobuf/wrappers.proto</exclude>
-                        <exclude>**/google/protobuf/compiler/plugin.proto</exclude>
+                        <exclude>**/google/protobuf/**</exclude>
                         <exclude>**.desc</exclude>
                     </excludes>
                     <mapping>
