@@ -179,10 +179,11 @@
                 <configuration>
                     <header>HEADER.txt</header>
                     <excludes>
-                        <exclude>**/google/protobuf/**</exclude>
-                        <exclude>**.desc</exclude>
+                        <exclude>**/*.desc</exclude>
                         <exclude>**/*.MD</exclude>
-                        <exclude>**/src/test/java/com/**</exclude>
+                        <exclude>**/*.proto</exclude>
+                        <exclude>**/HEADER1.txt</exclude>
+                        <exclude>**/X.java</exclude>
                     </excludes>
                     <mapping>
                         <proto>JAVADOC_STYLE</proto>
@@ -200,6 +201,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
