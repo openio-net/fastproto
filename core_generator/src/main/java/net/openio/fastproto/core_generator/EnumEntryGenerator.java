@@ -69,15 +69,7 @@ public class EnumEntryGenerator {
         pw.println();
 
         File file = Util.genFile(javaOut, pack, message.getName());
-
-//
-
-
-
-
         Util.WriterContent(file,sw);
-
-
         return file;
     }
 
