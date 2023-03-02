@@ -313,8 +313,14 @@ public class Util {
     }
 
     static String writeLicense(String content) {
-        String property = System.getProperty("user.dir");
-        String str = property + "\\HEADER1.txt";
+        File directory = new File("");
+        String courseFile = null;
+        try {
+            courseFile = directory.getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String str = courseFile + "\\HEADER1.txt";
         FileReader fileReader = null;
         char[] chars = new char[256];
         int strLen = 0;
