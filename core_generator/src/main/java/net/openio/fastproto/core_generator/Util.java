@@ -313,29 +313,20 @@ public class Util {
     }
 
     static String writeLicense(String content) {
-        File directory = new File("");
-        String courseFile = null;
-        try {
-            courseFile = directory.getCanonicalPath();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String str = courseFile + "\\HEADER1.txt";
-        FileReader fileReader = null;
-        char[] chars = new char[256];
+        InputStream is = Util.class.getResourceAsStream("/net/openio/fastproto/HEADER1.txt");
+        byte[] bytes = new byte[1024];
         int strLen = 0;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            fileReader = new FileReader(str);
-            while ((strLen = fileReader.read(chars)) != -1) {
-                String s = new String(chars, 0, strLen);
+            while ((strLen = is.read(bytes)) != -1) {
+                String s = new String(bytes, 0, strLen);
                 stringBuilder.append(s);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             try {
-                fileReader.close();
+                is.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
