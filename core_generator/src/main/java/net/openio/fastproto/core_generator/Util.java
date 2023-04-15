@@ -306,9 +306,9 @@ public class Util {
     }
 
     static void WriterContent(File file, String sw) throws IOException {
-        String content = Roaster.format("" + sw);
+        String content = Roaster.format(writeLicense(sw));
         try (Writer w = Files.newBufferedWriter(file.toPath())) {
-            w.write(writeLicense(content));
+            w.write(content);
         }
     }
 
@@ -331,7 +331,7 @@ public class Util {
                 throw new RuntimeException(e);
             }
         }
-        content = stringBuilder + "\n" +content;
+        content = stringBuilder + "\n" + content;
         return content;
     }
 
