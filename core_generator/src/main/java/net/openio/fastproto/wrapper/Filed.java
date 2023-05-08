@@ -20,6 +20,9 @@ package net.openio.fastproto.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a field in FastProto.
+ */
 public class Filed {
 
 

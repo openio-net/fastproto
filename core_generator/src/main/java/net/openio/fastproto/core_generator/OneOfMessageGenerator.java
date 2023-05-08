@@ -23,6 +23,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The OneOfMessageGenerator class is responsible for generating code for the fields and methods related to a oneof group in the message class.
+ */
 public class OneOfMessageGenerator {
     List<Filed> filed1;
 

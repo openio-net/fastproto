@@ -24,6 +24,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The OneOfBuildMethodGenerator class is responsible for generating code for the methods related to a oneof group in the builder class.
+ */
 public class OneOfBuildMethodGenerator {
 
     List<Filed> filed;

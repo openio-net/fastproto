@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Represents the types of options in FastProto.
+ */
 public enum OptionType {
 
     PackageOption("FileOption"),

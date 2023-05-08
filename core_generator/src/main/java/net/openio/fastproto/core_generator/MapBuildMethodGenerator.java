@@ -24,6 +24,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * Generates methods for manipulating a map build entry for a specific field in a message.
+ */
 public class MapBuildMethodGenerator {
     private final Filed filed;
 

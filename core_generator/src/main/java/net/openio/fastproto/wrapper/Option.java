@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Represents an option in FastProto.
+ */
 public class Option {
 
     private final String key;

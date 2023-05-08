@@ -23,6 +23,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The MessageBuildMethodGenerator class is responsible for generating setter, getter, clear, and has methods for a field in a message builder class.
+ */
 public class MessageBuildMethodGenerator {
 
     Filed filed;

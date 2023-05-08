@@ -23,6 +23,9 @@ import net.openio.fastproto.wrapper.Meta;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * Generates the map build entry for a specific field in a message.
+ */
 public class MapBuildFileGenerator {
 
     Filed filed;

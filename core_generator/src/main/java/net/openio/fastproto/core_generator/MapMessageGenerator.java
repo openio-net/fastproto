@@ -24,6 +24,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The MapMessageGenerator class is responsible for generating methods to handle map fields in a message.
+ */
 public class MapMessageGenerator {
 
 
@@ -155,7 +158,7 @@ public class MapMessageGenerator {
         pw.println("     }");
     }
 
-    public void Generate(PrintWriter pw, Map<String, Meta> metaMap) {
+    public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
 
         Filed key = null;
         Filed value = null;

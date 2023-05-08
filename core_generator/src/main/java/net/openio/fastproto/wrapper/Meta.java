@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Represents metadata for a class in FastProto.
+ */
 public class Meta {
 
     private final String className;

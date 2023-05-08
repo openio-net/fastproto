@@ -24,6 +24,10 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The `RepeatedMessageGenerator` class is responsible for generating methods related to repeated message fields in a protocol buffer message.
+ * It provides methods for setting, getting, adding, encoding, decoding, and checking the presence of repeated message fields.
+ */
 public class RepeatedMessageGenerator {
 
     private final Filed filed;
@@ -35,7 +39,7 @@ public class RepeatedMessageGenerator {
         this.className = className;
     }
 
-    public void Gen(PrintWriter pw, Map<String, Meta> metaMap) {
+    public void gen(PrintWriter pw, Map<String, Meta> metaMap) {
         Boolean packed = false;
         for (Option option : filed.getAllOption()) {
             if (option.getKey().equals("packed")) {
@@ -77,41 +81,41 @@ public class RepeatedMessageGenerator {
 
     }
 
-    private void set(PrintWriter pw, Filed filed, String ClassName, Map<String, Meta> metaMap, boolean packed) {
+    private void set(PrintWriter pw, Filed filed, String className, Map<String, Meta> metaMap, boolean packed) {
         pw.format("     private void set_%s(java.util.List<%s> list_1){\n", filed.getFiledName(), Util.getJavaType(filed, metaMap));
         pw.format("         this.%s=new java.util.ArrayList<>(list_1.size());", filed.getFiledName());
         if (packed) {
-            packedSet(pw, filed, ClassName, metaMap);
+            packedSet(pw, filed, className, metaMap);
         } else {
-            set(pw, filed, ClassName, metaMap);
+            set(pw, filed, className, metaMap);
         }
         pw.format("     }");
     }
 
 
-    private void packedSet(PrintWriter pw, Filed filed, String ClassName, Map<String, Meta> metaMap) {
+    private void packedSet(PrintWriter pw, Filed filed, String className, Map<String, Meta> metaMap) {
         String fileName = filed.getFiledName();
-        pw.format("         this.%s_size+=%s_TagEncodeSize;//add tag length\n", ClassName, fileName);
+        pw.format("         this.%s_size+=%s_TagEncodeSize;//add tag length\n", className, fileName);
         pw.format("          int length_1=0;\n");
         pw.format("          for(%s value_1: list_1){\n", Util.getJavaType(filed, metaMap));
         Util.size(pw, filed.getFileType().getType(), "length_1", "value_1");
         pw.format("             this.%s.add(value_1);", fileName);
         pw.format("          }\n");
-        pw.format("         this.%s_size+=Serializer.computeVarInt32Size(length_1);//add length byte size\n", ClassName);//添加length的byte长度
-        pw.format("         this.%s_size+=length_1;\n", ClassName);
+        pw.format("         this.%s_size+=Serializer.computeVarInt32Size(length_1);//add length byte size\n", className);//添加length的byte长度
+        pw.format("         this.%s_size+=length_1;\n", className);
         pw.format("         this.%s_Length=length_1;\n", fileName);
 
     }
 
 
-    private void set(PrintWriter pw, Filed filed, String ClassName, Map<String, Meta> metaMap) {
+    private void set(PrintWriter pw, Filed filed, String className, Map<String, Meta> metaMap) {
         String fileName = filed.getFiledName();
-        pw.format("         this.%s_size+=%s_TagEncodeSize*list_1.size();//add tag length\n", ClassName, fileName);
+        pw.format("         this.%s_size+=%s_TagEncodeSize*list_1.size();//add tag length\n", className, fileName);
         pw.format("          for(%s value_1: list_1){\n", Util.getJavaType(filed, metaMap));
         pw.format("             this.%s.add(value_1);", fileName);
         pw.format("             int length_1=0;\n");
         Util.size(pw, filed.getFileType().getType(), "length_1", "value_1");
-        pw.format("             this.%s_size+=length_1;\n", ClassName);
+        pw.format("             this.%s_size+=length_1;\n", className);
         pw.format("          }\n");
 
     }

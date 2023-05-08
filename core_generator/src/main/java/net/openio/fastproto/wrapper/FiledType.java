@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Enumeration representing the type of a field in FastProto.
+ */
 public enum FiledType {
 
     Int32("int32",Integer.class),
@@ -36,23 +39,23 @@ public enum FiledType {
     Message("message", Object.class),
     Enum("enum", Enum.class);
 
-    public final static String eInt32 = "int32";
-    public final static String eInt64 = "int64";
-    public final static String eDouble = "double";
-    public final static String eFloat = "float";
-    public final static String euInt32 = "uint32";
-    public final static String euInt64 = "uInt64";
-    public final static String esInt32 = "sInt32";
-    public final static String esInt64 = "sInt64";
-    public final  static String eFixed32="fixed32";
-    public final  static String eFixed64="fixed64";
-    public final  static String esFixed32="sfixed32";
-    public final  static String esFixed64="sfixed64";
-    public final  static String eBool="bool";
-    public final  static String eString="String";
-    public final  static String eBytes="bytes";
-    public final  static String eMessage="message";
-    public final  static String eEnum="enum";
+    public final static String E_INT_32 = "int32";
+    public final static String E_INT_64 = "int64";
+    public final static String E_DOUBLE = "double";
+    public final static String E_FLOAT = "float";
+    public final static String EU_INT_32 = "uint32";
+    public final static String EU_INT_64 = "uInt64";
+    public final static String ES_INT_32 = "sInt32";
+    public final static String ES_INT_64 = "sInt64";
+    public final  static String E_FIXED_32 ="fixed32";
+    public final  static String E_FIXED_64 ="fixed64";
+    public final  static String ES_FIXED_32 ="sfixed32";
+    public final  static String ES_FIXED_64 ="sfixed64";
+    public final  static String E_BOOL ="bool";
+    public final  static String E_STRING ="String";
+    public final  static String E_BYTES ="bytes";
+    public final  static String E_MESSAGE ="message";
+    public final  static String E_ENUM ="enum";
 
     String type;
 

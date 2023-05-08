@@ -26,7 +26,9 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Map;
 
-
+/**
+ * The Util class provides utility methods for various operations.
+ */
 public class Util {
 
     static int getTag(Filed filed) {
@@ -91,57 +93,59 @@ public class Util {
 
     static void filedDecode(Filed filed, PrintWriter pw, String bufName, String var, Map<String, Meta> map) {
         switch (filed.getFileType().getType()) {
-            case FiledType.eMessage:
+            case FiledType.E_MESSAGE:
                 pw.format("             %s=%s.decode(%s,Serializer.decodeVarInt32(%s));\n", var, getJavaType(filed, map), bufName, bufName);
                 break;
-            case FiledType.eEnum:
+            case FiledType.E_ENUM:
                 pw.format("             %s=%s.get(Serializer.decodeVarInt32(%s));\n", var, getJavaType(filed, map), bufName);
                 break;
-            case FiledType.eFloat:
+            case FiledType.E_FLOAT:
                 pw.format("             %s=Serializer.decodeFloat(%s);\n", var, bufName);
                 break;
-            case FiledType.eString:
+            case FiledType.E_STRING:
                 pw.format("             %s=Serializer.decodeString(%s,Serializer.decodeVarInt32(%s));\n", var, bufName, bufName);
                 break;
-            case FiledType.eBytes:
+            case FiledType.E_BYTES:
                 pw.format("             %s=Serializer.decodeByteString(%s,Serializer.decodeVarInt32(%s));\n", var, bufName, bufName);
                 break;
-            case FiledType.eDouble:
+            case FiledType.E_DOUBLE:
                 pw.format("             %s=Serializer.decodeDouble(%s);\n", var, bufName);
                 break;
-            case FiledType.eFixed32:
+            case FiledType.E_FIXED_32:
                 pw.format("             %s=Serializer.decode32(%s);\n", var, bufName);
                 break;
-            case FiledType.eFixed64:
+            case FiledType.E_FIXED_64:
                 pw.format("             %s=Serializer.decode64(%s);\n", var, bufName);
                 break;
-            case FiledType.esFixed32:
+            case FiledType.ES_FIXED_32:
                 pw.format("             %s=Serializer.decode32(%s);\n", var, bufName);
                 break;
-            case FiledType.esFixed64:
+            case FiledType.ES_FIXED_64:
                 pw.format("             %s=Serializer.decode64(%s);\n", var, bufName);
                 break;
-            case FiledType.euInt64:
+            case FiledType.EU_INT_64:
                 pw.format("             %s=Serializer.decodeVarInt64(%s);\n", var, bufName);
                 break;
-            case FiledType.euInt32:
+            case FiledType.EU_INT_32:
                 pw.format("             %s=Serializer.decodeVarInt32(%s);\n", var, bufName);
                 break;
-            case FiledType.esInt64:
+            case FiledType.ES_INT_64:
                 pw.format("             %s=Serializer.decodeZigzag64(Serializer.decodeVarInt64(%s));\n", var, bufName);
                 break;
-            case FiledType.esInt32:
+            case FiledType.ES_INT_32:
                 pw.format("             %s=Serializer.decodeZigzag32(Serializer.decodeVarInt32(%s));\n", var, bufName);
                 break;
-            case FiledType.eInt32:
+            case FiledType.E_INT_32:
                 pw.format("             %s=Serializer.decodeVarInt32(%s);\n", var, bufName);
                 break;
-            case FiledType.eInt64:
+            case FiledType.E_INT_64:
                 pw.format("             %s=Serializer.decodeVarInt64(%s);\n", var, bufName);
                 break;
-            case FiledType.eBool:
+            case FiledType.E_BOOL:
                 pw.format("             %s=Serializer.decodeBoolean(%s);\n", var, bufName);
                 break;
+            default:
+
         }
 
     }
@@ -149,121 +153,124 @@ public class Util {
 
     static void encodeFiled(PrintWriter pw, Filed f, String bufName, String var) {
         switch (f.getFileType().getType()) {
-            case FiledType.eMessage:
+            case FiledType.E_MESSAGE:
                 pw.format("Serializer.encodeVarInt32(%s,%s.getByteSize());\n", bufName, var);
                 pw.format("%s.encode(%s);\n", var, bufName);
                 break;
-            case FiledType.eEnum:
+            case FiledType.E_ENUM:
                 pw.format("            Serializer.encodeVarInt32(%s,%s.getNum());\n", bufName, var);
                 break;
-            case FiledType.eFloat:
+            case FiledType.E_FLOAT:
                 pw.format("            Serializer.encodeFloat(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eString:
+            case FiledType.E_STRING:
                 pw.format("            Serializer.encodeString(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eBytes:
+            case FiledType.E_BYTES:
                 pw.format("            Serializer.encodeByteString(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eDouble:
+            case FiledType.E_DOUBLE:
                 pw.format("            Serializer.encodeDouble(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eFixed32:
+            case FiledType.E_FIXED_32:
                 pw.format("            Serializer.encode32(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eFixed64:
+            case FiledType.E_FIXED_64:
                 pw.format("            Serializer.encode64(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.esFixed32:
+            case FiledType.ES_FIXED_32:
                 pw.format("            Serializer.encode32(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.esFixed64:
+            case FiledType.ES_FIXED_64:
                 pw.format("            Serializer.encode64(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.euInt64:
+            case FiledType.EU_INT_64:
                 pw.format("            Serializer.encodeVarInt64(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.euInt32:
+            case FiledType.EU_INT_32:
                 pw.format("            Serializer.encodeVarUInt32(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.esInt64:
+            case FiledType.ES_INT_64:
 
                 pw.format("            Serializer.encodeVarInt64(%s,Serializer.encodeZigzag64(%s));\n", bufName, var);
                 break;
-            case FiledType.esInt32:
+            case FiledType.ES_INT_32:
                 pw.format("            Serializer.encodeVarUInt32(%s,Serializer.encodeZigzag32(%s));\n", bufName, var);
                 break;
-            case FiledType.eInt32:
+            case FiledType.E_INT_32:
                 pw.format("            Serializer.encodeVarInt32(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eInt64:
+            case FiledType.E_INT_64:
                 pw.format("            Serializer.encodeVarInt64(%s,%s);\n", bufName, var);
                 break;
-            case FiledType.eBool:
+            case FiledType.E_BOOL:
                 pw.format("            Serializer.encodeBoolean(%s,%s);\n", bufName, var);
                 break;
+            default:
+
         }
     }
 
     static void size(PrintWriter pw, String type, String var, String deValue) {
         switch (type) {
-            case FiledType.eInt32:
+            case FiledType.E_INT_32:
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s);\n", var, deValue);
                 break;
-            case FiledType.eInt64:
+            case FiledType.E_INT_64:
                 pw.format("             %s+=Serializer.computeVarInt64Size(%s);\n", var, deValue);
                 break;
-            case FiledType.esInt32:
+            case FiledType.ES_INT_32:
                 pw.format("             %s+=Serializer.computeVarUInt32Size(Serializer.encodeZigzag32(%s));\n", var, deValue);
                 break;
-            case FiledType.esInt64:
+            case FiledType.ES_INT_64:
                 pw.format("             %s+=Serializer.computeVarInt64Size(Serializer.encodeZigzag64(%s));\n", var, deValue);
                 break;
-            case FiledType.euInt32:
+            case FiledType.EU_INT_32:
                 pw.format("             %s+=Serializer.computeVarUInt32Size(%s);\n", var, deValue);
                 break;
-            case FiledType.euInt64:
+            case FiledType.EU_INT_64:
                 pw.format("             %s+=Serializer.computeVarInt64Size(%s);\n", var, deValue);
                 break;
-            case FiledType.eEnum:
+            case FiledType.E_ENUM:
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s.getNum());\n", var, deValue);
                 break;
-            case FiledType.eBool:
+            case FiledType.E_BOOL:
                 pw.format("             %s+=1;\n", var);
                 break;
-            case FiledType.eDouble:
+            case FiledType.E_DOUBLE:
                 pw.format("             %s+=8;\n", var);
                 break;
-            case FiledType.eFloat:
+            case FiledType.E_FLOAT:
                 pw.format("             %s+=4;\n", var);
                 break;
-            case FiledType.eFixed32:
+            case FiledType.E_FIXED_32:
                 pw.format("             %s+=4;\n", var);
                 break;
-            case FiledType.eFixed64:
+            case FiledType.E_FIXED_64:
                 pw.format("             %s+=8;\n", var);
                 break;
-            case FiledType.esFixed32:
+            case FiledType.ES_FIXED_32:
                 pw.format("             %s+=4;\n", var);
                 break;
-            case FiledType.esFixed64:
+            case FiledType.ES_FIXED_64:
                 pw.format("             %s+=8;\n", var);
                 break;
 
-            case FiledType.eBytes:
+            case FiledType.E_BYTES:
 
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s.length);\n", var, deValue);
                 pw.format("             %s+=%s.length;\n", var, deValue);
                 break;
-            case FiledType.eString:
+            case FiledType.E_STRING:
                 pw.format("             %s+=Serializer.computeVarInt32Size(ByteBufUtil.utf8Bytes(%s));\n", var, deValue);
                 pw.format("             %s+=ByteBufUtil.utf8Bytes(%s);// value length \n", var, deValue);
                 break;
 
-            case FiledType.eMessage:
+            case FiledType.E_MESSAGE:
                 pw.format("             %s+=Serializer.computeVarInt32Size(%s.getByteSize());\n", var, deValue);
                 pw.format("             %s+=%s.getByteSize();\n", var, deValue);
                 break;
+            default:
 
         }
     }
@@ -298,14 +305,14 @@ public class Util {
 
     }
 
-    static void WriterContent(File file, StringWriter sw) throws IOException {
+    static void writerContent(File file, StringWriter sw) throws IOException {
         String content = Roaster.format(sw.toString());
         try (Writer w = Files.newBufferedWriter(file.toPath())) {
             w.write(writeLicense(content));
         }
     }
 
-    static void WriterContent(File file, String sw) throws IOException {
+    static void writerContent(File file, String sw) throws IOException {
         String content = Roaster.format(writeLicense(sw));
         try (Writer w = Files.newBufferedWriter(file.toPath())) {
             w.write(content);

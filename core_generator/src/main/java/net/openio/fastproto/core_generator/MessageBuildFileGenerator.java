@@ -22,6 +22,9 @@ import net.openio.fastproto.wrapper.Meta;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The MessageBuildFileGenerator class is responsible for generating a field in a message builder class.
+ */
 public class MessageBuildFileGenerator {
 
 

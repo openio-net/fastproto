@@ -19,14 +19,16 @@ package net.openio.fastproto.config;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Configuration class for file and Java output paths.
+ */
 public class Config {
 
-    private String fileDir="";//File scan root path
+    private String fileDir = "";//File scan root path
 
-    private  String java_out="";//Java file output path
+    private  String javaOut ="";//Java file output path
 
-    private final List<String> ProtoFiles=new ArrayList<String>();//File name
+    private final List<String> protoFiles = new ArrayList<String>();//File name
 
     public String getFileDir(){
         return fileDir;
@@ -43,22 +45,22 @@ public class Config {
     }
 
     public String getJavaOut(){
-        return java_out;
+        return javaOut;
     }
 
     public  void setJavaOut(String fileDir1){
-        this.java_out=fileDir1;
+        this.javaOut =fileDir1;
     }
 
     public void addProtoFiles(String file){
-        ProtoFiles.add(file);
+        protoFiles.add(file);
     }
 
     public void addProtoFiles(List files){
-        ProtoFiles.addAll(files);
+        protoFiles.addAll(files);
     }
 
     public List<String> getProtoFiles(){
-        return this.ProtoFiles;
+        return this.protoFiles;
     }
 }

@@ -19,9 +19,16 @@ package net.openio.fastproto.compile;
 
 import net.openio.fastproto.config.Config;
 import net.openio.fastproto.exception.FastProtoException;
-import net.openio.fastproto.wrapper.*;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
+import net.openio.fastproto.wrapper.ObjectType;
+import net.openio.fastproto.wrapper.Filed;
+import net.openio.fastproto.wrapper.FiledLabel;
+import net.openio.fastproto.wrapper.FiledType;
+import net.openio.fastproto.wrapper.Option;
+import net.openio.fastproto.wrapper.OptionType;
+import net.openio.fastproto.wrapper.Message;
+import net.openio.fastproto.wrapper.Meta;
 import net.openio.fastproto.wrapper.Package;
 import org.apache.commons.text.CaseUtils;
 
@@ -29,106 +36,116 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Parse the contents of proto file
+ * Parse the contents of proto file.
  */
 public class Parser {
 
-    private static final Set<String> keyword = new HashSet<>();
-    private final List<Package> list = new ArrayList<>();//Store the package information corresponding to each proto
+    private static final Set<String> KEYWORD = new HashSet<>();
+    //Store the package information corresponding to each proto
+    private final List<Package> list = new ArrayList<>();
 
     public List<Package> getList() {
         return list;
     }
-
-    public Map<String, Meta> metas = new HashMap<>(); //Store meta information of each entity class
-    private final Set<String> importSet = new HashSet<>();//Store all dependent files to be loaded
-    public Map<String, Message> maps = new HashMap<>();//Store map information of all required files
+    //Store meta information of each entity class
+    public Map<String, Meta> metas = new HashMap<>();
+    //Store all dependent files to be loaded
+    private final Set<String> importSet = new HashSet<>();
+    //Store map information of all required files
+    public Map<String, Message> maps = new HashMap<>();
 
 
     static {
-        keyword.add("null");
-        keyword.add("false");
-        keyword.add("true");
-        keyword.add("const");
-        keyword.add("goto");
-        keyword.add("while");
-        keyword.add("volatile");
-        keyword.add("void");
-        keyword.add("try");
-        keyword.add("transient");
-        keyword.add("throws");
-        keyword.add("throw");
-        keyword.add("this");
-        keyword.add("synchronized");
-        keyword.add("switch");
-        keyword.add("super");
-        keyword.add("strictfp");
-        keyword.add("static");
-        keyword.add("short");
-        keyword.add("return");
-        keyword.add("public");
-        keyword.add("protected");
-        keyword.add("private");
-        keyword.add("package");
-        keyword.add("new");
-        keyword.add("native");
-        keyword.add("long");
-        keyword.add("instanceof");
-        keyword.add("interface");
-        keyword.add("int");
-        keyword.add("import");
-        keyword.add("implements");
-        keyword.add("if");
-        keyword.add("for");
-        keyword.add("float");
-        keyword.add("finally");
-        keyword.add("final");
-        keyword.add("extends");
-        keyword.add("enum");
-        keyword.add("else");
-        keyword.add("double");
-        keyword.add("do");
-        keyword.add("default");
-        keyword.add("continue");
-        keyword.add("class");
-        keyword.add("char");
-        keyword.add("catch");
-        keyword.add("case");
-        keyword.add("byte");
-        keyword.add("boolean");
-        keyword.add("break");
-        keyword.add("assert");
-        keyword.add("abstract");
+        KEYWORD.add("null");
+        KEYWORD.add("false");
+        KEYWORD.add("true");
+        KEYWORD.add("const");
+        KEYWORD.add("goto");
+        KEYWORD.add("while");
+        KEYWORD.add("volatile");
+        KEYWORD.add("void");
+        KEYWORD.add("try");
+        KEYWORD.add("transient");
+        KEYWORD.add("throws");
+        KEYWORD.add("throw");
+        KEYWORD.add("this");
+        KEYWORD.add("synchronized");
+        KEYWORD.add("switch");
+        KEYWORD.add("super");
+        KEYWORD.add("strictfp");
+        KEYWORD.add("static");
+        KEYWORD.add("short");
+        KEYWORD.add("return");
+        KEYWORD.add("public");
+        KEYWORD.add("protected");
+        KEYWORD.add("private");
+        KEYWORD.add("package");
+        KEYWORD.add("new");
+        KEYWORD.add("native");
+        KEYWORD.add("long");
+        KEYWORD.add("instanceof");
+        KEYWORD.add("interface");
+        KEYWORD.add("int");
+        KEYWORD.add("import");
+        KEYWORD.add("implements");
+        KEYWORD.add("if");
+        KEYWORD.add("for");
+        KEYWORD.add("float");
+        KEYWORD.add("finally");
+        KEYWORD.add("final");
+        KEYWORD.add("extends");
+        KEYWORD.add("enum");
+        KEYWORD.add("else");
+        KEYWORD.add("double");
+        KEYWORD.add("do");
+        KEYWORD.add("default");
+        KEYWORD.add("continue");
+        KEYWORD.add("class");
+        KEYWORD.add("char");
+        KEYWORD.add("catch");
+        KEYWORD.add("case");
+        KEYWORD.add("byte");
+        KEYWORD.add("boolean");
+        KEYWORD.add("break");
+        KEYWORD.add("assert");
+        KEYWORD.add("abstract");
     }
 
     /**
      *
      *  Parse the proto file information to generate the corresponding package
-     * @param config
-     * @throws IOException
-     * @throws InterruptedException
+     *
+     *  @param config
+     *  @throws IOException
+     *  @throws InterruptedException
      */
     public   void parse(Config config) throws IOException, InterruptedException {
 
         for (String s : config.getProtoFiles()) {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
-            String[] args = {"-v3.11.1", "-I", config.getFileDir(), "--descriptor_set_out", config.getFileDir() + s1 + ".desc", config.getFileDir() + s};
-            int result = Protoc.runProtoc(args);//Generate desc file and call protoc
+            String[] args = {"-v3.11.1", "-I", config.getFileDir(), "--descriptor_set_out",
+                    config.getFileDir() + s1 + ".desc", config.getFileDir() + s};
+            int result = Protoc.runProtoc(args); //Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
-            FileInputStream is=null;
-            File file=new File(config.getFileDir()+s1+".desc");
+            FileInputStream is = null;
+            File file = new File(config.getFileDir()+s1+".desc");
             if(!file.exists()){
                 throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
             }
             try {
 
-                is=new FileInputStream(file);
-                fileDescriptorSet=DescriptorProtos.FileDescriptorSet.parseFrom(is);
+                is = new FileInputStream(file);
+                fileDescriptorSet = DescriptorProtos.FileDescriptorSet.parseFrom(is);
                 is.close();
 
             } catch (Exception e) {
@@ -152,7 +169,7 @@ public class Parser {
             importSet.add(s);
             String s1 = s.substring(0, s.length() - 6);
             String[] args = {"-v3.11.1", "-I", fileDir, "--descriptor_set_out", fileDir + s1 + ".desc", fileDir + s};
-            int result = Protoc.runProtoc(args);//Generate desc file and call protoc
+            int result = Protoc.runProtoc(args); //Generate desc file and call protoc
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is = null;
@@ -234,7 +251,7 @@ public class Parser {
 
 
 
-        Set<String> fileName=new HashSet<>();
+        Set<String> fileName = new HashSet<>();
         for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
 
             parseMessageFiled(message, proto1, fileName);
@@ -322,10 +339,10 @@ public class Parser {
         }
 
         filed.setNum(descriptorProto.getNumber());
-        boolean cfl = keyword.contains(descriptorProto.getName());
+        boolean cfl = KEYWORD.contains(descriptorProto.getName());
         String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
         if(fileName.contains(name)){
-            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName()+" name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
+            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName() + " name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
         }
         filed.setFiledName(name);
         if(descriptorProto.hasTypeName()) {
@@ -421,37 +438,38 @@ public class Parser {
                 filed.setFileTypeName(FiledType.sInt64.getJavaClass().getName());
                 filed.setFileType(FiledType.sInt64);
                 break;
+            default:
 
         }
 
-        /**TYPE_DOUBLE = 1;
-         TYPE_FLOAT = 2;
-         // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
-         // negative values are likely.
-         TYPE_INT64 = 3;
-         TYPE_UINT64 = 4;
-         // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
-         // negative values are likely.
-         TYPE_INT32 = 5;
-         TYPE_FIXED64 = 6;
-         TYPE_FIXED32 = 7;
-         TYPE_BOOL = 8;
-         TYPE_STRING = 9;
-         // Tag-delimited aggregate.
-         // Group type is deprecated and not supported in proto3. However, Proto3
-         // implementations should still be able to parse the group wire format and
-         // treat group fields as unknown fields.
-         TYPE_GROUP = 10;
-         TYPE_MESSAGE = 11;  // Length-delimited aggregate.
+       /**TYPE_DOUBLE = 1;
+        TYPE_FLOAT = 2;
+        // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT64 if
+        // negative values are likely.
+        TYPE_INT64 = 3;
+        TYPE_UINT64 = 4;
+        // Not ZigZag encoded.  Negative numbers take 10 bytes.  Use TYPE_SINT32 if
+        // negative values are likely.
+        TYPE_INT32 = 5;
+        TYPE_FIXED64 = 6;
+        TYPE_FIXED32 = 7;
+        TYPE_BOOL = 8;
+        TYPE_STRING = 9;
+        // Tag-delimited aggregate.
+        // Group type is deprecated and not supported in proto3. However, Proto3
+        // implementations should still be able to parse the group wire format and
+        // treat group fields as unknown fields.
+        TYPE_GROUP = 10;
+        TYPE_MESSAGE = 11;  // Length-delimited aggregate.
 
-         // New in version 2.
-         TYPE_BYTES = 12;
-         TYPE_UINT32 = 13;
-         TYPE_ENUM = 14;
-         TYPE_SFIXED32 = 15;
-         TYPE_SFIXED64 = 16;
-         TYPE_SINT32 = 17;  // Uses ZigZag encoding.
-         TYPE_SINT64 = 18;  // Uses ZigZag encoding.*/
+        // New in version 2.
+        TYPE_BYTES = 12;
+        TYPE_UINT32 = 13;
+        TYPE_ENUM = 14;
+        TYPE_SFIXED32 = 15;
+        TYPE_SFIXED64 = 16;
+        TYPE_SINT32 = 17;  // Uses ZigZag encoding.
+        TYPE_SINT64 = 18;  // Uses ZigZag encoding.*/
         message.addFiled(filed);
 
     }
@@ -558,6 +576,7 @@ public class Parser {
                 filed.setFileTypeName(FiledType.sInt64.getJavaClass().getName());
                 filed.setFileType(FiledType.sInt64);
                 break;
+            default:
 
         }
         message.addFiled(filed);

@@ -40,6 +40,7 @@ public class ProtoGenerator {
     /**
      *
      * @param config
+     *
      * @return
      * @throws IOException
      */
@@ -54,19 +55,19 @@ public class ProtoGenerator {
         }
 
 
-    private static void generate(Package pack, String out_dir, Map<String, Message> map, Map<String, Meta> metaMap, List<File> list) throws IOException {
+    private static void generate(Package pack, String outDir, Map<String, Message> map, Map<String, Meta> metaMap, List<File> list) throws IOException {
         Set<String> javaPack = new HashSet<>();
         for (Message o : pack.getAllObject()) {
             javaPack.add(pack.getJavaPackName());
             if (o.getObjectType().getType().equals(ObjectType.Message.getType())) {
-                list.add(new MessageEntryGenerator(o, out_dir, pack.getJavaPackName()).generate(map, metaMap));
+                list.add(new MessageEntryGenerator(o, outDir, pack.getJavaPackName()).generate(map, metaMap));
             } else if (o.getObjectType().getType().equals(ObjectType.Enum.getType())) {
-                list.add(new EnumEntryGenerator(o, out_dir, pack.getJavaPackName()).generate());
+                list.add(new EnumEntryGenerator(o, outDir, pack.getJavaPackName()).generate());
             }
         }
         for (String javaPackage : javaPack) {
             String javaDir = Joiner.on('/').join(javaPackage.split("\\."));
-            File file1 = new File(out_dir + javaDir + "/" + "Serializer.java");
+            File file1 = new File(outDir + javaDir + "/" + "Serializer.java");
             if(file1.exists()){
                 file1.delete();
             }
@@ -78,8 +79,8 @@ public class ProtoGenerator {
                 }else {
                     codecClass.setPackage(javaPackage);
                 }
-                File file=Util.genFile(out_dir,javaPackage,"Serializer");
-                Util.WriterContent(file,codecClass.toString());
+                File file=Util.genFile(outDir,javaPackage,"Serializer");
+                Util.writerContent(file,codecClass.toString());
                 list.add(file);
             }
         }

@@ -25,7 +25,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-
+/**
+ * Generates an enum entry for a given message.
+ */
 public class EnumEntryGenerator {
 
 
@@ -33,18 +35,18 @@ public class EnumEntryGenerator {
 
     private final String outDir;
 
-    private final String Package;
+    private final String packages;
 
     public EnumEntryGenerator(Message message, String outDir, String aPackage) {
         this.message = message;
         this.outDir = outDir;
-        Package = aPackage;
+        packages = aPackage;
     }
 
     public File generate() throws IOException {
         Message message = this.message;
-        String javaOut = this.outDir;
-        String pack = this.Package;
+        final String javaOut = this.outDir;
+        String pack = this.packages;
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         if (pack != null && !pack.equals("")) {
@@ -52,7 +54,7 @@ public class EnumEntryGenerator {
         }
         pw.println("public enum " + message.getName() + "{");
         pw.println();
-        EnumFiled(pw, message.getAllFiled(), message.getName());
+        enumFiled(pw, message.getAllFiled(), message.getName());
 
         pw.println("    int num;");
         pw.println();
@@ -69,11 +71,11 @@ public class EnumEntryGenerator {
         pw.println();
 
         File file = Util.genFile(javaOut, pack, message.getName());
-        Util.WriterContent(file,sw);
+        Util.writerContent(file,sw);
         return file;
     }
 
-    private void EnumFiled(PrintWriter pw, List<Filed> list, String className) {
+    private void enumFiled(PrintWriter pw, List<Filed> list, String className) {
         StringBuilder s = new StringBuilder(list.size() * 40);
         s.append("  public static ").append(className).append(" get(int tag){");
         for (Filed filed : list) {

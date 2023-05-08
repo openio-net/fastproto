@@ -30,7 +30,9 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.util.List;
 
-
+/**
+ * The FastProtoMojo class is a Maven plugin for generating FastProto code.
+ */
 @Mojo(
         name = "generate",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
@@ -43,13 +45,13 @@ public class FastProtoMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
-    @Parameter( required = true)
-    private String SourcesDir;
+    @Parameter(required = true)
+    private String sourcesDir;
 
-    @Parameter( required = true)
+    @Parameter(required = true)
     private String javaOutDir;
 
-    @Parameter( required = true)
+    @Parameter(required = true)
     private List<String> protoFile;
 
 
@@ -58,7 +60,7 @@ public class FastProtoMojo extends AbstractMojo {
         File baseDir = project.getBasedir();
         Config config=new Config();
         config.setJavaOut(new File(baseDir,javaOutDir).getPath());
-        config.setFileDir(new File(baseDir,SourcesDir).getPath());
+        config.setFileDir(new File(baseDir, sourcesDir).getPath());
         config.addProtoFiles(protoFile);
         try {
             ProtoGenerator.generate(config);
