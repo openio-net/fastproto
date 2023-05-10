@@ -16,7 +16,9 @@
  */
 package net.openio.fastproto.exception;
 
-
+/**
+ * Custom exception class for FastProto.
+ */
 public class FastProtoException extends RuntimeException {
 	
 	public FastProtoException() {
@@ -25,7 +27,10 @@ public class FastProtoException extends RuntimeException {
 	public FastProtoException(String message) {
 		super(message);
 	}
-	
+
+	/**
+	 * Exception thrown when there is a conflict with attribute names.
+	 */
 	public static class AttributeNameConflictException extends FastProtoException {
 		
 		public AttributeNameConflictException() {
@@ -35,8 +40,10 @@ public class FastProtoException extends RuntimeException {
 			super(message);
 		}
 	}
-	
-	
+
+	/**
+	 * Exception thrown when there is a failure to create a directory.
+	 */
 	public static class FailToMakeDirException extends FastProtoException {
 		public FailToMakeDirException() {
 		}
@@ -45,7 +52,10 @@ public class FastProtoException extends RuntimeException {
 			super(message);
 		}
 	}
-	
+
+	/**
+	 * Exception thrown when there is a failure to create a file.
+	 */
 	public static class FailToCreateFileException extends FastProtoException {
 		public FailToCreateFileException() {
 		}

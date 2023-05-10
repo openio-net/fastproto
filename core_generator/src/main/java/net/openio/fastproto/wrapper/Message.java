@@ -19,6 +19,9 @@ package net.openio.fastproto.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a message in FastProto.
+ */
 public class Message {
 
     private String name;

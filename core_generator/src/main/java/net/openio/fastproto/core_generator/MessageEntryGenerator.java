@@ -26,7 +26,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-
+/**
+ * The MessageEntryGenerator class is responsible for generating code for a message entry based on the provided message and package information.
+ */
 public class MessageEntryGenerator {
 
 
@@ -34,13 +36,13 @@ public class MessageEntryGenerator {
 
     private final String outDir;
 
-    private final String Package;
+    private final String packages;
 
 
     public MessageEntryGenerator(Message message, String outDir, String aPackage) {
         this.message = message;
         this.outDir = outDir;
-        Package = aPackage;
+        packages = aPackage;
     }
 
     /**
@@ -50,14 +52,14 @@ public class MessageEntryGenerator {
     public File generate(Map<String, Message> map, Map<String, Meta> metaMap) throws IOException {
 
         Message o = message;
-        String out_dir = outDir;
-        String pack = Package;
+        final String outDir = this.outDir;
+        String pack = packages;
 
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
-        String className = o.getName();
+        final String className = o.getName();
 
         if (pack != null && !pack.equals("")) {
             pw.format("package %s;\n", pack);
@@ -67,7 +69,7 @@ public class MessageEntryGenerator {
         pw.format("public final class %s {\n",o.getName());///Class declaration
 
 
-        Map<Integer, List<Filed>> oneOf=new HashMap<>();//The same oneof structure is stored in a list
+        final Map<Integer, List<Filed>> oneOf=new HashMap<>();//The same oneof structure is stored in a list
 
 
         pw.println();
@@ -127,9 +129,9 @@ public class MessageEntryGenerator {
         pw.println("}");
 
 
-        File file = Util.genFile(out_dir, pack, className);
+        File file = Util.genFile(outDir, pack, className);
 
-        Util.WriterContent(file,sw);
+        Util.writerContent(file,sw);
         return file;
 
     }
@@ -151,9 +153,9 @@ public class MessageEntryGenerator {
                 filedList.add(filed);
             }
         } else if (mapMessage != null) {                             //Determine whether it is a map type
-            new MapMessageGenerator(filed, mapMessage, className).Generate(pw, metaMap);
+            new MapMessageGenerator(filed, mapMessage, className).generate(pw, metaMap);
         } else if (label.equals(FiledLabel.Repeated.getLabel())) {//Determine whether the label can appear multiple times
-            new RepeatedMessageGenerator(filed, className).Gen(pw, metaMap);
+            new RepeatedMessageGenerator(filed, className).gen(pw, metaMap);
         } else {
             new MessageGenerator(filed, className).generate(pw, metaMap);//Repeated: no operation
         }

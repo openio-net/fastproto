@@ -16,14 +16,15 @@
  */
 package net.openio.fastproto.core_generator;
 
-
-
 import net.openio.fastproto.wrapper.*;
 import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
 import java.util.*;
 
+/**
+ * The NestedMessageGenerator class is responsible for generating code for a nested message within a message.
+ */
 public class NestedMessageGenerator {
 
 
@@ -47,7 +48,7 @@ public class NestedMessageGenerator {
         pw.format("         public final static class %s {\n", message.getName());//Class declaration
 
 
-        Map<Integer, List<Filed>> oneOf = new HashMap<>();//The same oneof structure is stored in a list
+        final Map<Integer, List<Filed>> oneOf = new HashMap<>();//The same oneof structure is stored in a list
 
 
 
@@ -122,9 +123,9 @@ public class NestedMessageGenerator {
                 filedList.add(filed);
             }
         } else if (mapMessage != null) {                             //Determine whether it is a map type
-            new MapMessageGenerator(filed, mapMessage, className).Generate(pw, metaMap);
+            new MapMessageGenerator(filed, mapMessage, className).generate(pw, metaMap);
         } else if (label.equals(FiledLabel.Repeated.getLabel())) {//Determine whether the label can appear multiple times
-            new RepeatedMessageGenerator(filed, className).Gen(pw, metaMap);
+            new RepeatedMessageGenerator(filed, className).gen(pw, metaMap);
         } else {
             new MessageGenerator(filed, className).generate(pw, metaMap);//Repeated: no operation
         }

@@ -19,10 +19,13 @@ package net.openio.fastproto.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a package in FastProto.
+ */
 public class Package {
     private final List<Option> options = new ArrayList<>();
-    private final List<String> ImportFile = new ArrayList<>();
-    private final List<String> ImportPublicFile = new ArrayList<>();
+    private final List<String> importFile = new ArrayList<>();
+    private final List<String> importPublicFile = new ArrayList<>();
     private final List<Message> messages = new ArrayList<>();
     private String fileName;
     private String packageName;
@@ -54,7 +57,7 @@ public class Package {
 
 
     public List<String> getImportFile() {
-        return ImportFile;
+        return importFile;
     }
 
 
@@ -62,13 +65,13 @@ public class Package {
         if (path == null) {
             throw new NullPointerException("the path is null");
         }
-        ImportFile.add(path);
+        importFile.add(path);
         return this;
     }
 
 
     public List<String> getImportPublicFile() {
-        return ImportPublicFile;
+        return importPublicFile;
     }
 
 
@@ -76,7 +79,7 @@ public class Package {
         if (path == null) {
             throw new NullPointerException("the path is null");
         }
-        ImportPublicFile.add(path);
+        importPublicFile.add(path);
         return this;
     }
 
@@ -97,12 +100,12 @@ public class Package {
         return messages;
     }
 
-    public Message getObjectByName(String Name) {
-        if (Name == null) {
+    public Message getObjectByName(String name) {
+        if (name == null) {
             throw new NullPointerException("the name is null");
         }
         for (Message message : messages) {
-            if (message.getName().equals(Name))
+            if (message.getName().equals(name))
                 return message;
         }
         return null;
@@ -131,8 +134,8 @@ public class Package {
                 ", packageName='" + packageName + '\'' +
                 ", javaPackage='" + javaPackage + '\'' +
                 ", options=" + options +
-                ", ImportFile=" + ImportFile +
-                ", ImportPublicFile=" + ImportPublicFile +
+                ", ImportFile=" + importFile +
+                ", ImportPublicFile=" + importPublicFile +
                 ", objects=" + messages +
                 '}';
     }

@@ -22,6 +22,9 @@ import net.openio.fastproto.wrapper.Meta;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The RepeatedBuildFileGenerator class is responsible for generating code for a repeated field in the message class.
+ */
 public class RepeatedBuildFileGenerator {
 
     Filed filed;

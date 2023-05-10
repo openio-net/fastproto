@@ -23,6 +23,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The OneOfBuildFiledGenerator class is responsible for generating code for the fields within a oneof group in the builder class.
+ */
 public class OneOfBuildFiledGenerator {
 
     List<Filed> filed;

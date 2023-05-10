@@ -25,6 +25,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.*;
 
+/**
+ * Generates build entries for a given message.
+ */
 public class BuildEntryGenerator {
 
     private final Message message;

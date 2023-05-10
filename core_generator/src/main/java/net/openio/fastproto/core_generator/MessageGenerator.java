@@ -23,6 +23,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The MessageGenerator class is responsible for generating code for a message field within a message entry.
+ */
 public class MessageGenerator {
 
     Filed filed;

@@ -23,6 +23,9 @@ import org.apache.commons.text.CaseUtils;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * The RepeatedBuildMethodGenerator class is responsible for generating methods related to a repeated field in the message class.
+ */
 public class RepeatedBuildMethodGenerator {
 
     private final Filed filed;

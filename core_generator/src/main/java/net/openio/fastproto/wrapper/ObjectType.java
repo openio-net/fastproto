@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Represents the type of an object in FastProto.
+ */
 public enum ObjectType {
 
     Message("message"),//proto2、3,

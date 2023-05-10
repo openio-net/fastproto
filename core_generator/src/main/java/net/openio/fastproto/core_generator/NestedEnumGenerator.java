@@ -23,6 +23,9 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * The NestedEnumGenerator class is responsible for generating code for a nested enum within a message.
+ */
 public class NestedEnumGenerator {
 
     Message message;

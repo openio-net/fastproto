@@ -16,6 +16,9 @@
  */
 package net.openio.fastproto.wrapper;
 
+/**
+ * Enumeration representing the label of a field in FastProto.
+ */
 public enum FiledLabel {
 
     Required("required"),
