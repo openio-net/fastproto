@@ -45,15 +45,15 @@ public class NestedMessageGenerator {
         String className = message.getName();
 
 
-        pw.format("         public final static class %s {\n", message.getName());//Class declaration
+        pw.format("         public final static class %s {\n", message.getName()); //Class declaration
 
 
-        final Map<Integer, List<Filed>> oneOf = new HashMap<>();//The same oneof structure is stored in a list
+        Map<Integer, List<Filed>> oneOf = new HashMap<>(); //The same oneof structure is stored in a list
 
 
 
         pw.println();
-        pw.format("         private int %s_size=0;\n",className);
+        pw.format("         private int %s_size=0;\n", className);
         pw.println();
 
 
@@ -124,10 +124,10 @@ public class NestedMessageGenerator {
             }
         } else if (mapMessage != null) {                             //Determine whether it is a map type
             new MapMessageGenerator(filed, mapMessage, className).generate(pw, metaMap);
-        } else if (label.equals(FiledLabel.Repeated.getLabel())) {//Determine whether the label can appear multiple times
+        } else if (label.equals(FiledLabel.Repeated.getLabel())) { //Determine whether the label can appear multiple times
             new RepeatedMessageGenerator(filed, className).gen(pw, metaMap);
         } else {
-            new MessageGenerator(filed, className).generate(pw, metaMap);//Repeated: no operation
+            new MessageGenerator(filed, className).generate(pw, metaMap); //Repeated: no operation
         }
 
     }
@@ -155,7 +155,7 @@ public class NestedMessageGenerator {
         pw.format("default: Serializer.skipUnknownField(num_1,buf);");
         pw.format("              }\n");
         pw.format("         }\n");
-        pw.format("         value_1.%s_size=buf.readerIndex()-f_Index;\n",className);
+        pw.format("         value_1.%s_size=buf.readerIndex()-f_Index;\n", className);
         pw.format("         return value_1;\n");
         pw.println("    }\n");
     }
@@ -171,14 +171,14 @@ public class NestedMessageGenerator {
         for (Filed filed : filedList) {
             String filedName = filed.getFiledName();
             pw.format("             case %s_Tag:\n", filed.getFiledName());
-            pw.format("                 decode_%s(buf,value_1);\n",filedName);
+            pw.format("                 decode_%s(buf,value_1);\n", filedName);
             pw.format("                 break;\n");
         }
         pw.format("default: Serializer.skipUnknownField(num_1,buf);");
         pw.format("              }\n");
         pw.format("         }\n");
 
-        pw.format("         value_1.%s_size=length_1;\n",className);
+        pw.format("         value_1.%s_size=length_1;\n", className);
         pw.format("         value_1.verify();\n");
         pw.format("         return value_1;\n");
         pw.println("    }\n");
@@ -199,9 +199,9 @@ public class NestedMessageGenerator {
             pw.println();
 
         }
-        for(int oneOf:set){
-            pw.format("     if(hasOneOf%d()){",oneOf);
-            pw.format("         encodeOneOf_%d(buf);",oneOf);
+        for (int oneOf:set) {
+            pw.format("     if(hasOneOf%d()){", oneOf);
+            pw.format("         encodeOneOf_%d(buf);", oneOf);
             pw.format("     }");
         }
         pw.format("     }");

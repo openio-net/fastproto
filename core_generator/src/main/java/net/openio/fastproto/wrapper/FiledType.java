@@ -21,11 +21,11 @@ package net.openio.fastproto.wrapper;
  */
 public enum FiledType {
 
-    Int32("int32",Integer.class),
-    Int64("int64",Long.class),
+    Int32("int32", Integer.class),
+    Int64("int64", Long.class),
     Double("double", java.lang.Double.class),
-    Float("float",java.lang.Float.class),
-    uInt32("uint32",Integer.class),
+    Float("float", java.lang.Float.class),
+    uInt32("uint32", Integer.class),
     uInt64("uInt64", Long.class),
     sInt32("sInt32", Integer.class),
     sInt64("sInt64", Long.class),
@@ -47,26 +47,26 @@ public enum FiledType {
     public final static String EU_INT_64 = "uInt64";
     public final static String ES_INT_32 = "sInt32";
     public final static String ES_INT_64 = "sInt64";
-    public final  static String E_FIXED_32 ="fixed32";
-    public final  static String E_FIXED_64 ="fixed64";
-    public final  static String ES_FIXED_32 ="sfixed32";
-    public final  static String ES_FIXED_64 ="sfixed64";
-    public final  static String E_BOOL ="bool";
-    public final  static String E_STRING ="String";
-    public final  static String E_BYTES ="bytes";
-    public final  static String E_MESSAGE ="message";
-    public final  static String E_ENUM ="enum";
+    public final  static String E_FIXED_32 = "fixed32";
+    public final  static String E_FIXED_64 = "fixed64";
+    public final  static String ES_FIXED_32 = "sfixed32";
+    public final  static String ES_FIXED_64 = "sfixed64";
+    public final  static String E_BOOL = "bool";
+    public final  static String E_STRING = "String";
+    public final  static String E_BYTES = "bytes";
+    public final  static String E_MESSAGE = "message";
+    public final  static String E_ENUM = "enum";
 
     String type;
 
     Class javaClass;
 
-    public Class getJavaClass(){
+    public Class getJavaClass() {
         return javaClass;
     }
-    FiledType(String type, Class javaClass){
-        this.type=type;
-        this.javaClass=javaClass;
+    FiledType(String type, Class javaClass) {
+        this.type = type;
+        this.javaClass = javaClass;
     }
 
     public java.lang.String getType() {

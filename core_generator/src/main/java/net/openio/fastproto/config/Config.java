@@ -24,43 +24,43 @@ import java.util.List;
  */
 public class Config {
 
-    private String fileDir = "";//File scan root path
+    private String fileDir = ""; //File scan root path
 
-    private  String javaOut ="";//Java file output path
+    private  String javaOut = ""; //Java file output path
 
-    private final List<String> protoFiles = new ArrayList<String>();//File name
+    private final List<String> protoFiles = new ArrayList<String>(); //File name
 
-    public String getFileDir(){
+    public String getFileDir() {
         return fileDir;
     }
 
-    public  void setFileDir(String fileDir1){
-        char a=fileDir1.charAt(fileDir1.length()-1);
-        if(a=='/'&&a=='\\'){
-            this.fileDir=fileDir1;
-        }else {
-            this.fileDir=fileDir1+'/';
+    public void setFileDir(String fileDir1) {
+        char a = fileDir1.charAt(fileDir1.length() - 1);
+        if (a == '/' && a == '\\') {
+            this.fileDir = fileDir1;
+        } else {
+            this.fileDir = fileDir1 + '/';
         }
 
     }
 
-    public String getJavaOut(){
+    public String getJavaOut() {
         return javaOut;
     }
 
-    public  void setJavaOut(String fileDir1){
-        this.javaOut =fileDir1;
+    public void setJavaOut(String fileDir1) {
+        this.javaOut = fileDir1;
     }
 
-    public void addProtoFiles(String file){
+    public void addProtoFiles(String file) {
         protoFiles.add(file);
     }
 
-    public void addProtoFiles(List files){
+    public void addProtoFiles(List files) {
         protoFiles.addAll(files);
     }
 
-    public List<String> getProtoFiles(){
+    public List<String> getProtoFiles() {
         return this.protoFiles;
     }
 }

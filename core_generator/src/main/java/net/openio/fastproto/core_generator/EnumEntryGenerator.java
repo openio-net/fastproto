@@ -45,7 +45,7 @@ public class EnumEntryGenerator {
 
     public File generate() throws IOException {
         Message message = this.message;
-        final String javaOut = this.outDir;
+        String javaOut = this.outDir;
         String pack = this.packages;
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -62,7 +62,7 @@ public class EnumEntryGenerator {
         pw.println("        this.num = num;");
         pw.println("    }");
         pw.println();
-        pw.println("    int getNum"+"( ){");
+        pw.println("    int getNum" + "( ){");
         pw.println("        return this.num;");
         pw.println("    }");
         pw.println("}");
@@ -71,7 +71,7 @@ public class EnumEntryGenerator {
         pw.println();
 
         File file = Util.genFile(javaOut, pack, message.getName());
-        Util.writerContent(file,sw);
+        Util.writerContent(file, sw);
         return file;
     }
 

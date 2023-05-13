@@ -58,14 +58,14 @@ public class FastProtoMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         File baseDir = project.getBasedir();
-        Config config=new Config();
-        config.setJavaOut(new File(baseDir,javaOutDir).getPath());
+        Config config = new Config();
+        config.setJavaOut(new File(baseDir, javaOutDir).getPath());
         config.setFileDir(new File(baseDir, sourcesDir).getPath());
         config.addProtoFiles(protoFile);
         try {
             ProtoGenerator.generate(config);
             project.addCompileSourceRoot(config.getJavaOut());
-        }catch (Exception e){
+        } catch (Exception e) {
             getLog().error("Failed to generate fastproto code for " + protoFile + ": " + e.getMessage(), e);
             throw new MojoExecutionException("Failed to generate fastproto code for " + protoFile, e);
         }

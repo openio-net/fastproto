@@ -52,28 +52,28 @@ public class MessageEntryGenerator {
     public File generate(Map<String, Message> map, Map<String, Meta> metaMap) throws IOException {
 
         Message o = message;
-        final String outDir = this.outDir;
+        String outDir = this.outDir;
         String pack = packages;
 
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
-        final String className = o.getName();
+        String className = o.getName();
 
         if (pack != null && !pack.equals("")) {
             pw.format("package %s;\n", pack);
         }
 
         pw.format("import io.netty.buffer.ByteBuf;  import io.netty.buffer.ByteBufUtil;");
-        pw.format("public final class %s {\n",o.getName());///Class declaration
+        pw.format("public final class %s {\n", o.getName()); ///Class declaration
 
 
-        final Map<Integer, List<Filed>> oneOf=new HashMap<>();//The same oneof structure is stored in a list
+        Map<Integer, List<Filed>> oneOf = new HashMap<>(); //The same oneof structure is stored in a list
 
 
         pw.println();
-        pw.format("private int %s_size=0;\n",className);
+        pw.format("private int %s_size=0;\n", className);
         pw.println();
 
 
@@ -131,7 +131,7 @@ public class MessageEntryGenerator {
 
         File file = Util.genFile(outDir, pack, className);
 
-        Util.writerContent(file,sw);
+        Util.writerContent(file, sw);
         return file;
 
     }
@@ -154,10 +154,10 @@ public class MessageEntryGenerator {
             }
         } else if (mapMessage != null) {                             //Determine whether it is a map type
             new MapMessageGenerator(filed, mapMessage, className).generate(pw, metaMap);
-        } else if (label.equals(FiledLabel.Repeated.getLabel())) {//Determine whether the label can appear multiple times
+        } else if (label.equals(FiledLabel.Repeated.getLabel())) { //Determine whether the label can appear multiple times
             new RepeatedMessageGenerator(filed, className).gen(pw, metaMap);
         } else {
-            new MessageGenerator(filed, className).generate(pw, metaMap);//Repeated: no operation
+            new MessageGenerator(filed, className).generate(pw, metaMap); //Repeated: no operation
         }
 
     }
@@ -185,7 +185,7 @@ public class MessageEntryGenerator {
         pw.format("default: Serializer.skipUnknownField(num_1,buf);");
         pw.format("              }\n");
         pw.format("         }\n");
-        pw.format("         value_1.%s_size=buf.readerIndex()-f_Index;\n",className);
+        pw.format("         value_1.%s_size=buf.readerIndex()-f_Index;\n", className);
         pw.format("         return value_1;\n");
         pw.println("    }\n");
     }
@@ -201,14 +201,14 @@ public class MessageEntryGenerator {
         for (Filed filed : filedList) {
             String filedName = filed.getFiledName();
             pw.format("             case %s_Tag:\n", filed.getFiledName());
-            pw.format("                 decode_%s(buf,value_1);\n",filedName);
+            pw.format("                 decode_%s(buf,value_1);\n", filedName);
             pw.format("                 break;\n");
         }
         pw.format("default: Serializer.skipUnknownField(num_1,buf);");
         pw.format("              }\n");
         pw.format("         }\n");
 
-        pw.format("         value_1.%s_size=length_1;\n",className);
+        pw.format("         value_1.%s_size=length_1;\n", className);
         pw.format("         value_1.verify();\n");
         pw.format("         return value_1;\n");
         pw.println("    }\n");
@@ -229,9 +229,9 @@ public class MessageEntryGenerator {
             pw.println();
 
         }
-        for(int oneOf:set){
-            pw.format("     if(hasOneOf%d()){",oneOf);
-            pw.format("         encodeOneOf_%d(buf);",oneOf);
+        for (int oneOf:set) {
+            pw.format("     if(hasOneOf%d()){", oneOf);
+            pw.format("         encodeOneOf_%d(buf);", oneOf);
             pw.format("     }");
         }
         pw.format("     }");

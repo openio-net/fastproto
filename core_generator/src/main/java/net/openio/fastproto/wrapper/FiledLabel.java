@@ -27,8 +27,8 @@ public enum FiledLabel {
 
     String label;
 
-    FiledLabel(String label){
-        this.label=label;
+    FiledLabel(String label) {
+        this.label = label;
     }
 
     public String getLabel() {

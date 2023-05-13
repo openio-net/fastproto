@@ -51,30 +51,30 @@ public class RepeatedMessageGenerator {
 
         pw.format("        private java.util.List<%s> %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
 
-        pw.format("    public final static int %s_Num = %d;\n",filed.getFiledName(),filed.getNum());
+        pw.format("    public final static int %s_Num = %d;\n", filed.getFiledName(), filed.getNum());
 
-        pw.format("    public final static int %s_Tag=%d;//the value is num<<3|wireType\n",filed.getFiledName(), Util.getTag(filed));
+        pw.format("    public final static int %s_Tag=%d;//the value is num<<3|wireType\n", filed.getFiledName(), Util.getTag(filed));
 
-        pw.format("    public final static int %s_TagEncodeSize=%d;\n",filed.getFiledName(), Util.getTagEncodeSize(filed));
+        pw.format("    public final static int %s_TagEncodeSize=%d;\n", filed.getFiledName(), Util.getTagEncodeSize(filed));
 
-        if(packed) {
+        if (packed) {
             pw.format("        private int %s_Length=0;\n", filed.getFiledName());
         }
         pw.println();
         pw.println();
-        set(pw,filed,className,metaMap,packed);
+        set(pw, filed, className, metaMap,  packed);
         pw.println();
-        get(pw,metaMap,filed);
+        get(pw, metaMap, filed);
         pw.println();
-        getSize(pw,filed);
+        getSize(pw, filed);
         pw.println();
-        decode(pw,metaMap,filed,className,packed);
+        decode(pw, metaMap, filed, className, packed);
         pw.println();
-        encode(pw,filed,metaMap,packed);
+        encode(pw, filed, metaMap, packed);
         pw.println();
-        add(pw,metaMap,filed);
+        add(pw, metaMap, filed);
         pw.println();
-        has(pw,filed.getFiledName());
+        has(pw, filed.getFiledName());
         pw.println();
 
 
@@ -101,7 +101,7 @@ public class RepeatedMessageGenerator {
         Util.size(pw, filed.getFileType().getType(), "length_1", "value_1");
         pw.format("             this.%s.add(value_1);", fileName);
         pw.format("          }\n");
-        pw.format("         this.%s_size+=Serializer.computeVarInt32Size(length_1);//add length byte size\n", className);//添加length的byte长度
+        pw.format("         this.%s_size+=Serializer.computeVarInt32Size(length_1);//add length byte size\n", className); //添加length的byte长度
         pw.format("         this.%s_size+=length_1;\n", className);
         pw.format("         this.%s_Length=length_1;\n", fileName);
 

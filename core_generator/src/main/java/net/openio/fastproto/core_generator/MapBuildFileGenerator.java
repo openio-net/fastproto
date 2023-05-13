@@ -50,7 +50,7 @@ public class MapBuildFileGenerator {
         }
 
         pw.println();
-        pw.format("    private java.util.Map<%s,%s> %s;\n", Util.getJavaType(key,metaMap), Util.getJavaType(value,metaMap),filed.getFiledName());
+        pw.format("    private java.util.Map<%s,%s> %s;\n", Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap), filed.getFiledName());
 
         pw.println();
     }

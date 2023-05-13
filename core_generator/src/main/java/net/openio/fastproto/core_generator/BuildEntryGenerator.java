@@ -75,7 +75,7 @@ public class BuildEntryGenerator {
         generateClear(pw, o.getAllFiled(), buildName);
 
         pw.println();
-        pw.format("     private %s(){\n",buildName);
+        pw.format("     private %s(){\n", buildName);
         pw.println("    }");
 
 
@@ -130,25 +130,26 @@ public class BuildEntryGenerator {
         pw.format("         %s value_1=new %s();\n", className, className);
         for (Filed filed : filed1) {
             String filedName = filed.getFiledName();
-            if (filed.getHasOneOf()) {//oneOf
+            if (filed.getHasOneOf()) { //oneOf
                 int oneOf = filed.getOneIndex();
                 pw.format("         if(this.endSet%dNum==%d){\n", oneOf, filed.getNum());
                 pw.format("             value_1.setOneOf%d_%s(this.%s);\n", oneOf, filedName, filedName);
                 pw.format("         }\n");
-            } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Repeated.getLabel())) {//repeated
-                pw.format("         if(this.has%s()){\n", CaseUtils.toCamelCase(filedName,true));
+            } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Repeated.getLabel())) { //repeated
+                pw.format("         if(this.has%s()){\n", CaseUtils.toCamelCase(filedName, true));
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
                 pw.format("         }\n");
-            } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Required.getLabel())) {//required
+            } else if (filed.getFiledLabel().getLabel().equals(FiledLabel.Required.getLabel())) { //required
                 pw.format("         if(this.%s==null){\n", filedName);
                 pw.format("             throw new RuntimeException(\" %s is required\");\n", filedName);
                 pw.format("         }\n");
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
-            } else if (map.get(filed.getFileTypeName()) != null) {//map
-                pw.format("     if(has%s){\n", CaseUtils.toCamelCase(filedName,true));
-                pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);pw.format("");
+            } else if (map.get(filed.getFileTypeName()) != null) { //map
+                pw.format("     if(has%s){\n", CaseUtils.toCamelCase(filedName, true));
+                pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
+                pw.format("");
                 pw.format("     }\n");
-            } else {//option
+            } else { //option
                 pw.format("         if(this.%s!=null){\n", filedName);
                 pw.format("             value_1.set_%s(this.%s);\n", filedName, filedName);
                 pw.format("         }\n");
@@ -165,13 +166,13 @@ public class BuildEntryGenerator {
 
             String filedName = filed.getFiledName();
 
-            if (filed.getHasOneOf()) {//oneOf
+            if (filed.getHasOneOf()) { //oneOf
                 int oneOf = filed.getOneIndex();
                 if (set.contains(oneOf)) {
                     continue;
                 }
                 set.add(oneOf);
-                pw.format("         endSet%dNum=-1;",oneOf);
+                pw.format("         endSet%dNum=-1;", oneOf);
             }
             pw.format("         this.%s=null;\n", filed.getFiledName());
         }
