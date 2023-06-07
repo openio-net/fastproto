@@ -31,7 +31,6 @@
         <property name="fileNamePattern" value="^(module|package)\-info\.java$" />
     </module>
     <module name="SuppressWarningsFilter" />
-    <!--排除不需要扫描的路径-->
     <module name="SuppressionFilter">
         <property name="file" value="suppressions.xml"/>
     </module>
@@ -76,15 +75,15 @@
         <module name="MissingSwitchDefault" />
         <module name="NestedForDepth">
             <property name="max" value="2" />
-            <message key="nested.for.depth" value="除最外层for，至多允许嵌套{1,number,integer}层 ，目前{0,number,integer}层" />
+            <message key="nested.for.depth" value="Except for the outermost for, nesting up to {1,number,integer} layers is allowed, currently {0,number,integer} layers" />
         </module>
         <module name="NestedIfDepth">
             <property name="max" value="2" />
-            <message key="nested.if.depth" value="除最外层if，至多允许嵌套{1,number,integer}层 ，目前{0,number,integer}层" />
+            <message key="nested.if.depth" value="Nested layers of {1,number,integer} are allowed except for the outermost if, which is currently {0,number,integer}." />
         </module>
         <module name="NestedTryDepth">
             <property name="max" value="2" />
-            <message key="nested.try.depth" value="除最外层if，至多允许嵌套{1,number,integer}层 ，目前{0,number,integer}层" />
+            <message key="nested.try.depth" value="Nested layers of {1,number,integer} are allowed except for the outermost if, which is currently {0,number,integer}." />
         </module>
         <module name="OneStatementPerLine" />
         <module name="SimplifyBooleanExpression" />
@@ -97,15 +96,6 @@
         <module name="IllegalImport" />
         <module name="RedundantImport" />
         <module name="UnusedImports" />
-
-        <!-- https://checkstyle.org/config_javadoc.html -->
-        <!-- 暂时去掉
-        <module name="MissingJavadocMethod">
-            <property name="allowedAnnotations" value="Override, Test" />
-            <property name="allowMissingPropertyJavadoc" value="true" />
-            <message key="javadoc.missing" value="除@Override/@Test/getter/setter外，所有公有方法/构造方法/注解属性，都必须要有注释" />
-        </module>
-        -->
 
         <!-- https://checkstyle.org/config_misc.html -->
         <module name="ArrayTypeStyle" />
@@ -120,7 +110,7 @@
         <module name="AbstractClassName">
             <property name="format" value="^(Abstract|Base)[A-Z][a-zA-Z0-9]*$" />
             <property name="ignoreModifier" value="true" />
-            <message key="name.invalidPattern" value="抽象类命名使用Abstract或Base开头" />
+            <message key="name.invalidPattern" value="Abstract class naming starts with Abstract or Base" />
         </module>
         <module name="CatchParameterName" />
         <module name="ClassTypeParameterName" />

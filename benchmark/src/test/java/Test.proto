@@ -1,3 +1,4 @@
+//This code is from lightproto
 syntax = "proto2";
 package com;
 

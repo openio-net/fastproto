@@ -14,52 +14,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//package net.openio.fastproto;
-//
-//import io.netty.buffer.ByteBuf;
-//import io.netty.buffer.ByteBufAllocator;
-//import io.netty.buffer.ByteBufUtil;
-//import org.openjdk.jmh.annotations.*;
-//import org.openjdk.jmh.infra.Blackhole;
-//
-//import java.nio.charset.StandardCharsets;
-//import java.util.concurrent.TimeUnit;
-//
-//@State(Scope.Benchmark)
-//@Warmup(iterations = 3)
-//@OutputTimeUnit(TimeUnit.MICROSECONDS)
-//@Measurement(iterations = 10)
-//@Fork(value = 1)
-//public class StringEncodingBenchmark {
-//
-//    private static final String TEST_STRING = "UTF16 Ελληνικά Русский 日本語";
-//    private static final String TEST_STRING_ASCII = "Neque porro quisquam est qui dolorem ipsum";
-//
-//    @Benchmark
-//    public void jdkEncoding(Blackhole bh) {
-//        byte[] bytes = TEST_STRING.getBytes(StandardCharsets.UTF_8);
-//        bh.consume(bytes);
-//    }
-//
-//    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
-//
-//    @Benchmark
-//    public void nettyEncoding(Blackhole bh) {
-//        buffer.clear();
-//        ByteBufUtil.writeUtf8(buffer, TEST_STRING);
-//        bh.consume(buffer);
-//    }
-//
-//    @Benchmark
-//    public void jdkEncodingAscii(Blackhole bh) {
-//        byte[] bytes = TEST_STRING_ASCII.getBytes(StandardCharsets.UTF_8);
-//        bh.consume(bytes);
-//    }
-//
-//    @Benchmark
-//    public void nettyEncodingAscii(Blackhole bh) {
-//        buffer.clear();
-//        ByteBufUtil.writeUtf8(buffer, TEST_STRING_ASCII);
-//        bh.consume(buffer);
-//    }
-//}
+package net.openio.fastproto;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufUtil;
+import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.infra.Blackhole;
+
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
+
+@State(Scope.Benchmark)
+@Warmup(iterations = 3)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Measurement(iterations = 10)
+@Fork(value = 1)
+public class StringEncodingBenchmark {
+
+    private static final String TEST_STRING = "UTF16 Ελληνικά Русский 日本語";
+    private static final String TEST_STRING_ASCII = "Neque porro quisquam est qui dolorem ipsum";
+
+    @Benchmark
+    public void jdkEncoding(Blackhole bh) {
+        byte[] bytes = TEST_STRING.getBytes(StandardCharsets.UTF_8);
+        bh.consume(bytes);
+    }
+
+    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
+
+    @Benchmark
+    public void nettyEncoding(Blackhole bh) {
+        buffer.clear();
+        ByteBufUtil.writeUtf8(buffer, TEST_STRING);
+        bh.consume(buffer);
+    }
+
+    @Benchmark
+    public void jdkEncodingAscii(Blackhole bh) {
+        byte[] bytes = TEST_STRING_ASCII.getBytes(StandardCharsets.UTF_8);
+        bh.consume(bytes);
+    }
+
+    @Benchmark
+    public void nettyEncodingAscii(Blackhole bh) {
+        buffer.clear();
+        ByteBufUtil.writeUtf8(buffer, TEST_STRING_ASCII);
+        bh.consume(buffer);
+    }
+}
