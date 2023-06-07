@@ -27,7 +27,7 @@ public enum OptionType {
 
     String type;
 
-    OptionType(String type){
-        this.type=type;
+    OptionType(String type) {
+        this.type = type;
     }
 }

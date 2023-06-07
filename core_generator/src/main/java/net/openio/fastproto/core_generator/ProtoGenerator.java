@@ -48,8 +48,8 @@ public class ProtoGenerator {
             Parser parse = new Parser();
             parse.parse(config);
             List<File> files = new ArrayList<>();
-            for(Package pack:parse.getList()){
-                generate(pack, config.getJavaOut(), parse.maps,parse.metas,files);
+            for (Package pack:parse.getList()) {
+                generate(pack, config.getJavaOut(), parse.maps, parse.metas, files);
             }
             return files;
         }
@@ -68,19 +68,19 @@ public class ProtoGenerator {
         for (String javaPackage : javaPack) {
             String javaDir = Joiner.on('/').join(javaPackage.split("\\."));
             File file1 = new File(outDir + javaDir + "/" + "Serializer.java");
-            if(file1.exists()){
+            if (file1.exists()) {
                 file1.delete();
             }
 
-            try (InputStream is =Util.class.getResourceAsStream("/net/openio/fastproto/Serializer.java")) {
+            try (InputStream is = Util.class.getResourceAsStream("/net/openio/fastproto/Serializer.java")) {
                 JavaClassSource codecClass = (JavaClassSource) Roaster.parse(is);
-                if(javaPackage.equals("")){
+                if (javaPackage.equals("")) {
                     codecClass.setDefaultPackage();
-                }else {
+                } else {
                     codecClass.setPackage(javaPackage);
                 }
-                File file=Util.genFile(outDir,javaPackage,"Serializer");
-                Util.writerContent(file,codecClass.toString());
+                File file = Util.genFile(outDir, javaPackage, "Serializer");
+                Util.writerContent(file, codecClass.toString());
                 list.add(file);
             }
         }

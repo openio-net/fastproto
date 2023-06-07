@@ -66,7 +66,7 @@ public class RepeatedBuildMethodGenerator {
         pw.format("             this.%s=new java.util.ArrayList<>();\n", fileName);
         pw.format("             this.%s.add(a);\n", fileName);
         pw.println("        }else{");
-        pw.format("             this.%s.add(a);\n",fileName);
+        pw.format("             this.%s.add(a);\n", fileName);
         pw.println("        }");
         pw.println("        return this;");
         pw.println("    }");

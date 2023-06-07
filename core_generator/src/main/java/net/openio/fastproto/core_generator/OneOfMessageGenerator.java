@@ -82,9 +82,9 @@ public class OneOfMessageGenerator {
 //
 //            }
 //            pw.format("             }\n");
-            pw.format("         %s_size+=%s_TagEncodeSize;\n",className, filed.getFiledName());
-            pw.format("         endOneOfNum_%d=%s_Num;\n",oneOf,filed.getFiledName());
-            Util.size(pw,filed.getFileType().getType(),className+"_size","value_1");
+            pw.format("         %s_size+=%s_TagEncodeSize;\n", className, filed.getFiledName());
+            pw.format("         endOneOfNum_%d=%s_Num;\n", oneOf, filed.getFiledName());
+            Util.size(pw, filed.getFileType().getType(), className + "_size", "value_1");
 //            pw.format("         }\n");
             pw.format("     }\n");
         }
@@ -118,9 +118,9 @@ public class OneOfMessageGenerator {
         for (Filed filed : filed1) {
 
             String filedName = filed.getFiledName();
-                pw.format("             case %s_Num :\n",filed.getFiledName());
+                pw.format("             case %s_Num :\n", filed.getFiledName());
                 pw.format("         Serializer.encodeVarInt32(buf,%s_Tag);\n", filed.getFiledName());
-                Util.encodeFiled(pw,filed,"buf","this."+filedName);
+                Util.encodeFiled(pw, filed, "buf", "this." + filedName);
                 pw.format("         break;");
             }
             pw.println("        }");
@@ -142,16 +142,16 @@ public class OneOfMessageGenerator {
             pw.format("             switch(value_1.endOneOfNum_%d){\n", oneOf);
             for (Filed filed2 : filed1) {
                 pw.format("             case %s_Tag :\n", filed2.getFiledName());
-                pw.format("                 value_1.%s=null;\n",filed2.getFiledName());
+                pw.format("                 value_1.%s=null;\n", filed2.getFiledName());
                 pw.format("                 break;\n");
 
             }
             pw.format("             }\n");
             pw.format("     }\n");
-            pw.format("             value_1.endOneOfNum_%d=%s_Num;",oneOf,filed.getFiledName());
-            pw.format("             %s value_2=null;",Util.getJavaType(filed,metaMap));
-            Util.filedDecode(filed,pw,"buf","value_2",metaMap);
-            pw.format("             value_1.%s=value_2;\n",filedName);
+            pw.format("             value_1.endOneOfNum_%d=%s_Num;", oneOf, filed.getFiledName());
+            pw.format("             %s value_2=null;", Util.getJavaType(filed, metaMap));
+            Util.filedDecode(filed, pw, "buf", "value_2", metaMap);
+            pw.format("             value_1.%s=value_2;\n", filedName);
 
             pw.println();
             pw.println("}");

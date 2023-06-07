@@ -138,9 +138,9 @@ public class Parser {
 
             DescriptorProtos.FileDescriptorSet fileDescriptorSet;
             FileInputStream is = null;
-            File file = new File(config.getFileDir()+s1+".desc");
-            if(!file.exists()){
-                throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
+            File file = new File(config.getFileDir() + s1 + ".desc");
+            if (!file.exists()) {
+                throw new FileNotFoundException(file.getAbsolutePath() + " is not exists");
             }
             try {
 
@@ -175,7 +175,7 @@ public class Parser {
             FileInputStream is = null;
             File file = new File(fileDir + s1 + ".desc");
             if (!file.exists()) {
-                throw new FileNotFoundException(file.getAbsolutePath()+" is not exists");
+                throw new FileNotFoundException(file.getAbsolutePath() + " is not exists");
             }
             try {
 
@@ -210,13 +210,13 @@ public class Parser {
                 parseMessage(pack, descriptorProto);
 
             }
-            for(DescriptorProtos.EnumDescriptorProto descriptorProto:proto.getEnumTypeList()){
+            for (DescriptorProtos.EnumDescriptorProto descriptorProto:proto.getEnumTypeList()) {
                 parseEnum(pack, descriptorProto);
 
             }
-            Set<String> set=new HashSet<>();
-            for(String s:proto.getDependencyList()){
-                if(importSet.contains(s)){
+            Set<String> set = new HashSet<>();
+            for (String s:proto.getDependencyList()) {
+                if (importSet.contains(s)) {
                     continue;
                 }
                 importSet.add(s);
@@ -252,7 +252,7 @@ public class Parser {
 
 
         Set<String> fileName = new HashSet<>();
-        for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
+        for (DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()) {
 
             parseMessageFiled(message, proto1, fileName);
         }
@@ -264,7 +264,7 @@ public class Parser {
 
     private void parseMessage(Message message1, DescriptorProtos.DescriptorProto proto, String filed, String protoPack, String javaPack) {
         metas.put(protoPack + "." + filed + "." + proto.getName(),
-                new Meta(proto.getName(), javaPack, protoPack, filed, protoPack + "." + filed + "." + proto.getName()));//添加类元数据
+                new Meta(proto.getName(), javaPack, protoPack, filed, protoPack + "." + filed + "." + proto.getName())); //添加类元数据
 
 
         Message message = new Message();
@@ -284,8 +284,8 @@ public class Parser {
         }
 
 
-        Set<String> fieldName=new HashSet<>();
-        for(DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()){
+        Set<String> fieldName = new HashSet<>();
+        for (DescriptorProtos.FieldDescriptorProto proto1:proto.getFieldList()) {
             parseMessageFiled(message, proto1, fieldName);
         }
 
@@ -341,31 +341,31 @@ public class Parser {
         filed.setNum(descriptorProto.getNumber());
         boolean cfl = KEYWORD.contains(descriptorProto.getName());
         String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
-        if(fileName.contains(name)){
-            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName() + " name of attribute: "+name+", which conflicts with other attribute names. Please rename it.");
+        if (fileName.contains(name)) {
+            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName() + " name of attribute: " + name + ", which conflicts with other attribute names. Please rename it.");
         }
         filed.setFiledName(name);
-        if(descriptorProto.hasTypeName()) {
+        if (descriptorProto.hasTypeName()) {
             filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
         }
 
-        if(descriptorProto.getLabel().name().equals("LABEL_REPEATED")){
+        if (descriptorProto.getLabel().name().equals("LABEL_REPEATED")) {
             filed.setFiledLabel(FiledLabel.Repeated);
-            if(descriptorProto.getOptions().getPacked()){
+            if (descriptorProto.getOptions().getPacked()) {
                 Option option = new Option("packed", true, OptionType.FiledOption);
                 filed.addOption(option);
             }
-        }else if(descriptorProto.getLabel().name().equals("LABEL_REQUIRED")){
+        } else if (descriptorProto.getLabel().name().equals("LABEL_REQUIRED")) {
             filed.setFiledLabel(FiledLabel.Required);
-        }else {
+        } else {
             filed.setFiledLabel(FiledLabel.Optional);
         }
 
-        if(filed.getFiledName().equals("x_uint32")){
+        if (filed.getFiledName().equals("x_uint32")) {
             System.out.println();
         }
 
-        switch (descriptorProto.getType().getNumber()){
+        switch (descriptorProto.getType().getNumber()) {
             case 1:
                 filed.setFileType(FiledType.Double);
                 filed.setFileTypeName(FiledType.Double.getJavaClass().getName());

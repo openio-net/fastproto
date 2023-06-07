@@ -1,107 +1,153 @@
 <?xml version="1.0"?>
-<!DOCTYPE module PUBLIC  "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
-        "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+<!--
 
+    Licensed to the OpenIO.Net under one or more
+    contributor license agreements. See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License. You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-    <property name="charset" value="UTF-8"/>
-    <property name="fileExtensions" value="java"/>
+    <property name="charset" value="UTF-8" />
+    <property name="fileExtensions" value="java, properties" />
+    <property name="localeCountry" value="CN" />
+    <property name="localeLanguage" value="zh" />
+
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="^(module|package)\-info\.java$" />
+    </module>
+    <module name="SuppressWarningsFilter" />
+    <module name="SuppressionFilter">
+        <property name="file" value="suppressions.xml"/>
+    </module>
+    <module name="NewlineAtEndOfFile" />
     <module name="FileLength">
-        <property name="max" value="1500"/>
+        <property name="max" value="1500" />
     </module>
     <module name="TreeWalker">
-        <module name="SuppressWarningsHolder"/>
-        <module name="AvoidEscapedUnicodeCharacters">
-            <property name="allowEscapesForControlCharacters" value="true"/>
-            <property name="allowByTailComment" value="true"/>
-            <property name="allowNonPrintableEscapes" value="true"/>
-        </module>
-        <module name="NoLineWrap"/>
-        <module name="OuterTypeFilename"/>
-        <module name="IllegalImport"/>
-        <module name="RedundantImport"/>
-        <module name="UnusedImports"/>
-        <module name="MissingJavadocType"/>
 
+        <!-- https://checkstyle.org/config_annotation.html -->
+        <module name="SuppressWarningsHolder" />
+        <module name="MissingOverride" />
+
+        <!-- https://checkstyle.org/config_blocks.html -->
+        <module name="AvoidNestedBlocks" />
+        <module name="EmptyBlock">
+            <property name="option" value="text" />
+        </module>
+        <module name="EmptyCatchBlock" />
+        <module name="LeftCurly" />
+        <module name="RightCurly">
+            <property name="id" value="RightCurlySame" />
+            <property name="option" value="same" />
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_DO" />
+        </module>
+        <module name="RightCurly">
+            <property name="id" value="RightCurlyAlone" />
+            <property name="option" value="alone" />
+            <property name="tokens" value="CLASS_DEF , METHOD_DEF , CTOR_DEF , LITERAL_FOR , LITERAL_WHILE , STATIC_INIT , INSTANCE_INIT , ANNOTATION_DEF , ENUM_DEF" />
+        </module>
+
+        <!-- https://checkstyle.org/config_design.html -->
+        <module name="FinalClass" />
+        <module name="InterfaceIsType" />
+
+        <!-- https://checkstyle.org/config_coding.html -->
+        <module name="DefaultComesLast" />
+        <module name="EmptyStatement" />
+        <module name="EqualsHashCode" />
+        <module name="FallThrough" />
+        <module name="InnerAssignment" />
+        <module name="MissingSwitchDefault" />
+        <module name="NestedForDepth">
+            <property name="max" value="2" />
+            <message key="nested.for.depth" value="Except for the outermost for, nesting up to {1,number,integer} layers is allowed, currently {0,number,integer} layers" />
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="2" />
+            <message key="nested.if.depth" value="Nested layers of {1,number,integer} are allowed except for the outermost if, which is currently {0,number,integer}." />
+        </module>
+        <module name="NestedTryDepth">
+            <property name="max" value="2" />
+            <message key="nested.try.depth" value="Nested layers of {1,number,integer} are allowed except for the outermost if, which is currently {0,number,integer}." />
+        </module>
+        <module name="OneStatementPerLine" />
+        <module name="SimplifyBooleanExpression" />
+        <module name="SimplifyBooleanReturn" />
+        <module name="StringLiteralEquality" />
+        <module name="SuperClone" />
+        <module name="SuperFinalize" />
+
+        <!-- https://checkstyle.org/config_imports.html -->
+        <module name="IllegalImport" />
+        <module name="RedundantImport" />
+        <module name="UnusedImports" />
+
+        <!-- https://checkstyle.org/config_misc.html -->
+        <module name="ArrayTypeStyle" />
+        <module name="UncommentedMain">
+            <property name="excludedClasses" value=".*Application$" />
+        </module>
+        <module name="UpperEll" />
+
+        <module name="RedundantModifier" />
+
+        <!-- https://checkstyle.org/config_naming -->
+        <module name="AbstractClassName">
+            <property name="format" value="^(Abstract|Base)[A-Z][a-zA-Z0-9]*$" />
+            <property name="ignoreModifier" value="true" />
+            <message key="name.invalidPattern" value="Abstract class naming starts with Abstract or Base" />
+        </module>
+        <module name="CatchParameterName" />
+        <module name="ClassTypeParameterName" />
+        <module name="ConstantName" />
+        <module name="InterfaceTypeParameterName" />
+        <module name="LambdaParameterName" />
+        <module name="LocalFinalVariableName" />
+        <module name="LocalVariableName" />
+        <module name="MemberName" />
         <module name="MethodName">
-            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
-            <message key="name.invalidPattern"
-                     value="Method name ''{0}'' must match pattern ''{1}''."/>
+            <property name="format" value="^[_a-z]([a-zA-Z0-9]+)*$" />
         </module>
-        <module name="ParameterName"/>
-        <module name="ConstantName"/>
-        <module name="UpperEll"/>
-        <module name="MissingSwitchDefault"/>
-        <module name="StringLiteralEquality"/>
-
-        <module name="VariableDeclarationUsageDistance"/>
-
-        <module name="MethodParamPad">
-            <property name="tokens"
-                      value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF,
-                    SUPER_CTOR_CALL, ENUM_CONSTANT_DEF, RECORD_DEF"/>
-        </module>
-        <module name="NoWhitespaceBefore">
-            <property name="tokens"
-                      value="COMMA, SEMI, POST_INC, POST_DEC, DOT,
-                    LABELED_STAT, METHOD_REF"/>
-            <property name="allowLineBreaks" value="true"/>
-        </module>
-        <module name="ParenPad">
-            <property name="tokens"
-                      value="ANNOTATION, ANNOTATION_FIELD_DEF, CTOR_CALL, CTOR_DEF, DOT, ENUM_CONSTANT_DEF,
-                    EXPR, LITERAL_CATCH, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_NEW,
-                    LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_WHILE, METHOD_CALL,
-                    METHOD_DEF, QUESTION, RESOURCE_SPECIFICATION, SUPER_CTOR_CALL, LAMBDA,
-                    RECORD_DEF"/>
+        <module name="MethodTypeParameterName" />
+        <module name="StaticVariableName" />
+        <module name="TypeName">
+            <property name="severity" value="warning" />
         </module>
 
-        <module name="OperatorWrap">
-            <property name="option" value="NL"/>
-            <property name="tokens"
-                      value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
-                    LT, MINUS, MOD, NOT_EQUAL, QUESTION, SL, SR, STAR, METHOD_REF,
-                    TYPE_EXTENSION_AND "/>
-        </module>
 
-        <module name="AnnotationLocation">
-            <property name="id" value="AnnotationLocationMostCases"/>
-            <property name="tokens"
-                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF,
-                      RECORD_DEF, COMPACT_CTOR_DEF"/>
+        <module name="GenericWhitespace" />
+        <module name="MethodParamPad" />
+        <module name="NoLineWrap" />
+        <module name="NoWhitespaceAfter" />
+        <module name="NoWhitespaceBefore" />
+        <module name="ParenPad" />
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapNL" />
+            <property name="tokens" value="DOT" />
+            <property name="option" value="nl" />
         </module>
-
-        <module name="AnnotationLocation">
-            <property name="id" value="AnnotationLocationVariables"/>
-            <property name="tokens" value="VARIABLE_DEF"/>
-            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapEOL" />
+            <property name="tokens" value="COMMA, ELLIPSIS, ARRAY_DECLARATOR" />
+            <property name="option" value="EOL" />
         </module>
-
-        <module name="AbbreviationAsWordInName">
-            <property name="ignoreStatic" value="false"/>
-            <property name="allowedAbbreviationLength" value="1"/>
-            <property name="allowedAbbreviations" value="XML,URL,TRS,VO,DTO,PKI,MAC,IMEI,IMSI"/>
-        </module>
-        <module name="LocalVariableName">
-            <property name="format"
-                      value="^[a-z][a-z0-9]*([A-Z][a-z0-9]+)*(DO|DTO|VO|DAO|BO|DOList|DTOList|VOList|DAOList|BOList|X|Y|Z|UDF|UDAF|[A-Z])?$"/>
-            <property name="allowOneCharVarInForLoop" value="true"/>
-            <message key="name.invalidPattern" value="Local variable naming ''{0}'' does not satisfy the lowerCaseCamel naming convention"/>
-        </module>
-        <module name="MemberName">
-            <property name="format"
-                      value="^[a-z][a-z0-9]*([A-Z][a-z0-9]+)*(DO|DTO|VO|DAO|BO|DOList|DTOList|VOList|DAOList|BOList|X|Y|Z|UDF|UDAF|[A-Z])?$"/>
-            <message key="name.invalidPattern" value="Member variable naming ''{0}'' does not satisfy the lowerCaseCamel naming convention"/>
-        </module>
-        <module name="MethodName">
-            <message key="name.invalidPattern" value="Method naming ''{0}'' does not satisfy the lowerCaseCamel naming convention"/>
-        </module>
-        <module name="PackageName">
-            <message key="name.invalidPattern" value="Package naming ''{0}'' does not satisfy the naming convention"/>
-        </module>
-        <module name="ParameterName">
-            <message key="name.invalidPattern" value="The method name ''{0}'' does not satisfy the lowerCaseCamel naming convention"/>
-        </module>
+        <module name="TypecastParenPad" />
+        <module name="WhitespaceAfter" />
+        <module name="WhitespaceAround" />
     </module>
 </module>
-

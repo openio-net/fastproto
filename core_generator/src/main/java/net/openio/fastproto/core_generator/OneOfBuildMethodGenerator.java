@@ -57,8 +57,8 @@ public class OneOfBuildMethodGenerator {
     private void set(PrintWriter pw, List<Filed> filed1, Map<String, Meta> metaMap, String className) {
         int oneOfIndex = filed1.get(0).getOneIndex();
         for (Filed filed : filed1) {
-            pw.format("     public %s setOneOf%d%sValue(%s a){\n"
-                    , className, oneOfIndex, CaseUtils.toCamelCase(filed.getFiledName(), true), Util.getJavaType(filed, metaMap));
+            pw.format("     public %s setOneOf%d%sValue(%s a){\n",
+                    className, oneOfIndex, CaseUtils.toCamelCase(filed.getFiledName(), true), Util.getJavaType(filed, metaMap));
             pw.format("     if(a==null) {\n");
             pw.format("         endSet%dNum=-1;\n", oneOfIndex);
             pw.format("         return this;\n");

@@ -54,26 +54,26 @@ public class MapMessageGenerator {
         pw.format("int key_Length1=Serializer.computeVarInt32Size(%d);//the number is key tag\n", Util.getTag(key));
         pw.format("int value_Length1=Serializer.computeVarInt32Size(%d);//the number is value tag\n", Util.getTag(value));
 
-        pw.format("         for(%s s_1:map.keySet()){\n",keyType);
+        pw.format("         for(%s s_1:map.keySet()){\n", keyType);
         pw.format("             int key_value_length=0;");
         pw.format("             key_value_length+= key_Length1;//add the map value tag length\n");
         //add key encode length
         pw.format("             //sum the key length\n");
-        Util.size(pw,key.getFileType().getType(),"key_value_length","s_1");
+        Util.size(pw, key.getFileType().getType(), "key_value_length", "s_1");
 
 
         //add value encode length
-        pw.format("             %s value_1=map.get(s_1);\n",valueType);
+        pw.format("             %s value_1=map.get(s_1);\n", valueType);
         pw.format("             key_value_length+=value_Length1;//add the map value tag length\n");
         pw.format("             //sum the value length\n");
-        Util.size(pw,value.getFileType().getType(),"key_value_length","value_1");
+        Util.size(pw, value.getFileType().getType(), "key_value_length", "value_1");
 
-        pw.format("             %s_Length.put(s_1,key_value_length)\n;",fileName);
-        pw.format("             %s_size+=key_value_length;\n",className);
-        pw.format("             this.%s.put(s_1,value_1);",fileName);
-        pw.format("             %s_size+=Serializer.computeVarInt64Size(key_value_length);",className);
+        pw.format("             %s_Length.put(s_1,key_value_length)\n;", fileName);
+        pw.format("             %s_size+=key_value_length;\n", className);
+        pw.format("             this.%s.put(s_1,value_1);", fileName);
+        pw.format("             %s_size+=Serializer.computeVarInt64Size(key_value_length);", className);
         pw.format("         }\n");
-        pw.format("         %s_size+=map.keySet().size()*%s_TagEncodeSize;\n",className, filed.getFiledName());
+        pw.format("         %s_size+=map.keySet().size()*%s_TagEncodeSize;\n", className, filed.getFiledName());
 
         pw.format("     }\n");
     }
@@ -119,18 +119,18 @@ public class MapMessageGenerator {
         pw.format("         if(tag==%s){\n", Util.getTag(key));
         Util.filedDecode(key, pw, "buf", "key", metaMap);
         pw.format("         }else if(tag==%s){\n", Util.getTag(value));
-        Util.filedDecode(value,pw,"buf","value",metaMap);
+        Util.filedDecode(value, pw, "buf", "value", metaMap);
         pw.format("         }\n");
         pw.format("         tag=Serializer.decodeVarInt32(buf);\n");
         pw.format("         if(tag==%s){\n", Util.getTag(key));
-        Util.filedDecode(value,pw,"buf","value",metaMap);
+        Util.filedDecode(value, pw, "buf", "value", metaMap);
         pw.format("         }else if(tag==%s){\n", Util.getTag(value));
-        Util.filedDecode(value,pw,"buf","value",metaMap);
+        Util.filedDecode(value, pw, "buf", "value", metaMap);
         pw.format("         }\n");
         pw.format("        if(key==null||value==null){\n");
-        pw.format("            throw new RuntimeException(\" %s decode is wrong\");\n",fileName);
+        pw.format("            throw new RuntimeException(\" %s decode is wrong\");\n", fileName);
         pw.format("        }");
-        pw.format("        a_1.put_%s(key,value,length_1);\n",fileName);
+        pw.format("        a_1.put_%s(key,value,length_1);\n", fileName);
         pw.format("     }\n");
     }
 
