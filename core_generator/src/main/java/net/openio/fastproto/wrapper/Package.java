@@ -105,8 +105,9 @@ public class Package {
             throw new NullPointerException("the name is null");
         }
         for (Message message : messages) {
-            if (message.getName().equals(name))
+            if (message.getName().equals(name)) {
                 return message;
+            }
         }
         return null;
     }
@@ -129,14 +130,11 @@ public class Package {
     }
 
     public String toString() {
-        return "ProtoPackage{" +
-                "fileName='" + fileName + '\'' +
-                ", packageName='" + packageName + '\'' +
-                ", javaPackage='" + javaPackage + '\'' +
-                ", options=" + options +
-                ", ImportFile=" + importFile +
-                ", ImportPublicFile=" + importPublicFile +
-                ", objects=" + messages +
-                '}';
+        return "ProtoPackage{" + "fileName='" + fileName + '\''
+                + ", packageName='" + packageName + '\'' + ", javaPackage='"
+                + javaPackage + '\'' + ", options=" + options
+                + ", ImportFile=" + importFile
+                + ", ImportPublicFile=" + importPublicFile
+                + ", objects=" + messages + '}';
     }
 }

@@ -17,7 +17,7 @@
 package net.openio.fastproto;
 
 import net.openio.fastproto.config.Config;
-import net.openio.fastproto.core_generator.ProtoGenerator;
+import net.openio.fastproto.core.generator.ProtoGenerator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

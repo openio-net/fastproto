@@ -14,22 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
+import com.google.common.base.Joiner;
 import net.openio.fastproto.compile.Parser;
 import net.openio.fastproto.config.Config;
 import net.openio.fastproto.wrapper.Message;
 import net.openio.fastproto.wrapper.Meta;
 import net.openio.fastproto.wrapper.ObjectType;
 import net.openio.fastproto.wrapper.Package;
-import com.google.common.base.Joiner;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Generate java file
@@ -42,20 +46,20 @@ public class ProtoGenerator {
      * @param config
      *
      * @return
-     * @throws IOException
      */
-        public static List<File> generate(Config config) throws IOException, InterruptedException {
-            Parser parse = new Parser();
-            parse.parse(config);
-            List<File> files = new ArrayList<>();
-            for (Package pack:parse.getList()) {
-                generate(pack, config.getJavaOut(), parse.maps, parse.metas, files);
-            }
-            return files;
+    public static List<File> generate(Config config) throws IOException, InterruptedException {
+        Parser parse = new Parser();
+        parse.parse(config);
+        List<File> files = new ArrayList<>();
+        for (Package pack:parse.getList()) {
+            generate(pack, config.getJavaOut(), parse.maps, parse.metas, files);
         }
+        return files;
+    }
 
 
-    private static void generate(Package pack, String outDir, Map<String, Message> map, Map<String, Meta> metaMap, List<File> list) throws IOException {
+    private static void generate(Package pack, String outDir, Map<String, Message> map,
+                                 Map<String, Meta> metaMap, List<File> list) throws IOException {
         Set<String> javaPack = new HashSet<>();
         for (Message o : pack.getAllObject()) {
             javaPack.add(pack.getJavaPackName());

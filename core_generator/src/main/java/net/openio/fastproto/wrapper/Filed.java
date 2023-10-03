@@ -132,15 +132,15 @@ public class Filed {
 
 
     public String toString() {
-        return "ProtoFiled{" +
-                "tag=" + tag +
-                ", filedLabel=" + filedLabel +
-                ", filedType=" + filedType +
-                ", fileName='" + fileName + '\'' +
-                ", oneOf=" + oneOf +
-                ", oneIndex=" + oneIndex +
-                ", options=" + options +
-                ", fileTypeName='" + fileTypeName + '\'' +
-                '}';
+        return "ProtoFiled{"
+            + "tag=" + tag
+            + ", filedLabel=" + filedLabel
+            + ", filedType=" + filedType
+            + ", fileName='" + fileName + '\''
+            + ", oneOf=" + oneOf
+            + ", oneIndex=" + oneIndex
+            + ", options=" + options
+            + ", fileTypeName='" + fileTypeName
+            + '\'' + '}';
     }
 }

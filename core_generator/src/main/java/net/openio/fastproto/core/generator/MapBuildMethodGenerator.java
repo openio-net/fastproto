@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Message;
@@ -67,7 +67,8 @@ public class MapBuildMethodGenerator {
     }
 
     public void generatePut(PrintWriter pw, String fileName, Map<String, Meta> metaMap, Filed key, Filed value, String className) {
-        pw.format("     public %s put%s(%s key,%s value){\n", className, CaseUtils.toCamelCase(fileName, true), Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap));
+        pw.format("     public %s put%s(%s key,%s value){\n", className, CaseUtils.toCamelCase(fileName, true),
+            Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap));
         pw.format("         if(key==null||value==null){");
         pw.format("             throw new RuntimeException(\"key or value is null\");");
         pw.format("         }");
@@ -79,8 +80,11 @@ public class MapBuildMethodGenerator {
         pw.println("    }");
     }
 
-    public void generateGet(PrintWriter pw, String fileName, Map<String, Meta> metaMap, Filed key, Filed value) {
-        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value, metaMap), CaseUtils.toCamelCase(fileName, true), Util.getJavaType(key, metaMap));
+    public void generateGet(PrintWriter pw, String fileName,
+                            Map<String, Meta> metaMap, Filed key, Filed value) {
+
+        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value, metaMap),
+            CaseUtils.toCamelCase(fileName, true), Util.getJavaType(key, metaMap));
         pw.format("         if(this.%s==null){\n", fileName);
         pw.format("             throw new RuntimeException(\"%s is null\");\n", fileName);
         pw.println("        }\n");

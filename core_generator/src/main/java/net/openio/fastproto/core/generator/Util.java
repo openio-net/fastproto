@@ -14,14 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 
-import net.openio.fastproto.exception.FastProtoException;
-import net.openio.fastproto.wrapper.*;
+import net.openio.fastproto.exception.FailToCreateFileException;
+import net.openio.fastproto.exception.FailToMakeDirException;
+import net.openio.fastproto.wrapper.Filed;
+import net.openio.fastproto.wrapper.FiledLabel;
+import net.openio.fastproto.wrapper.FiledType;
+import net.openio.fastproto.wrapper.Meta;
+import net.openio.fastproto.wrapper.Option;
 import org.jboss.forge.roaster.Roaster;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Map;
@@ -42,7 +52,9 @@ public class Util {
         if (label.equals(FiledLabel.Repeated.getLabel())) {
             for (Option option : filed.getAllOption()) {
                 if (option.getKey().equals("packed")) {
-                    if ((Boolean) option.getValue()) return 2;
+                    if ((Boolean) option.getValue()){
+                        return 2;
+                    }
                 }
             }
         }
@@ -290,7 +302,7 @@ public class Util {
         File fileDir = new File(path.toString());
         if (!fileDir.isDirectory()) {
             if (!fileDir.mkdirs()) {
-                throw new FastProtoException.FailToMakeDirException("Cannot create the dir " + fileDir.toPath().toString());
+                throw new FailToMakeDirException("Cannot create the dir " + fileDir.toPath().toString());
             }
         }
         path.append('/').append(fileName).append(".java");
@@ -298,7 +310,7 @@ public class Util {
         File file = new File(path.toString());
         if (!file.exists()) {
             if (!file.createNewFile()) {
-                throw new FastProtoException.FailToCreateFileException("Cannot create the file " + file.toPath().toString());
+                throw new FailToCreateFileException("Cannot create the file " + file.toPath().toString());
             }
         }
         return file;

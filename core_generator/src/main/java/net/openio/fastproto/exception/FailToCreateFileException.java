@@ -14,29 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.wrapper;
+package net.openio.fastproto.exception;
 
 /**
- * Represents the type of an object in FastProto.
+ * Exception thrown when there is a failure to create a file.
  */
-public enum ObjectType {
-
-    Message("message"), //proto2、3,
-    Enum("enum"), //proto2、3,
-    Service("service"), //proto2、3
-    Extend("extend"),
-    OneOf("oneof"),
-    Map("map"),
-    group("group"); //proto2
-
-    String type;
-
-
-    public  String getType() {
-        return type;
+public class FailToCreateFileException extends FastProtoException {
+    public FailToCreateFileException() {
     }
 
-    ObjectType(String type) {
-        this.type = type;
+    public FailToCreateFileException(String message) {
+        super(message);
     }
 }

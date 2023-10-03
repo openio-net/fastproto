@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Meta;
@@ -24,7 +24,8 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * The MessageBuildMethodGenerator class is responsible for generating setter, getter, clear, and has methods for a field in a message builder class.
+ * The MessageBuildMethodGenerator class is responsible for generating setter,
+ * getter, clear, and has methods for a field in a message builder class.
  */
 public class MessageBuildMethodGenerator {
 
@@ -54,7 +55,8 @@ public class MessageBuildMethodGenerator {
 
     private void generateSet(PrintWriter pw, Filed filed, Map<String, Meta> metaMap, String className) {
 
-        pw.format("     public %s set%s(%s a){\n", className, CaseUtils.toCamelCase(filed.getFiledName(), true), Util.getJavaType(filed, metaMap));
+        pw.format("     public %s set%s(%s a){\n", className, CaseUtils.toCamelCase(filed.getFiledName(),
+            true), Util.getJavaType(filed, metaMap));
         pw.format("         this.%s=a;\n", filed.getFiledName());
         pw.format("         return this;\n");
         pw.println("    }");
