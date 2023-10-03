@@ -14,45 +14,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
+import net.openio.fastproto.wrapper.Message;
 import net.openio.fastproto.wrapper.Meta;
 
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Map;
 
 /**
- * The OneOfBuildFiledGenerator class is responsible for generating code for the fields within a oneof group in the builder class.
+ * Generates the map build entry for a specific field in a message.
  */
-public class OneOfBuildFiledGenerator {
+public class MapBuildFileGenerator {
 
-    List<Filed> filed;
+    Filed filed;
 
-    public OneOfBuildFiledGenerator(List<Filed> filed) {
+    Message message;
+
+    public MapBuildFileGenerator(Filed filed, Message message) {
         this.filed = filed;
+        this.message = message;
     }
 
     public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
-        int oneOfIndex = filed.get(0).getOneIndex();
 
-        pw.format("private final static int oneOfIndex%d=%d;\n\n", oneOfIndex, oneOfIndex);
-        pw.format("//OneOfIndex is %d last value\n", oneOfIndex);
-        pw.format("private  int endSet%dNum=-1;\n", oneOfIndex);
-
-        for (Filed filed1 : filed) {
-            filedGenerate(pw, filed1, metaMap);
+        Filed key = null;
+        Filed value = null;
+        for (Filed filed1 : message.getAllFiled()) {
+            if (filed1.getFiledName().equals("key")) {
+                key = filed1;
+            } else {
+                value = filed1;
+            }
         }
-    }
 
-
-    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Meta> metaMap) {
-
-        pw.format("    private %s %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
+        pw.println();
+        pw.format("    private java.util.Map<%s,%s> %s;\n", Util.getJavaType(key, metaMap),
+            Util.getJavaType(value, metaMap), filed.getFiledName());
 
         pw.println();
     }
+
+
+
 
 
 }

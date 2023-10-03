@@ -39,23 +39,23 @@ public enum FiledType {
     Message("message", Object.class),
     Enum("enum", Enum.class);
 
-    public final static String E_INT_32 = "int32";
-    public final static String E_INT_64 = "int64";
-    public final static String E_DOUBLE = "double";
-    public final static String E_FLOAT = "float";
-    public final static String EU_INT_32 = "uint32";
-    public final static String EU_INT_64 = "uInt64";
-    public final static String ES_INT_32 = "sInt32";
-    public final static String ES_INT_64 = "sInt64";
-    public final  static String E_FIXED_32 = "fixed32";
-    public final  static String E_FIXED_64 = "fixed64";
-    public final  static String ES_FIXED_32 = "sfixed32";
-    public final  static String ES_FIXED_64 = "sfixed64";
-    public final  static String E_BOOL = "bool";
-    public final  static String E_STRING = "String";
-    public final  static String E_BYTES = "bytes";
-    public final  static String E_MESSAGE = "message";
-    public final  static String E_ENUM = "enum";
+    public static final  String E_INT_32 = "int32";
+    public static final String E_INT_64 = "int64";
+    public static final String E_DOUBLE = "double";
+    public static final String E_FLOAT = "float";
+    public static final String EU_INT_32 = "uint32";
+    public static final String EU_INT_64 = "uInt64";
+    public static final String ES_INT_32 = "sInt32";
+    public static final String ES_INT_64 = "sInt64";
+    public static final String E_FIXED_32 = "fixed32";
+    public static final String E_FIXED_64 = "fixed64";
+    public static final String ES_FIXED_32 = "sfixed32";
+    public static final String ES_FIXED_64 = "sfixed64";
+    public static final String E_BOOL = "bool";
+    public static final String E_STRING = "String";
+    public static final String E_BYTES = "bytes";
+    public static final String E_MESSAGE = "message";
+    public static final String E_ENUM = "enum";
 
     String type;
 

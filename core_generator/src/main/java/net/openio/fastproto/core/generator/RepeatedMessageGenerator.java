@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Meta;
@@ -25,8 +25,10 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * The `RepeatedMessageGenerator` class is responsible for generating methods related to repeated message fields in a protocol buffer message.
- * It provides methods for setting, getting, adding, encoding, decoding, and checking the presence of repeated message fields.
+ * The `RepeatedMessageGenerator` class is responsible
+ * for generating methods related to repeated message fields in a protocol buffer message.
+ * It provides methods for setting, getting,
+ * adding, encoding, decoding, and checking the presence of repeated message fields.
  */
 public class RepeatedMessageGenerator {
 

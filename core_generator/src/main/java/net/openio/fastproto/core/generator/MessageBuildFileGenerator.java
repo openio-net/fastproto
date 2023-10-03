@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Meta;
@@ -23,21 +23,20 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * The RepeatedBuildFileGenerator class is responsible for generating code for a repeated field in the message class.
+ * The MessageBuildFileGenerator class is responsible for generating a field in a message builder class.
  */
-public class RepeatedBuildFileGenerator {
+public class MessageBuildFileGenerator {
+
 
     Filed filed;
 
-
-    public RepeatedBuildFileGenerator(Filed filed) {
+    public MessageBuildFileGenerator(Filed filed) {
         this.filed = filed;
     }
 
     public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
 
-        pw.format("    private java.util.List<%s> %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
-
+        pw.format("    private %s %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
 
     }
 }

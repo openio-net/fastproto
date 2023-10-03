@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Meta;
@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The OneOfMessageGenerator class is responsible for generating code for the fields and methods related to a oneof group in the message class.
+ * The OneOfMessageGenerator class is responsible for
+ * generating code for the fields and methods related to a oneof group in the message class.
  */
 public class OneOfMessageGenerator {
     List<Filed> filed1;
@@ -118,16 +119,14 @@ public class OneOfMessageGenerator {
         for (Filed filed : filed1) {
 
             String filedName = filed.getFiledName();
-                pw.format("             case %s_Num :\n", filed.getFiledName());
-                pw.format("         Serializer.encodeVarInt32(buf,%s_Tag);\n", filed.getFiledName());
-                Util.encodeFiled(pw, filed, "buf", "this." + filedName);
-                pw.format("         break;");
-            }
-            pw.println("        }");
-            pw.format("     }\n");
-            pw.println();
-
-
+            pw.format("             case %s_Num :\n", filed.getFiledName());
+            pw.format("         Serializer.encodeVarInt32(buf,%s_Tag);\n", filed.getFiledName());
+            Util.encodeFiled(pw, filed, "buf", "this." + filedName);
+            pw.format("         break;");
+        }
+        pw.println("        }");
+        pw.format("     }\n");
+        pw.println();
 
     }
 

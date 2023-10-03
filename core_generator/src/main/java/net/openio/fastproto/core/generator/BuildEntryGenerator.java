@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.FiledLabel;
@@ -23,7 +23,13 @@ import net.openio.fastproto.wrapper.Meta;
 import org.apache.commons.text.CaseUtils;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * Generates build entries for a given message.
@@ -86,7 +92,8 @@ public class BuildEntryGenerator {
     }
 
 
-    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Message> map, Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf) {
+    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Message> map,
+                               Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf) {
 
         Message mapMessage = map.get(filed.getFileTypeName());
         String label = filed.getFiledLabel().getLabel();

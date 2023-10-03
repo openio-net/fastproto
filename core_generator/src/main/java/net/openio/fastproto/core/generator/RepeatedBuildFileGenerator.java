@@ -14,49 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
-import net.openio.fastproto.wrapper.Message;
 import net.openio.fastproto.wrapper.Meta;
 
 import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * Generates the map build entry for a specific field in a message.
+ * The RepeatedBuildFileGenerator class is responsible for generating code for a repeated field in the message class.
  */
-public class MapBuildFileGenerator {
+public class RepeatedBuildFileGenerator {
 
     Filed filed;
 
-    Message message;
 
-    public MapBuildFileGenerator(Filed filed, Message message) {
+    public RepeatedBuildFileGenerator(Filed filed) {
         this.filed = filed;
-        this.message = message;
     }
 
     public void generate(PrintWriter pw, Map<String, Meta> metaMap) {
 
-        Filed key = null;
-        Filed value = null;
-        for (Filed filed1 : message.getAllFiled()) {
-            if (filed1.getFiledName().equals("key")) {
-                key = filed1;
-            } else {
-                value = filed1;
-            }
-        }
+        pw.format("    private java.util.List<%s> %s;\n", Util.getJavaType(filed, metaMap), filed.getFiledName());
 
-        pw.println();
-        pw.format("    private java.util.Map<%s,%s> %s;\n", Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap), filed.getFiledName());
 
-        pw.println();
     }
-
-
-
-
-
 }

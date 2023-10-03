@@ -115,13 +115,10 @@ public class Message {
 
 
     public String toString() {
-        return "Message{" +
-                "name='" + name + '\'' +
-                ", objectType=" + objectType +
-                ", filed=" + filed +
-                ", options=" + options +
-                ", objects=" + messages +
-                '}';
+        return "Message{" + "name='" + name
+            + '\'' + ", objectType=" + objectType
+            + ", filed=" + filed + ", options=" + options
+            + ", objects=" + messages + '}';
     }
 
 }

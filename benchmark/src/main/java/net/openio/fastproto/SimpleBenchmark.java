@@ -16,6 +16,8 @@
  */
 package net.openio.fastproto;
 
+import com.Frame;
+import com.Point;
 import com.google.protobuf.CodedOutputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;

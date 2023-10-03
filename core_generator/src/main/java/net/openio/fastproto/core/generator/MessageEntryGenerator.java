@@ -14,20 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 
-import net.openio.fastproto.wrapper.*;
+
+import net.openio.fastproto.wrapper.Filed;
+import net.openio.fastproto.wrapper.FiledLabel;
+import net.openio.fastproto.wrapper.Message;
+import net.openio.fastproto.wrapper.Meta;
+import net.openio.fastproto.wrapper.ObjectType;
 import org.apache.commons.text.CaseUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
- * The MessageEntryGenerator class is responsible for generating code for a message entry based on the provided message and package information.
+ * The MessageEntryGenerator class is responsible for generating code
+ * for a message entry based on the provided message and package information.
  */
 public class MessageEntryGenerator {
 
@@ -137,7 +149,9 @@ public class MessageEntryGenerator {
     }
 
 
-    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Message> map, Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf, String className) {
+    private void filedGenerate(PrintWriter pw, Filed filed, Map<String, Message> map,
+                               Map<String, Meta> metaMap, Map<Integer, List<Filed>> oneOf,
+                               String className) {
 
         Message mapMessage = map.get(filed.getFileTypeName());
 
@@ -223,7 +237,8 @@ public class MessageEntryGenerator {
                 continue;
             }
             String filedName = filed.getFiledName();
-            pw.format("         if(has%s()){\n", CaseUtils.toCamelCase(filedName, true));
+            pw.format("         if(has%s()){\n",
+                CaseUtils.toCamelCase(filedName, true));
             pw.format("             this.encode_%s(buf);\n", filedName);
             pw.format("         }\n");
             pw.println();

@@ -14,29 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.wrapper;
+package net.openio.fastproto.exception;
 
 /**
- * Represents the type of an object in FastProto.
+ * Exception thrown when there is a conflict with attribute names.
  */
-public enum ObjectType {
+public class AttributeNameConflictException extends FastProtoException {
 
-    Message("message"), //proto2、3,
-    Enum("enum"), //proto2、3,
-    Service("service"), //proto2、3
-    Extend("extend"),
-    OneOf("oneof"),
-    Map("map"),
-    group("group"); //proto2
-
-    String type;
-
-
-    public  String getType() {
-        return type;
+    public AttributeNameConflictException() {
     }
 
-    ObjectType(String type) {
-        this.type = type;
+    public AttributeNameConflictException(String message) {
+        super(message);
     }
 }

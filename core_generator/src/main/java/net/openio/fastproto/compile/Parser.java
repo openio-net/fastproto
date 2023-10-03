@@ -16,19 +16,18 @@
  */
 package net.openio.fastproto.compile;
 
-
-import net.openio.fastproto.config.Config;
-import net.openio.fastproto.exception.FastProtoException;
 import com.github.os72.protocjar.Protoc;
 import com.google.protobuf.DescriptorProtos;
-import net.openio.fastproto.wrapper.ObjectType;
+import net.openio.fastproto.config.Config;
+import net.openio.fastproto.exception.AttributeNameConflictException;
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.FiledLabel;
 import net.openio.fastproto.wrapper.FiledType;
-import net.openio.fastproto.wrapper.Option;
-import net.openio.fastproto.wrapper.OptionType;
 import net.openio.fastproto.wrapper.Message;
 import net.openio.fastproto.wrapper.Meta;
+import net.openio.fastproto.wrapper.ObjectType;
+import net.openio.fastproto.wrapper.Option;
+import net.openio.fastproto.wrapper.OptionType;
 import net.openio.fastproto.wrapper.Package;
 import org.apache.commons.text.CaseUtils;
 
@@ -36,12 +35,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 
 /**
  * Parse the contents of proto file.
@@ -197,7 +197,8 @@ public class Parser {
         }
     }
 
-    private void parsePackage(Package pack, DescriptorProtos.FileDescriptorSet fileDescriptorSet, String fileDir) throws IOException, InterruptedException {
+    private void parsePackage(Package pack, DescriptorProtos.FileDescriptorSet fileDescriptorSet, String fileDir)
+        throws IOException, InterruptedException {
         for (DescriptorProtos.FileDescriptorProto proto : fileDescriptorSet.getFileList()) {
             for (String list : proto.getDependencyList()) {
                 pack.addImportFile(list);
@@ -231,7 +232,8 @@ public class Parser {
 
     private void parseMessage(Package pack, DescriptorProtos.DescriptorProto proto) {
         metas.put(pack.getPackageName() + "." + proto.getName(),
-                new Meta(proto.getName(), pack.getJavaPackName(), pack.getPackageName(), "", pack.getPackageName() + "." + proto.getName()));
+                new Meta(proto.getName(), pack.getJavaPackName(), pack.getPackageName(), "",
+                  pack.getPackageName() + "." + proto.getName()));
         Message message = new Message();
         message.setObjectType(ObjectType.Message);
         message.setName(proto.getName());
@@ -342,7 +344,8 @@ public class Parser {
         boolean cfl = KEYWORD.contains(descriptorProto.getName());
         String name = CaseUtils.toCamelCase(descriptorProto.getName(), cfl, '_');
         if (fileName.contains(name)) {
-            throw new FastProtoException.AttributeNameConflictException(filed.getFiledName() + " name of attribute: " + name + ", which conflicts with other attribute names. Please rename it.");
+            throw new AttributeNameConflictException(filed.getFiledName() + " name of attribute: " + name
+              + ", which conflicts with other attribute names. Please rename it.");
         }
         filed.setFiledName(name);
         if (descriptorProto.hasTypeName()) {
@@ -420,7 +423,7 @@ public class Parser {
                 break;
             case 14:
                 filed.setFileType(FiledType.Enum);
-            filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
+                filed.setFileTypeName(descriptorProto.getTypeName().substring(1));
                 break;
             case 15:
                 filed.setFileTypeName(FiledType.sFixed32.getJavaClass().getName());

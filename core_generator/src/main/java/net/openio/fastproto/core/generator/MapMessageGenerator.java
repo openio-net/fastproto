@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openio.fastproto.core_generator;
+package net.openio.fastproto.core.generator;
 
 import net.openio.fastproto.wrapper.Filed;
 import net.openio.fastproto.wrapper.Message;
@@ -79,7 +79,9 @@ public class MapMessageGenerator {
     }
 
     private static void generateSet(PrintWriter pw, String fileName, Map<String, Meta> metaMap, Filed key, Filed value) {
-        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value, metaMap), CaseUtils.toCamelCase(fileName, true), Util.getJavaType(key, metaMap));
+
+        pw.format("     public %s get%s(%s key){\n", Util.getJavaType(value, metaMap),
+            CaseUtils.toCamelCase(fileName, true), Util.getJavaType(key, metaMap));
         pw.format("         if(this.%s==null){\n", fileName);
         pw.format("             return null;");
         pw.println("        }\n");
@@ -96,8 +98,11 @@ public class MapMessageGenerator {
         pw.println("    }");
     }
 
-    private static void generatePut(PrintWriter pw, String fileName, Map<String, Meta> metaMap, Filed key, Filed value) {
-        pw.format("     private void put_%s(%s key,%s value,int length){\n", fileName, Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap));
+    private static void generatePut(PrintWriter pw, String fileName, Map<String, Meta> metaMap,
+                                    Filed key, Filed value) {
+
+        pw.format("     private void put_%s(%s key,%s value,int length){\n", fileName,
+            Util.getJavaType(key, metaMap), Util.getJavaType(value, metaMap));
 
         pw.format("         if(this.%s==null){\n", fileName);
         pw.format("             this.%s=new java.util.HashMap<>();\n", fileName);
@@ -108,7 +113,8 @@ public class MapMessageGenerator {
         pw.println("    }");
     }
 
-    private static void generateDecode(PrintWriter pw, String fileName, Map<String, Meta> metaMap, Filed key, Filed value, String className) {
+    private static void generateDecode(PrintWriter pw, String fileName, Map<String, Meta> metaMap,
+                                       Filed key, Filed value, String className) {
 
         pw.format("     private static void decode_%s(ByteBuf buf,%s a_1){\n", fileName, className);
         pw.format("         int length_1=Serializer.decodeVarInt32(buf);\n");
