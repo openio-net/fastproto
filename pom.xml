@@ -22,14 +22,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.openio.fastproto</groupId>
-    <artifactId>protobuf</artifactId>
+    <artifactId>FastProto</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
 
-        <module>core_generator</module>
-        <module>fastproto_maven_plugin</module>
-        <module>fastproto_tests</module>
+        <module>core-generator</module>
+        <module>fastproto-maven-plugin</module>
+        <module>fastproto-tests</module>
         <module>benchmark</module>
     </modules>
 

@@ -1,7 +1,7 @@
 //This code is from lightproto
 syntax = "proto2";
 package com;
-option java_package = "com";
+option java_package = "com.github.splunk.lightproto.tests";
 message Point {
 	required int32 x = 1;
 	required int32 y = 2;
