@@ -41,7 +41,7 @@ public class StringEncodingBenchmark {
         bh.consume(bytes);
     }
 
-    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
+    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1<<10);
 
     @Benchmark
     public void nettyEncoding(Blackhole bh) {

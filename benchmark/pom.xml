@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>protobuf</artifactId>
+        <artifactId>FastProto</artifactId>
         <groupId>net.openio.fastproto</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>net.openio.fastproto</groupId>
             <artifactId>fastproto_tests</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -94,11 +94,11 @@
             </plugin>
             <plugin>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>fastproto_maven_plugin</artifactId>
+                <artifactId>fastproto-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
                     <javaOutDir>src/main/java</javaOutDir>
-                    <sourcesDir>src/test/java</sourcesDir>
+                    <sourcesDir>src/main/fastProto/</sourcesDir>
                     <protoFile>
                         <file>addressbook.proto</file>
                         <file>Test.proto</file>
@@ -126,9 +126,9 @@
                     <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
                     </protocArtifact>
 
-                    <protoSourceRoot>${project.basedir}/src/test/java</protoSourceRoot>
+                    <protoSourceRoot>${project.basedir}/src/main/fastProto</protoSourceRoot>
 
-                    <outputDirectory>${project.basedir}/src/main/java/com/google.protobuf/</outputDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
 
                     <clearOutputDirectory>false</clearOutputDirectory>
 
@@ -146,6 +146,18 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>com.github.splunk.lightproto</groupId>
+                <artifactId>lightproto-maven-plugin</artifactId>
+                <version>0.5-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

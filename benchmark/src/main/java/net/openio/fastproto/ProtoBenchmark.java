@@ -17,9 +17,7 @@
 package net.openio.fastproto;
 
 
-import com.AddressBook;
-import com.AddressBookProtos;
-import com.Person;
+import net.openio.fastproto.tests.*;
 import com.google.protobuf.CodedOutputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -36,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1)
 public class ProtoBenchmark {
 
-    final static byte[] serialized;
+    final static ByteBuf serialized;
 
     static {
         AddressBook.AddressBookBuild ab = AddressBook.newBuilder();
@@ -63,13 +61,14 @@ public class ProtoBenchmark {
 
 
         AddressBook ab1=ab.build();
-        serialized = new byte[ab1.getByteSize()];
-        ab1.encode(Unpooled.wrappedBuffer(serialized).resetWriterIndex());
+        serialized = Unpooled.buffer(ab1.getByteSize());
+        serialized.clear();
+        ab1.encode(serialized);
     }
 
 
-    private final ByteBuf buffer = PooledByteBufAllocator.DEFAULT.buffer(1024);
-    byte[] data = new byte[1024];
+    private final ByteBuf buffer = PooledByteBufAllocator.DEFAULT.buffer(1<<10);
+    byte[] data = new byte[1<<10];
     private final ByteBuf serializeByteBuf = Unpooled.wrappedBuffer(serialized);
 
     @Benchmark
@@ -144,24 +143,65 @@ public class ProtoBenchmark {
         pbab.addPerson(pb_p2.build());
 
 
-        ByteBuf buf=Unpooled.wrappedBuffer(data);
-        pbab.build().encode(buf);
-        CodedOutputStream s = CodedOutputStream.newInstance(buf.nioBuffer());
+        pbab.build().encode(buffer);
         bh.consume(pbab);
-        bh.consume(s);
+        buffer.clear();
+    }
+
+    @Benchmark
+    public void lightProtoSerialize(Blackhole bh) {
+        com.github.splunk.lightproto.tests.AddressBook frame
+            =new com.github.splunk.lightproto.tests.AddressBook();
+        frame.clear();
+
+        com.github.splunk.lightproto.tests.Person p1 = frame.addPerson();
+        p1.setName("name");
+        p1.setEmail("name@example.com");
+        p1.setId(5);
+        com.github.splunk.lightproto.tests.Person.PhoneNumber p1_pn1 = p1.addPhone();
+        p1_pn1.setNumber("xxx-zzz-yyyyy");
+        p1_pn1.setType(com.github.splunk.lightproto.tests.Person.PhoneType.HOME);
+
+        com.github.splunk.lightproto.tests.Person.PhoneNumber p1_pn2 = p1.addPhone();
+        p1_pn2.setNumber("xxx-zzz-yyyyy");
+        p1_pn2.setType(com.github.splunk.lightproto.tests.Person.PhoneType.MOBILE);
+
+        com.github.splunk.lightproto.tests.Person p2 = frame.addPerson();
+        p2.setName("name 2");
+        p2.setEmail("name2@example.com");
+        p2.setId(6);
+
+        com.github.splunk.lightproto.tests.Person.PhoneNumber p2_pn1 = p1.addPhone();
+        p2_pn1.setNumber("xxx-zzz-yyyyy");
+        p2_pn1.setType(com.github.splunk.lightproto.tests.Person.PhoneType.HOME);
+
+        frame.writeTo(buffer);
+        buffer.clear();
+
+        bh.consume(frame);
     }
 
     @Benchmark
     public void protobufDeserialize(Blackhole bh) throws Exception {
-        AddressBook ab = AddressBook.decode(serializeByteBuf, serializeByteBuf.readableBytes());
+        AddressBookProtos.AddressBook ab = AddressBookProtos.AddressBook.parseFrom(serializeByteBuf.array());
         bh.consume(ab);
+        serializeByteBuf.resetReaderIndex();
     }
 
     @Benchmark
     public void fastProtoDeserialize(Blackhole bh) {
         AddressBook frame =AddressBook.decode(serializeByteBuf, serializeByteBuf.readableBytes());
-        serializeByteBuf.resetReaderIndex();
         bh.consume(frame);
+        serializeByteBuf.resetReaderIndex();
+    }
+
+
+    @Benchmark
+    public void lightProtoDeserialize(Blackhole bh) {
+        com.github.splunk.lightproto.tests.AddressBook frame =new com.github.splunk.lightproto.tests.AddressBook();
+        frame.parseFrom(serializeByteBuf, serializeByteBuf.readableBytes());
+        bh.consume(frame);
+        serializeByteBuf.resetReaderIndex();
     }
 
 

@@ -136,3 +136,24 @@ message O{
 
 	repeated bool l=10;
 }
+
+message P{
+	required string a=1;
+
+	repeated string b=2;
+
+	required A c=3;
+
+	repeated A d=4;
+}
+
+message Point {
+	required int32 x = 1;
+	required int32 y = 2;
+	optional int32 z = 3;
+}
+
+message Frame {
+	required string name = 1;
+	required Point point = 2;
+}

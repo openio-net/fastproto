@@ -1,6 +1,7 @@
+//This code is from lightproto
 syntax = "proto2";
 package com;
-
+option java_package = "net.openio.fastproto.tests";
 message Point {
 	required int32 x = 1;
 	required int32 y = 2;

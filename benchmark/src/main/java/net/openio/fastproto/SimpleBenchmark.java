@@ -16,8 +16,7 @@
  */
 package net.openio.fastproto;
 
-import com.Frame;
-import com.Point;
+import net.openio.fastproto.tests.*;
 import com.google.protobuf.CodedOutputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -34,8 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1)
 public class SimpleBenchmark {
 
-    final static byte[] serialized;
-
+    private static final ByteBuf serializeByteBuf ;
     static {
         Point.PointBuild b = Point.newBuilder();
         b.setX(1);
@@ -49,33 +47,33 @@ public class SimpleBenchmark {
         Frame frame = frameBuilder.build();
         int size = frame.getByteSize();
 
-        serialized = new byte[size];
-        CodedOutputStream s = CodedOutputStream.newInstance(serialized);
-        ByteBuf buf=Unpooled.wrappedBuffer(serialized);
-        frame.encode(buf);
+        serializeByteBuf=Unpooled.buffer(size);
+        serializeByteBuf.resetWriterIndex();
+        frame.encode(serializeByteBuf);
     }
 
     byte[] data = new byte[1024];
     Frame frame = new Frame();
     ByteBuf buffer = PooledByteBufAllocator.DEFAULT.buffer(1024);
-    private final ByteBuf serializeByteBuf = Unpooled.wrappedBuffer(serialized);
+
 
     @Benchmark
     public void protobufSerialize(Blackhole bh) throws Exception {
-        Point.PointBuild b = Point.newBuilder();
+        Test.Point.Builder b = Test.Point.newBuilder();
         b.setX(1);
         b.setY(2);
         b.setZ(3);
 
-        Frame.FrameBuild frameBuilder = Frame.newBuilder();
+        Test.Frame.Builder frameBuilder = Test.Frame.newBuilder();
         frameBuilder.setName("xyz");
         frameBuilder.setPoint(b.build());
 
-        Frame frame = frameBuilder.build();
+        Test.Frame frame = frameBuilder.build();
 
         CodedOutputStream s = CodedOutputStream.newInstance(data);
         ByteBuf buf=Unpooled.wrappedBuffer(data);
-        frame.encode(buf);
+        buf.resetWriterIndex();
+        frame.toByteArray();
         bh.consume(b);
         bh.consume(s);
         bh.consume(frame);
@@ -98,23 +96,42 @@ public class SimpleBenchmark {
     }
 
     @Benchmark
+    public void lightProtoSerialize(Blackhole bh) {
+        com.github.splunk.lightproto.tests.Frame frame =
+            new com.github.splunk.lightproto.tests.Frame();
+        frame.clear();
+        com.github.splunk.lightproto.tests.Point p = frame.setPoint();
+        p.setX(1);
+        p.setY(2);
+        p.setZ(3);
+        frame.setName("xyz");
+
+        p.writeTo(buffer);
+        buffer.clear();
+
+        bh.consume(p);
+    }
+
+
+    @Benchmark
     public void protobufDeserialize(Blackhole bh) throws Exception {
-        Frame b = Frame.decode(serializeByteBuf, serializeByteBuf.readableBytes());
-        Frame f = b;
-        f.getName();
-        bh.consume(f);
+        Test.Frame b = Test.Frame.parseFrom(serializeByteBuf.array());
+        bh.consume(b);
+        serializeByteBuf.resetReaderIndex();
     }
 
     @Benchmark
     public void fastProtoDeserialize(Blackhole bh) {
-        frame.encode(serializeByteBuf);
+        Frame.decode(serializeByteBuf);
+        bh.consume(frame.getName());
         serializeByteBuf.resetReaderIndex();
-        bh.consume(frame);
     }
 
     @Benchmark
     public void lightProtoDeserializeReadString(Blackhole bh) {
-        frame.encode(serializeByteBuf);
+        com.github.splunk.lightproto.tests.Frame frame =
+            new com.github.splunk.lightproto.tests.Frame();
+        frame.parseFrom(serializeByteBuf, serializeByteBuf.readableBytes());
         bh.consume(frame.getName());
         serializeByteBuf.resetReaderIndex();
     }
