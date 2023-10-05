@@ -27,6 +27,10 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
+//Test class from lightproto :
+// https://github.com/splunk/lightproto/blob/master/benchmark/src/main/java/com/github/splunk/lightproto/benchmark/StringEncodingBenchmark.java
+
+
 @State(Scope.Benchmark)
 @Warmup(iterations = 3)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)

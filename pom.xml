@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.openio.fastproto</groupId>
-    <artifactId>FastProto</artifactId>
+    <artifactId>fastproto</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>

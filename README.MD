@@ -37,9 +37,9 @@ StringEncodingBenchmark.nettyEncodingAscii       thrpt   10   31.964 ± 13.861  
 1. importing maven libraries
 ```yaml
         <dependency>
-          <artifactId>FastProto</artifactId>
+          <artifactId>fastproto</artifactId>
           <groupId>net.openio.fastproto</groupId>
-          <artifactId>core_generator</artifactId>
+          <artifactId>core-generator</artifactId>
           <version>1.0-SNAPSHOT</version>
         </dependency>
 ```
@@ -66,8 +66,8 @@ StringEncodingBenchmark.nettyEncodingAscii       thrpt   10   31.964 ± 13.861  
 The generated code is loaded by the class loader.
 ```yaml
             <plugin>
-                <groupId>FastProto</groupId>
-                <artifactId>fastproto_maven_plugin</artifactId>
+                <groupId>fastproto</groupId>
+                <artifactId>fastproto-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <javaOutDir>src/test/java</javaOutDir>
